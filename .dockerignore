@@ -1,0 +1,13 @@
+.pytest_cache
+docs
+schemas
+var
+venv
+.dockerignore
+.env
+contentful-apps
+Makefile
+htmlcov_integration_tests
+htmlcov_unit_tests
+.github
+tmp

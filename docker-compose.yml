@@ -1,0 +1,49 @@
+version: "3.7"
+services:
+#  redis:
+#    container_name: redis
+#    image: redis
+#    entrypoint: redis-server --protected-mode no --timeout 20 --appendonly yes --loglevel warning
+
+#  mysql:
+#    image: mysql:5.7
+#    container_name: codebook_mysql
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=root
+#    ports:
+#      - 3306:3306
+#    volumes:
+#      - ./docker/mysql:/docker-entrypoint-initdb.d/:ro
+
+  postgres:
+    image: 'postgres:13.1-alpine'
+    container_name: codebook-api-postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./docker/db-entrypoint.sql:/docker-entrypoint-initdb.d/init.sql
+
+  codebook-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CODEBOOK_DB_URL=postgresql://root:root@postgres/codebook
+    container_name: codebook-api
+    working_dir: /app
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+      - ~/.aws/:/root/.aws:ro #Neccesary for working with s3 services
+    ports:
+      - 8000:8000
+    entrypoint: >
+      sh -c "
+        [ ! -d "./var" ] && mkdir ./var
+        pip install -r requirements.txt
+        tail -f /dev/null
+      "

@@ -1,0 +1,46 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+      - id: pretty-format-json
+      - id: debug-statements
+      - id: detect-aws-credentials
+      - id: mixed-line-ending
+      - id: no-commit-to-branch
+      - id: requirements-txt-fixer
+      - id: detect-private-key
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.9.0
+    hooks:
+      - id: pyupgrade
+        args: [ --py38-plus ]
+  - repo: local
+    hooks:
+      - id: requirements
+        name: requirements
+        language: system
+        entry: pip freeze > requirements.txt
+        always_run: true
+        require_serial: true
+        types_or: [ python ]
+      - id: black
+        name: black
+        language: system
+        entry: venv/bin/black -q -l 150 src/ test/ features/steps/
+        always_run: true
+        require_serial: true
+        types_or: [ python ]
+      - id: flake8
+        name: flake8
+        language: system
+        entry: venv/bin/flake8 --max-line-length 150 --max-complexity 10 src test features/steps importer
+        always_run: true
+        require_serial: true
+        types_or: [ python ]

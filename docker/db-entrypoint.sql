@@ -1,0 +1,3 @@
+CREATE USER codebook;
+CREATE DATABASE codebook;
+GRANT ALL PRIVILEGES ON DATABASE codebook TO codebook;
