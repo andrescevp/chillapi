@@ -1,10 +1,7 @@
 FROM python:3.8-slim
 
-ARG DASH_DEBUG_MODE=False
-ENV DASH_DEBUG_MODE=$DASH_DEBUG_MODE
-
 RUN apt-get update
-RUN apt-get install -y libpq-dev build-essential
+RUN apt-get install -y libpq-dev build-essential libgraphviz-dev graphviz
 #RUN apt-get install -y default-libmysqlclient-dev  default-mysql-client
 
 #WORKDIR /tmp

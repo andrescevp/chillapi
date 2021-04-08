@@ -7,7 +7,7 @@ services:
 
 #  mysql:
 #    image: mysql:5.7
-#    container_name: codebook_mysql
+#    container_name: chillapi_mysql
 #    environment:
 #      - MYSQL_ROOT_PASSWORD=root
 #    ports:
@@ -17,7 +17,7 @@ services:
 
   postgres:
     image: 'postgres:13.1-alpine'
-    container_name: codebook-api-postgres
+    container_name: chillapi-postgres
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
@@ -26,13 +26,13 @@ services:
     volumes:
       - ./docker/db-entrypoint.sql:/docker-entrypoint-initdb.d/init.sql
 
-  codebook-api:
+  chillapi-api:
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      - CODEBOOK_DB_URL=postgresql://root:root@postgres/codebook
-    container_name: codebook-api
+      - DB_URL=postgresql://root:root@postgres/chillapi
+    container_name: chillapi-api
     working_dir: /app
     depends_on:
       - postgres
@@ -44,6 +44,9 @@ services:
     entrypoint: >
       sh -c "
         [ ! -d "./var" ] && mkdir ./var
+        pip install virtualenv
+        [ ! -d "./venv" ] && virtualenv venv
         pip install -r requirements.txt
+        chown -Rf 1000:1000 .
         tail -f /dev/null
       "

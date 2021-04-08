@@ -1,0 +1,2775 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "examples": [
+    {
+      "app": {
+        "name": "Test",
+        "version": "0.1",
+        "swagger_url": "/swagger",
+        "swagger_ui_url": "/doc",
+        "host": "0.0.0.0",
+        "port": 8000,
+        "debug": true,
+        "audit_logger": {
+          "package": "my_app.audit",
+          "audit_log_handler": "MyAuditHandler",
+          "audit_log_handler_args": {
+            "name": "hello"
+          }
+        }
+      },
+      "environment": {
+        "APP_DB_URL": "$CODEBOOK_DB_URL",
+        "APP_SECRET_KEY": "super-secret-key"
+      },
+      "logger": {
+        "app": {
+          "output": "stdout",
+          "level": 10
+        },
+        "audit_logger": {
+          "output": "stdout",
+          "level": 10
+        },
+        "error_handler": {
+          "output": "stdout",
+          "level": 10
+        },
+        "sqlalchemy": {
+          "output": "stdout",
+          "level": 10
+        }
+      },
+      "database": {
+        "name": "codebook",
+        "schema": "public",
+        "defaults": {
+          "tables": {
+            "id_field": "id",
+            "fields_excluded": {
+              "all": [
+                "created_at",
+                "updated_by",
+                "updated_at",
+                "created_by",
+                "deleted_at",
+                "deleted_by"
+              ],
+              "GET": {
+                "SINGLE": [],
+                "LIST": []
+              },
+              "POST": {
+                "SINGLE": [],
+                "LIST": []
+              },
+              "PUT": {
+                "SINGLE": [
+                  "id"
+                ],
+                "LIST": [
+                  "id"
+                ]
+              }
+            },
+            "api_endpoints": {
+              "PUT": [
+                "SINGLE",
+                "LIST"
+              ],
+              "GET": [
+                "SINGLE",
+                "LIST"
+              ],
+              "POST": [
+                "SINGLE",
+                "LIST"
+              ],
+              "DELETE": [
+                "SINGLE",
+                "LIST"
+              ]
+            },
+            "extensions": {
+              "soft_delete": {
+                "enable": true,
+                "default_field": "deleted_at"
+              },
+              "on_update_timestamp": {
+                "enable": true,
+                "default_field": "updated_at"
+              },
+              "on_create_timestamp": {
+                "enable": true,
+                "default_field": "created_at"
+              }
+            }
+          }
+        },
+        "tables": [
+          {
+            "name": "languages",
+            "alias": "language",
+            "id_field": null,
+            "extensions": {
+              "soft_delete": {
+                "enable": false
+              }
+            },
+            "fields_excluded": {
+              "POST": {
+                "SINGLE": [
+                  "name"
+                ]
+              }
+            }
+          },
+          {
+            "name": "country",
+            "alias": null,
+            "fields_excluded": {
+              "GET": {
+                "SINGLE": [
+                  "name"
+                ]
+              }
+            },
+            "api_endpoints": {}
+          },
+          {
+            "name": "country_region",
+            "alias": null,
+            "id_field": null,
+            "api_endpoints": {}
+          },
+          {
+            "name": "country",
+            "alias": "country_information",
+            "id_field": null,
+            "api_endpoints": {
+              "GET": [
+                "SINGLE",
+                "LIST"
+              ]
+            }
+          }
+        ],
+        "sql": [
+          {
+            "name": "test",
+            "method": "GET",
+            "url": "/test/test_sql",
+            "sql": "select * from country\n",
+            "query_parameters": [],
+            "response_schema": {
+              "type": "object",
+              "parameters": {
+                "test": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "test",
+            "method": "GET",
+            "url": "/test/test_sql2",
+            "sql": "select c.name as country_name, cr.* from country c\ninner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso\n",
+            "query_parameters": [
+              {
+                "in": "query",
+                "name": "country_iso",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          {
+            "name": "test_params",
+            "method": "POST",
+            "url": "/test_params_post",
+            "sql": "select c.name as country_name, cr.* from country c\ninner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso\n",
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "country_iso": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "templates": [
+          {
+            "name": "test",
+            "method": "GET",
+            "url": "/test_template",
+            "template": "./api_sql_templates/test.sql",
+            "query_parameters": []
+          },
+          {
+            "name": "test_params",
+            "method": "GET",
+            "url": "/test_template_params",
+            "template": "./api_sql_templates/test_params.sql",
+            "query_parameters": [
+              {
+                "in": "query",
+                "name": "country_iso",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          {
+            "name": "test_params",
+            "method": "GET",
+            "url": "/test_template_params_url/<country_iso>",
+            "template": "./api_sql_templates/test_params.sql",
+            "query_parameters": [
+              {
+                "in": "path",
+                "name": "country_iso",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          {
+            "name": "test_params",
+            "method": "POST",
+            "url": "/test_template_params",
+            "template": "./api_sql_templates/test_params.sql",
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "country_iso": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "required": [
+    "app",
+    "environment",
+    "logger",
+    "database"
+  ],
+  "properties": {
+    "app": {
+      "$ref": "#/$defs/app"
+    },
+    "environment": {
+      "type": "object",
+      "title": "The environment schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "APP_DB_URL": "$CODEBOOK_DB_URL",
+          "APP_SECRET_KEY": "super-secret-key"
+        }
+      ],
+      "required": [
+        "APP_DB_URL",
+        "APP_SECRET_KEY"
+      ],
+      "properties": {
+        "APP_DB_URL": {
+          "type": "string",
+          "title": "The APP_DB_URL schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "$CODEBOOK_DB_URL"
+          ]
+        },
+        "APP_SECRET_KEY": {
+          "type": "string",
+          "title": "The APP_SECRET_KEY schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "super-secret-key"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "logger": {
+      "type": "object",
+      "title": "The logger schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "app": {
+            "output": "stdout",
+            "level": 10
+          },
+          "audit_logger": {
+            "output": "stdout",
+            "level": 10
+          },
+          "error_handler": {
+            "output": "stdout",
+            "level": 10
+          },
+          "sqlalchemy": {
+            "output": "stdout",
+            "level": 10
+          }
+        }
+      ],
+      "required": [
+        "app",
+        "audit_logger",
+        "error_handler",
+        "sqlalchemy"
+      ],
+      "properties": {
+        "app": {
+          "type": "object",
+          "title": "The app schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+            {
+              "output": "stdout",
+              "level": 10
+            }
+          ],
+          "required": [
+            "output",
+            "level"
+          ],
+          "properties": {
+            "output": {
+              "type": "string",
+              "title": "The output schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": [
+                "stdout"
+              ]
+            },
+            "level": {
+              "type": "integer",
+              "title": "The level schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": 0,
+              "examples": [
+                10
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "audit_logger": {
+          "type": "object",
+          "title": "The audit_logger schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+            {
+              "output": "stdout",
+              "level": 10
+            }
+          ],
+          "required": [
+            "output",
+            "level"
+          ],
+          "properties": {
+            "output": {
+              "type": "string",
+              "title": "The output schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": [
+                "stdout"
+              ]
+            },
+            "level": {
+              "type": "integer",
+              "title": "The level schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": 0,
+              "examples": [
+                10
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "error_handler": {
+          "type": "object",
+          "title": "The error_handler schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+            {
+              "output": "stdout",
+              "level": 10
+            }
+          ],
+          "required": [
+            "output",
+            "level"
+          ],
+          "properties": {
+            "output": {
+              "type": "string",
+              "title": "The output schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": [
+                "stdout"
+              ]
+            },
+            "level": {
+              "type": "integer",
+              "title": "The level schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": 0,
+              "examples": [
+                10
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "sqlalchemy": {
+          "type": "object",
+          "title": "The sqlalchemy schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+            {
+              "output": "stdout",
+              "level": 10
+            }
+          ],
+          "required": [
+            "output",
+            "level"
+          ],
+          "properties": {
+            "output": {
+              "type": "string",
+              "title": "The output schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": [
+                "stdout"
+              ]
+            },
+            "level": {
+              "type": "integer",
+              "title": "The level schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": 0,
+              "examples": [
+                10
+              ]
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "database": {
+      "type": "object",
+      "title": "The database schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "name": "codebook",
+          "schema": "public",
+          "defaults": {
+            "tables": {
+              "id_field": "id",
+              "fields_excluded": {
+                "all": [
+                  "created_at",
+                  "updated_by",
+                  "updated_at",
+                  "created_by",
+                  "deleted_at",
+                  "deleted_by"
+                ],
+                "GET": {
+                  "SINGLE": [],
+                  "LIST": []
+                },
+                "POST": {
+                  "SINGLE": [],
+                  "LIST": []
+                },
+                "PUT": {
+                  "SINGLE": [
+                    "id"
+                  ],
+                  "LIST": [
+                    "id"
+                  ]
+                }
+              },
+              "api_endpoints": {
+                "PUT": [
+                  "SINGLE",
+                  "LIST"
+                ],
+                "GET": [
+                  "SINGLE",
+                  "LIST"
+                ],
+                "POST": [
+                  "SINGLE",
+                  "LIST"
+                ],
+                "DELETE": [
+                  "SINGLE",
+                  "LIST"
+                ]
+              },
+              "extensions": {
+                "soft_delete": {
+                  "enable": true,
+                  "default_field": "deleted_at"
+                },
+                "on_update_timestamp": {
+                  "enable": true,
+                  "default_field": "updated_at"
+                },
+                "on_create_timestamp": {
+                  "enable": true,
+                  "default_field": "created_at"
+                }
+              }
+            }
+          },
+          "tables": [
+            {
+              "name": "languages",
+              "alias": "language",
+              "id_field": null,
+              "extensions": {
+                "soft_delete": {
+                  "enable": false
+                }
+              },
+              "fields_excluded": {
+                "POST": {
+                  "SINGLE": [
+                    "name"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "country",
+              "alias": null,
+              "fields_excluded": {
+                "GET": {
+                  "SINGLE": [
+                    "name"
+                  ]
+                }
+              },
+              "api_endpoints": {}
+            },
+            {
+              "name": "country_region",
+              "alias": null,
+              "id_field": null,
+              "api_endpoints": {}
+            },
+            {
+              "name": "country",
+              "alias": "country_information",
+              "id_field": null,
+              "api_endpoints": {
+                "GET": [
+                  "SINGLE",
+                  "LIST"
+                ]
+              }
+            }
+          ],
+          "sql": [
+            {
+              "name": "test",
+              "method": "GET",
+              "url": "/test/test_sql",
+              "sql": "select * from country\n",
+              "query_parameters": [],
+              "response_schema": {
+                "type": "object",
+                "parameters": {
+                  "test": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "name": "test",
+              "method": "GET",
+              "url": "/test/test_sql2",
+              "sql": "select c.name as country_name, cr.* from country c\ninner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso\n",
+              "query_parameters": [
+                {
+                  "in": "query",
+                  "name": "country_iso",
+                  "required": true,
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test_params",
+              "method": "POST",
+              "url": "/test_params_post",
+              "sql": "select c.name as country_name, cr.* from country c\ninner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso\n",
+              "request_schema": {
+                "type": "object",
+                "properties": {
+                  "country_iso": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "templates": [
+            {
+              "name": "test",
+              "method": "GET",
+              "url": "/test_template",
+              "template": "./api_sql_templates/test.sql",
+              "query_parameters": []
+            },
+            {
+              "name": "test_params",
+              "method": "GET",
+              "url": "/test_template_params",
+              "template": "./api_sql_templates/test_params.sql",
+              "query_parameters": [
+                {
+                  "in": "query",
+                  "name": "country_iso",
+                  "required": true,
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test_params",
+              "method": "GET",
+              "url": "/test_template_params_url/<country_iso>",
+              "template": "./api_sql_templates/test_params.sql",
+              "query_parameters": [
+                {
+                  "in": "path",
+                  "name": "country_iso",
+                  "required": true,
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test_params",
+              "method": "POST",
+              "url": "/test_template_params",
+              "template": "./api_sql_templates/test_params.sql",
+              "request_schema": {
+                "type": "object",
+                "properties": {
+                  "country_iso": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "required": [
+        "name",
+        "schema",
+        "defaults",
+        "tables",
+        "sql",
+        "templates"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The name schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "codebook"
+          ]
+        },
+        "schema": {
+          "type": "string",
+          "title": "The schema schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "public"
+          ]
+        },
+        "defaults": {
+          "type": "object",
+          "title": "The defaults schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+            {
+              "tables": {
+                "id_field": "id",
+                "fields_excluded": {
+                  "all": [
+                    "created_at",
+                    "updated_by",
+                    "updated_at",
+                    "created_by",
+                    "deleted_at",
+                    "deleted_by"
+                  ],
+                  "GET": {
+                    "SINGLE": [],
+                    "LIST": []
+                  },
+                  "POST": {
+                    "SINGLE": [],
+                    "LIST": []
+                  },
+                  "PUT": {
+                    "SINGLE": [
+                      "id"
+                    ],
+                    "LIST": [
+                      "id"
+                    ]
+                  }
+                },
+                "api_endpoints": {
+                  "PUT": [
+                    "SINGLE",
+                    "LIST"
+                  ],
+                  "GET": [
+                    "SINGLE",
+                    "LIST"
+                  ],
+                  "POST": [
+                    "SINGLE",
+                    "LIST"
+                  ],
+                  "DELETE": [
+                    "SINGLE",
+                    "LIST"
+                  ]
+                },
+                "extensions": {
+                  "soft_delete": {
+                    "enable": true,
+                    "default_field": "deleted_at"
+                  },
+                  "on_update_timestamp": {
+                    "enable": true,
+                    "default_field": "updated_at"
+                  },
+                  "on_create_timestamp": {
+                    "enable": true,
+                    "default_field": "created_at"
+                  }
+                }
+              }
+            }
+          ],
+          "required": [
+            "tables"
+          ],
+          "properties": {
+            "tables": {
+              "type": "object",
+              "title": "The tables schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "examples": [
+                {
+                  "id_field": "id",
+                  "fields_excluded": {
+                    "all": [
+                      "created_at",
+                      "updated_by",
+                      "updated_at",
+                      "created_by",
+                      "deleted_at",
+                      "deleted_by"
+                    ],
+                    "GET": {
+                      "SINGLE": [],
+                      "LIST": []
+                    },
+                    "POST": {
+                      "SINGLE": [],
+                      "LIST": []
+                    },
+                    "PUT": {
+                      "SINGLE": [
+                        "id"
+                      ],
+                      "LIST": [
+                        "id"
+                      ]
+                    }
+                  },
+                  "api_endpoints": {
+                    "PUT": [
+                      "SINGLE",
+                      "LIST"
+                    ],
+                    "GET": [
+                      "SINGLE",
+                      "LIST"
+                    ],
+                    "POST": [
+                      "SINGLE",
+                      "LIST"
+                    ],
+                    "DELETE": [
+                      "SINGLE",
+                      "LIST"
+                    ]
+                  },
+                  "extensions": {
+                    "soft_delete": {
+                      "enable": true,
+                      "default_field": "deleted_at"
+                    },
+                    "on_update_timestamp": {
+                      "enable": true,
+                      "default_field": "updated_at"
+                    },
+                    "on_create_timestamp": {
+                      "enable": true,
+                      "default_field": "created_at"
+                    }
+                  }
+                }
+              ],
+              "required": [
+                "id_field",
+                "fields_excluded",
+                "api_endpoints",
+                "extensions"
+              ],
+              "properties": {
+                "id_field": {
+                  "type": "string",
+                  "title": "The id_field schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": "",
+                  "examples": [
+                    "id"
+                  ]
+                },
+                "fields_excluded": {
+                  "type": "object",
+                  "title": "The fields_excluded schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": {},
+                  "examples": [
+                    {
+                      "all": [
+                        "created_at",
+                        "updated_by",
+                        "updated_at",
+                        "created_by",
+                        "deleted_at",
+                        "deleted_by"
+                      ],
+                      "GET": {
+                        "SINGLE": [],
+                        "LIST": []
+                      },
+                      "POST": {
+                        "SINGLE": [],
+                        "LIST": []
+                      },
+                      "PUT": {
+                        "SINGLE": [
+                          "id"
+                        ],
+                        "LIST": [
+                          "id"
+                        ]
+                      }
+                    }
+                  ],
+                  "required": [
+                    "all",
+                    "GET",
+                    "POST",
+                    "PUT"
+                  ],
+                  "properties": {
+                    "all": {
+                      "type": "array",
+                      "title": "The all schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": [],
+                      "examples": [
+                        [
+                          "created_at",
+                          "updated_by"
+                        ]
+                      ],
+                      "additionalItems": true,
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "title": "The first anyOf schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": "",
+                            "examples": [
+                              "created_at",
+                              "updated_by"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "GET": {
+                      "type": "object",
+                      "title": "The GET schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                        {
+                          "SINGLE": [],
+                          "LIST": []
+                        }
+                      ],
+                      "required": [
+                        "SINGLE",
+                        "LIST"
+                      ],
+                      "properties": {
+                        "SINGLE": {
+                          "type": "array",
+                          "title": "The SINGLE schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": [],
+                          "examples": [
+                            []
+                          ],
+                          "additionalItems": true,
+                          "items": {
+                          }
+                        },
+                        "LIST": {
+                          "type": "array",
+                          "title": "The LIST schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": [],
+                          "examples": [
+                            []
+                          ],
+                          "additionalItems": true,
+                          "items": {
+                          }
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "POST": {
+                      "type": "object",
+                      "title": "The POST schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                        {
+                          "SINGLE": [],
+                          "LIST": []
+                        }
+                      ],
+                      "required": [
+                        "SINGLE",
+                        "LIST"
+                      ],
+                      "properties": {
+                        "SINGLE": {
+                          "type": "array",
+                          "title": "The SINGLE schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": [],
+                          "examples": [
+                            []
+                          ],
+                          "additionalItems": true,
+                          "items": {
+                          }
+                        },
+                        "LIST": {
+                          "type": "array",
+                          "title": "The LIST schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": [],
+                          "examples": [
+                            []
+                          ],
+                          "additionalItems": true,
+                          "items": {
+                          }
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "PUT": {
+                      "type": "object",
+                      "title": "The PUT schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                        {
+                          "SINGLE": [
+                            "id"
+                          ],
+                          "LIST": [
+                            "id"
+                          ]
+                        }
+                      ],
+                      "required": [
+                        "SINGLE",
+                        "LIST"
+                      ],
+                      "properties": {
+                        "SINGLE": {
+                          "type": "array",
+                          "title": "The SINGLE schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": [],
+                          "examples": [
+                            [
+                              "id"
+                            ]
+                          ],
+                          "additionalItems": true,
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": "",
+                                "examples": [
+                                  "id"
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "LIST": {
+                          "type": "array",
+                          "title": "The LIST schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": [],
+                          "examples": [
+                            [
+                              "id"
+                            ]
+                          ],
+                          "additionalItems": true,
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": "",
+                                "examples": [
+                                  "id"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "api_endpoints": {
+                  "type": "object",
+                  "title": "The api_endpoints schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": {},
+                  "examples": [
+                    {
+                      "PUT": [
+                        "SINGLE",
+                        "LIST"
+                      ],
+                      "GET": [
+                        "SINGLE",
+                        "LIST"
+                      ],
+                      "POST": [
+                        "SINGLE",
+                        "LIST"
+                      ],
+                      "DELETE": [
+                        "SINGLE",
+                        "LIST"
+                      ]
+                    }
+                  ],
+                  "required": [
+                    "PUT",
+                    "GET",
+                    "POST",
+                    "DELETE"
+                  ],
+                  "properties": {
+                    "PUT": {
+                      "type": "array",
+                      "title": "The PUT schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": [],
+                      "examples": [
+                        [
+                          "SINGLE",
+                          "LIST"
+                        ]
+                      ],
+                      "additionalItems": true,
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "title": "The first anyOf schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": "",
+                            "examples": [
+                              "SINGLE",
+                              "LIST"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "GET": {
+                      "type": "array",
+                      "title": "The GET schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": [],
+                      "examples": [
+                        [
+                          "SINGLE",
+                          "LIST"
+                        ]
+                      ],
+                      "additionalItems": true,
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "title": "The first anyOf schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": "",
+                            "examples": [
+                              "SINGLE",
+                              "LIST"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "POST": {
+                      "type": "array",
+                      "title": "The POST schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": [],
+                      "examples": [
+                        [
+                          "SINGLE",
+                          "LIST"
+                        ]
+                      ],
+                      "additionalItems": true,
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "title": "The first anyOf schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": "",
+                            "examples": [
+                              "SINGLE",
+                              "LIST"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "DELETE": {
+                      "type": "array",
+                      "title": "The DELETE schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": [],
+                      "examples": [
+                        [
+                          "SINGLE",
+                          "LIST"
+                        ]
+                      ],
+                      "additionalItems": true,
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "title": "The first anyOf schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": "",
+                            "examples": [
+                              "SINGLE",
+                              "LIST"
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "extensions": {
+                  "type": "object",
+                  "title": "The extensions schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": {},
+                  "examples": [
+                    {
+                      "soft_delete": {
+                        "enable": true,
+                        "default_field": "deleted_at"
+                      },
+                      "on_update_timestamp": {
+                        "enable": true,
+                        "default_field": "updated_at"
+                      },
+                      "on_create_timestamp": {
+                        "enable": true,
+                        "default_field": "created_at"
+                      }
+                    }
+                  ],
+                  "required": [
+                    "soft_delete",
+                    "on_update_timestamp",
+                    "on_create_timestamp"
+                  ],
+                  "properties": {
+                    "soft_delete": {
+                      "type": "object",
+                      "title": "The soft_delete schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                        {
+                          "enable": true,
+                          "default_field": "deleted_at"
+                        }
+                      ],
+                      "required": [
+                        "enable",
+                        "default_field"
+                      ],
+                      "properties": {
+                        "enable": {
+                          "type": "boolean",
+                          "title": "The enable schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": false,
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "default_field": {
+                          "type": "string",
+                          "title": "The default_field schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": "",
+                          "examples": [
+                            "deleted_at"
+                          ]
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "on_update_timestamp": {
+                      "type": "object",
+                      "title": "The on_update_timestamp schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                        {
+                          "enable": true,
+                          "default_field": "updated_at"
+                        }
+                      ],
+                      "required": [
+                        "enable",
+                        "default_field"
+                      ],
+                      "properties": {
+                        "enable": {
+                          "type": "boolean",
+                          "title": "The enable schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": false,
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "default_field": {
+                          "type": "string",
+                          "title": "The default_field schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": "",
+                          "examples": [
+                            "updated_at"
+                          ]
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "on_create_timestamp": {
+                      "type": "object",
+                      "title": "The on_create_timestamp schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "examples": [
+                        {
+                          "enable": true,
+                          "default_field": "created_at"
+                        }
+                      ],
+                      "required": [
+                        "enable",
+                        "default_field"
+                      ],
+                      "properties": {
+                        "enable": {
+                          "type": "boolean",
+                          "title": "The enable schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": false,
+                          "examples": [
+                            true
+                          ]
+                        },
+                        "default_field": {
+                          "type": "string",
+                          "title": "The default_field schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": "",
+                          "examples": [
+                            "created_at"
+                          ]
+                        }
+                      },
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "tables": {
+          "type": "array",
+          "title": "The tables schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "examples": [
+            [
+              {
+                "name": "languages",
+                "alias": "language",
+                "id_field": null,
+                "extensions": {
+                  "soft_delete": {
+                    "enable": false
+                  }
+                },
+                "fields_excluded": {
+                  "POST": {
+                    "SINGLE": [
+                      "name"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "country",
+                "alias": null,
+                "fields_excluded": {
+                  "GET": {
+                    "SINGLE": [
+                      "name"
+                    ]
+                  }
+                },
+                "api_endpoints": {}
+              }
+            ]
+          ],
+          "additionalItems": true,
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "title": "The first anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "name": "languages",
+                    "alias": "language",
+                    "id_field": null,
+                    "extensions": {
+                      "soft_delete": {
+                        "enable": false
+                      }
+                    },
+                    "fields_excluded": {
+                      "POST": {
+                        "SINGLE": [
+                          "name"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "required": [
+                  "name",
+                  "alias",
+                  "id_field",
+                  "extensions",
+                  "fields_excluded"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "languages"
+                    ]
+                  },
+                  "alias": {
+                    "type": "string",
+                    "title": "The alias schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "language"
+                    ]
+                  },
+                  "id_field": {
+                    "type": "null",
+                    "title": "The id_field schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": null,
+                    "examples": [
+                      null
+                    ]
+                  },
+                  "extensions": {
+                    "type": "object",
+                    "title": "The extensions schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                      {
+                        "soft_delete": {
+                          "enable": false
+                        }
+                      }
+                    ],
+                    "required": [
+                      "soft_delete"
+                    ],
+                    "properties": {
+                      "soft_delete": {
+                        "type": "object",
+                        "title": "The soft_delete schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": {},
+                        "examples": [
+                          {
+                            "enable": false
+                          }
+                        ],
+                        "required": [
+                          "enable"
+                        ],
+                        "properties": {
+                          "enable": {
+                            "type": "boolean",
+                            "title": "The enable schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": false,
+                            "examples": [
+                              false
+                            ]
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    },
+                    "additionalProperties": true
+                  },
+                  "fields_excluded": {
+                    "type": "object",
+                    "title": "The fields_excluded schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                      {
+                        "POST": {
+                          "SINGLE": [
+                            "name"
+                          ]
+                        }
+                      }
+                    ],
+                    "required": [
+                      "POST"
+                    ],
+                    "properties": {
+                      "POST": {
+                        "type": "object",
+                        "title": "The POST schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": {},
+                        "examples": [
+                          {
+                            "SINGLE": [
+                              "name"
+                            ]
+                          }
+                        ],
+                        "required": [
+                          "SINGLE"
+                        ],
+                        "properties": {
+                          "SINGLE": {
+                            "type": "array",
+                            "title": "The SINGLE schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": [],
+                            "examples": [
+                              [
+                                "name"
+                              ]
+                            ],
+                            "additionalItems": true,
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "title": "The first anyOf schema",
+                                  "description": "An explanation about the purpose of this instance.",
+                                  "default": "",
+                                  "examples": [
+                                    "name"
+                                  ]
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "object",
+                "title": "The second anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "name": "country",
+                    "alias": null,
+                    "fields_excluded": {
+                      "GET": {
+                        "SINGLE": [
+                          "name"
+                        ]
+                      }
+                    },
+                    "api_endpoints": {}
+                  }
+                ],
+                "required": [
+                  "name",
+                  "alias",
+                  "fields_excluded",
+                  "api_endpoints"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "country"
+                    ]
+                  },
+                  "alias": {
+                    "type": "null",
+                    "title": "The alias schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": null,
+                    "examples": [
+                      null
+                    ]
+                  },
+                  "fields_excluded": {
+                    "type": "object",
+                    "title": "The fields_excluded schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                      {
+                        "GET": {
+                          "SINGLE": [
+                            "name"
+                          ]
+                        }
+                      }
+                    ],
+                    "required": [
+                      "GET"
+                    ],
+                    "properties": {
+                      "GET": {
+                        "type": "object",
+                        "title": "The GET schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": {},
+                        "examples": [
+                          {
+                            "SINGLE": [
+                              "name"
+                            ]
+                          }
+                        ],
+                        "required": [
+                          "SINGLE"
+                        ],
+                        "properties": {
+                          "SINGLE": {
+                            "type": "array",
+                            "title": "The SINGLE schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": [],
+                            "examples": [
+                              [
+                                "name"
+                              ]
+                            ],
+                            "additionalItems": true,
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "title": "The first anyOf schema",
+                                  "description": "An explanation about the purpose of this instance.",
+                                  "default": "",
+                                  "examples": [
+                                    "name"
+                                  ]
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    },
+                    "additionalProperties": true
+                  },
+                  "api_endpoints": {
+                    "type": "object",
+                    "title": "The api_endpoints schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                      {}
+                    ],
+                    "required": [],
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "object",
+                "title": "The third anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "name": "country_region",
+                    "alias": null,
+                    "id_field": null,
+                    "api_endpoints": {}
+                  }
+                ],
+                "required": [
+                  "name",
+                  "alias",
+                  "id_field",
+                  "api_endpoints"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "country_region"
+                    ]
+                  },
+                  "alias": {
+                    "type": "null",
+                    "title": "The alias schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": null,
+                    "examples": [
+                      null
+                    ]
+                  },
+                  "id_field": {
+                    "type": "null",
+                    "title": "The id_field schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": null,
+                    "examples": [
+                      null
+                    ]
+                  },
+                  "api_endpoints": {
+                    "type": "object",
+                    "title": "The api_endpoints schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                      {}
+                    ],
+                    "required": [],
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        },
+        "sql": {
+          "type": "array",
+          "title": "The sql schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "examples": [
+            [
+              {
+                "name": "test",
+                "method": "GET",
+                "url": "/test/test_sql",
+                "sql": "select * from country\n",
+                "query_parameters": [],
+                "response_schema": {
+                  "type": "object",
+                  "parameters": {
+                    "test": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "test",
+                "method": "GET",
+                "url": "/test/test_sql2",
+                "sql": "select c.name as country_name, cr.* from country c\ninner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso\n",
+                "query_parameters": [
+                  {
+                    "in": "query",
+                    "name": "country_iso",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              }
+            ]
+          ],
+          "additionalItems": true,
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "title": "The first anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "name": "test",
+                    "method": "GET",
+                    "url": "/test/test_sql",
+                    "sql": "select * from country\n",
+                    "query_parameters": [],
+                    "response_schema": {
+                      "type": "object",
+                      "parameters": {
+                        "test": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "required": [
+                  "name",
+                  "method",
+                  "url",
+                  "sql",
+                  "query_parameters",
+                  "response_schema"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "test"
+                    ]
+                  },
+                  "method": {
+                    "type": "string",
+                    "title": "The method schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "GET"
+                    ]
+                  },
+                  "url": {
+                    "type": "string",
+                    "title": "The url schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "/test/test_sql"
+                    ]
+                  },
+                  "sql": {
+                    "type": "string",
+                    "title": "The sql schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "select * from country\n"
+                    ]
+                  },
+                  "query_parameters": {
+                    "type": "array",
+                    "title": "The query_parameters schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                      []
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                    }
+                  },
+                  "response_schema": {
+                    "type": "object",
+                    "title": "The response_schema schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                      {
+                        "type": "object",
+                        "parameters": {
+                          "test": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ],
+                    "required": [
+                      "type",
+                      "parameters"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "title": "The type schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                          "object"
+                        ]
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "title": "The parameters schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": {},
+                        "examples": [
+                          {
+                            "test": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                        "required": [
+                          "test"
+                        ],
+                        "properties": {
+                          "test": {
+                            "type": "object",
+                            "title": "The test schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "required": [
+                              "type"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "title": "The type schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": "",
+                                "examples": [
+                                  "string"
+                                ]
+                              }
+                            },
+                            "additionalProperties": true
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "object",
+                "title": "The second anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "name": "test",
+                    "method": "GET",
+                    "url": "/test/test_sql2",
+                    "sql": "select c.name as country_name, cr.* from country c\ninner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso\n",
+                    "query_parameters": [
+                      {
+                        "in": "query",
+                        "name": "country_iso",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "required": [
+                  "name",
+                  "method",
+                  "url",
+                  "sql",
+                  "query_parameters"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "test"
+                    ]
+                  },
+                  "method": {
+                    "type": "string",
+                    "title": "The method schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "GET"
+                    ]
+                  },
+                  "url": {
+                    "type": "string",
+                    "title": "The url schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "/test/test_sql2"
+                    ]
+                  },
+                  "sql": {
+                    "type": "string",
+                    "title": "The sql schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "select c.name as country_name, cr.* from country c\ninner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso\n"
+                    ]
+                  },
+                  "query_parameters": {
+                    "type": "array",
+                    "title": "The query_parameters schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                      [
+                        {
+                          "in": "query",
+                          "name": "country_iso",
+                          "required": true,
+                          "schema": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "title": "The first anyOf schema",
+                          "description": "An explanation about the purpose of this instance.",
+                          "default": {},
+                          "examples": [
+                            {
+                              "in": "query",
+                              "name": "country_iso",
+                              "required": true,
+                              "schema": {
+                                "type": "string"
+                              }
+                            }
+                          ],
+                          "required": [
+                            "in",
+                            "name",
+                            "required",
+                            "schema"
+                          ],
+                          "properties": {
+                            "in": {
+                              "type": "string",
+                              "title": "The in schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": "",
+                              "examples": [
+                                "query"
+                              ]
+                            },
+                            "name": {
+                              "type": "string",
+                              "title": "The name schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": "",
+                              "examples": [
+                                "country_iso"
+                              ]
+                            },
+                            "required": {
+                              "type": "boolean",
+                              "title": "The required schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": false,
+                              "examples": [
+                                true
+                              ]
+                            },
+                            "schema": {
+                              "type": "object",
+                              "title": "The schema schema",
+                              "description": "An explanation about the purpose of this instance.",
+                              "default": {},
+                              "examples": [
+                                {
+                                  "type": "string"
+                                }
+                              ],
+                              "required": [
+                                "type"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "title": "The type schema",
+                                  "description": "An explanation about the purpose of this instance.",
+                                  "default": "",
+                                  "examples": [
+                                    "string"
+                                  ]
+                                }
+                              },
+                              "additionalProperties": true
+                            }
+                          },
+                          "additionalProperties": true
+                        }
+                      ]
+                    }
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "object",
+                "title": "The third anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "name": "test_params",
+                    "method": "POST",
+                    "url": "/test_params_post",
+                    "sql": "select c.name as country_name, cr.* from country c\ninner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso\n",
+                    "request_schema": {
+                      "type": "object",
+                      "properties": {
+                        "country_iso": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "required": [
+                  "name",
+                  "method",
+                  "url",
+                  "sql",
+                  "request_schema"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "test_params"
+                    ]
+                  },
+                  "method": {
+                    "type": "string",
+                    "title": "The method schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "POST"
+                    ]
+                  },
+                  "url": {
+                    "type": "string",
+                    "title": "The url schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "/test_params_post"
+                    ]
+                  },
+                  "sql": {
+                    "type": "string",
+                    "title": "The sql schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "select c.name as country_name, cr.* from country c\ninner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso\n"
+                    ]
+                  },
+                  "request_schema": {
+                    "type": "object",
+                    "title": "The request_schema schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "country_iso": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ],
+                    "required": [
+                      "type",
+                      "properties"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "title": "The type schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                          "object"
+                        ]
+                      },
+                      "properties": {
+                        "type": "object",
+                        "title": "The properties schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": {},
+                        "examples": [
+                          {
+                            "country_iso": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                        "required": [
+                          "country_iso"
+                        ],
+                        "properties": {
+                          "country_iso": {
+                            "type": "object",
+                            "title": "The country_iso schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "required": [
+                              "type"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "title": "The type schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": "",
+                                "examples": [
+                                  "string"
+                                ]
+                              }
+                            },
+                            "additionalProperties": true
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        },
+        "templates": {
+          "type": "array",
+          "title": "The templates schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": [],
+          "examples": [
+            [
+              {
+                "name": "test",
+                "method": "GET",
+                "url": "/test_template",
+                "template": "./api_sql_templates/test.sql",
+                "query_parameters": []
+              },
+              {
+                "name": "test_params",
+                "method": "GET",
+                "url": "/test_template_params",
+                "template": "./api_sql_templates/test_params.sql",
+                "query_parameters": [
+                  {
+                    "in": "query",
+                    "name": "country_iso",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              }
+            ]
+          ],
+          "additionalItems": true,
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "title": "The first anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "name": "test",
+                    "method": "GET",
+                    "url": "/test_template",
+                    "template": "./api_sql_templates/test.sql",
+                    "query_parameters": []
+                  }
+                ],
+                "required": [
+                  "name",
+                  "method",
+                  "url",
+                  "template",
+                  "query_parameters"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "test"
+                    ]
+                  },
+                  "method": {
+                    "type": "string",
+                    "title": "The method schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "GET"
+                    ]
+                  },
+                  "url": {
+                    "type": "string",
+                    "title": "The url schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "/test_template"
+                    ]
+                  },
+                  "template": {
+                    "type": "string",
+                    "title": "The template schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "./api_sql_templates/test.sql"
+                    ]
+                  },
+                  "query_parameters": {
+                    "type": "array",
+                    "title": "The query_parameters schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                      []
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                    }
+                  }
+                },
+                "additionalProperties": true
+              },
+              {
+                "type": "object",
+                "title": "The second anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                  {
+                    "name": "test_params",
+                    "method": "POST",
+                    "url": "/test_template_params",
+                    "template": "./api_sql_templates/test_params.sql",
+                    "request_schema": {
+                      "type": "object",
+                      "properties": {
+                        "country_iso": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "required": [
+                  "name",
+                  "method",
+                  "url",
+                  "template",
+                  "request_schema"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "test_params"
+                    ]
+                  },
+                  "method": {
+                    "type": "string",
+                    "title": "The method schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "POST"
+                    ]
+                  },
+                  "url": {
+                    "type": "string",
+                    "title": "The url schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "/test_template_params"
+                    ]
+                  },
+                  "template": {
+                    "type": "string",
+                    "title": "The template schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                      "./api_sql_templates/test_params.sql"
+                    ]
+                  },
+                  "request_schema": {
+                    "type": "object",
+                    "title": "The request_schema schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "country_iso": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ],
+                    "required": [
+                      "type",
+                      "properties"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "title": "The type schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                          "object"
+                        ]
+                      },
+                      "properties": {
+                        "type": "object",
+                        "title": "The properties schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": {},
+                        "examples": [
+                          {
+                            "country_iso": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                        "required": [
+                          "country_iso"
+                        ],
+                        "properties": {
+                          "country_iso": {
+                            "type": "object",
+                            "title": "The country_iso schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "required": [
+                              "type"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "title": "The type schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": "",
+                                "examples": [
+                                  "string"
+                                ]
+                              }
+                            },
+                            "additionalProperties": true
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "app": {
+      "type": "object",
+      "title": "The app schema",
+      "description": "App Api Config.",
+      "default": {},
+      "examples": [
+        {
+          "name": "Test",
+          "version": "0.1",
+          "swagger_url": "/swagger",
+          "swagger_ui_url": "/doc",
+          "host": "0.0.0.0",
+          "port": 8000,
+          "debug": true,
+          "audit_logger": {
+            "package": "my_app.audit",
+            "audit_log_handler": "MyAuditHandler",
+            "audit_log_handler_args": {
+              "name": "hello"
+            }
+          }
+        }
+      ],
+      "required": [
+        "name",
+        "version",
+        "swagger_url",
+        "swagger_ui_url",
+        "host",
+        "port",
+        "debug",
+        "audit_logger"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The name schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "Test"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "title": "The version schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "0.1"
+          ]
+        },
+        "swagger_url": {
+          "type": "string",
+          "title": "The swagger_url schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "/swagger"
+          ]
+        },
+        "swagger_ui_url": {
+          "type": "string",
+          "title": "The swagger_ui_url schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "/doc"
+          ]
+        },
+        "host": {
+          "type": "string",
+          "title": "The host schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "0.0.0.0"
+          ]
+        },
+        "port": {
+          "type": "integer",
+          "title": "The port schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": 0,
+          "examples": [
+            8000
+          ]
+        },
+        "debug": {
+          "type": "boolean",
+          "title": "The debug schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": false,
+          "examples": [
+            true
+          ]
+        },
+        "audit_logger": {
+          "type": "object",
+          "title": "The audit_logger schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "examples": [
+            {
+              "package": "my_app.audit",
+              "audit_log_handler": "MyAuditHandler",
+              "audit_log_handler_args": {
+                "name": "hello"
+              }
+            }
+          ],
+          "required": [
+            "package",
+            "audit_log_handler",
+            "audit_log_handler_args"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "The package schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": [
+                "my_app.audit"
+              ]
+            },
+            "audit_log_handler": {
+              "type": "string",
+              "title": "The audit_log_handler schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": [
+                "MyAuditHandler"
+              ]
+            },
+            "audit_log_handler_args": {
+              "type": "object",
+              "title": "The audit_log_handler_args schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "examples": [
+                {
+                  "name": "hello"
+                }
+              ],
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "The name schema",
+                  "description": "An explanation about the purpose of this instance.",
+                  "default": "",
+                  "examples": [
+                    "hello"
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

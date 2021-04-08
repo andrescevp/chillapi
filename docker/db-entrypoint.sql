@@ -1,3 +1,3 @@
-CREATE USER codebook;
-CREATE DATABASE codebook;
-GRANT ALL PRIVILEGES ON DATABASE codebook TO codebook;
+CREATE USER chillapi;
+CREATE DATABASE chillapi;
+GRANT ALL PRIVILEGES ON DATABASE chillapi TO chillapi;

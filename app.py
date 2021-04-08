@@ -1,30 +1,30 @@
-from flask_restful_swagger_3 import Api
-# from swagger_ui import api as api_doc
-from api_config import app
+from chillapi.api import ChillApi
 
-from src.application.api_generator import build
-
-api = Api(app, version='0.0', api_spec_url='/api/swagger')
+app, api, api_manager, api_config = ChillApi()
 
 @app.route("/")
 def home():
     return {}
 
 
+# api_manager.create_api(api)
+
+# register_routes_sitemap(app)
+
 # app.app_context().push()
 
 # def create_app():
-    # api_doc(app, config_path='/api/swagger.json', url_prefix='/api', title='API doc')
 
-    # api.add_resource(LocationEventsResource, '/api/location_events')
-    # build(api, Client, 'Client', 'client', [], {})
-    # build(api, ClientLocation, 'ClientLocation', 'client_location', [], {
-    #     'client': (lambda: QuerySelectField(query_factory=client_form_chices,
-    #                             allow_blank=False))
-    # })
 
-    # app.app_context().push()
-    # return app
+# api.add_resource(LocationEventsResource, '/api/location_events')
+# build(api, Client, 'Client', 'client', [], {})
+# build(api, ClientLocation, 'ClientLocation', 'client_location', [], {
+#     'client': (lambda: QuerySelectField(query_factory=client_form_chices,
+#                             allow_blank=False))
+# })
+
+# app.app_context().push()
+# return app
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=api_config['app']['debug'], host=api_config['app']['host'], port=api_config['app']['port'])

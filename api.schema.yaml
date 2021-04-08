@@ -1,0 +1,324 @@
+# http://www.kuwata-lab.com/kwalify/ruby/users-guide.01.html#schema
+type: map
+mapping:
+  app:
+    type: map
+    mapping:
+      name:
+        type: str
+        required: True
+      version:
+        type: str
+        required: True
+      swagger_url:
+        type: str
+        required: True
+      swagger_ui_url:
+        type: str
+        required: True
+      host:
+        type: str
+        required: True
+      port:
+        type: int
+        required: True
+      debug:
+        type: bool
+        required: True
+      audit_logger:
+        type: map
+        mapping:
+          package:
+            type: str
+            required: True
+          audit_log_handler:
+            type: str
+            required: True
+          audit_log_handler_args:
+            type: any
+  environment:
+    type: map
+    mapping:
+      APP_DB_URL:
+        type: str
+      APP_SECRET_KEY:
+        type: str
+  logger:
+    type: map
+    mapping:
+      app:
+        include: logger_opts
+        required: True
+      audit_logger:
+        include: logger_opts
+        required: True
+      error_handler:
+        include: logger_opts
+        required: True
+      sqlalchemy:
+        include: logger_opts
+        required: True
+  database:
+    include: database
+
+schema;logger_opts:
+  type: map
+  mapping:
+    output:
+      type: str
+      pattern: ^stdout$|^(.|/[^/ ]*)+/?$
+    level:
+      type: int
+      enum: [ 10,20,30,40,50 ] # see logging.LogRecord 10 debug >
+
+schema;database:
+  type: map
+  mapping:
+    name:
+      type: str
+      required: True
+    schema:
+      type: str
+      required: True
+    defaults:
+      type: map
+      mapping:
+        tables:
+          include: table_defaults
+    tables:
+      include: tables
+    sql:
+      type: seq
+      sequence:
+        - type: map
+          mapping:
+            name:
+              type: str
+            method:
+              type: str
+              required: true
+              enum: [ GET,POST,PUT,DELETE ]
+            description:
+              type: str
+            url:
+              type: str
+            sql:
+              type: str
+            query_parameters:
+              type: any
+            request_schema:
+              type: any
+            response_schema:
+              type: any
+            tags:
+              type: seq
+              sequence:
+                - type: str
+    templates:
+      type: seq
+      sequence:
+        - type: map
+          mapping:
+            name:
+              type: str
+            method:
+              type: str
+              required: true
+              enum: [ GET,POST,PUT,DELETE ]
+            description:
+              type: str
+            url:
+              type: str
+            template:
+              type: str
+            query_parameters:
+              type: any
+            request_schema:
+              type: any
+            response_schema:
+              type: any
+            tags:
+              type: seq
+              sequence:
+                - type: str
+
+schema;table_defaults:
+  type: map
+  mapping:
+    id_field:
+      type: str
+    fields_excluded:
+      include: database_fields_excluded
+    api_endpoints:
+      include: api_endpoints
+    extensions:
+      include: table_extension
+
+schema;table_extension:
+  type: map
+  mapping:
+    soft_delete:
+      type: map
+      mapping:
+        enable:
+          type: bool
+        default_field:
+          type: str
+    on_update_timestamp:
+      type: map
+      mapping:
+        enable:
+          type: bool
+        default_field:
+          type: str
+    on_create_timestamp:
+      type: map
+      mapping:
+        enable:
+          type: bool
+        default_field:
+          type: str
+
+schema;default_request_only_table_endpoint:
+  type: map
+  mapping:
+    SINGLE:
+      type: seq
+      sequence:
+        - type: str
+    LIST:
+      type: seq
+      sequence:
+        - type: str
+
+schema;default_request_response_table_endpoint:
+  type: map
+  mapping:
+    SINGLE:
+      type: map
+      mapping:
+        request:
+          type: seq
+          sequence:
+            - type: str
+        response:
+          type: seq
+          sequence:
+            - type: str
+    LIST:
+      type: map
+      mapping:
+        request:
+          type: seq
+          sequence:
+            - type: str
+        response:
+          type: seq
+          sequence:
+            - type: str
+
+schema;database_fields_excluded:
+  type: map
+  mapping:
+    all:
+      type: seq
+      sequence:
+        - type: str
+    GET:
+      include: default_request_only_table_endpoint
+    POST:
+      include: default_request_only_table_endpoint
+    PUT:
+      include: default_request_only_table_endpoint
+
+schema;api_endpoints:
+  type: map
+  mapping:
+    GET:
+      type: seq
+      sequence:
+        - type: str
+          enum: [ SINGLE, LIST ]
+    POST:
+      type: seq
+      sequence:
+        - type: str
+          enum: [ SINGLE, LIST ]
+    PUT:
+      type: seq
+      sequence:
+        - type: str
+          enum: [ SINGLE, LIST ]
+    DELETE:
+      type: seq
+      sequence:
+        - type: str
+          enum: [ SINGLE, LIST ]
+
+schema;table_extension_table:
+  type: map
+  mapping:
+    soft_delete:
+      type: map
+      mapping:
+        enable:
+          type: bool
+        default_field:
+          type: str
+        cascade:
+          type: map
+          mapping:
+            one_to_many:
+              type: seq
+              sequence:
+                - type: map
+                  mapping:
+                    table:
+                      type: str
+                    column_id:
+                      type: str
+                    column_fk:
+                      type: str
+            many_to_many:
+              type: any
+#              sequence:
+#                - type: map
+#                  mapping:
+#                    table:
+#                      type: str
+#                    columns:
+#                      type: any
+
+    on_update_timestamp:
+      type: map
+      mapping:
+        enable:
+          type: bool
+        default_field:
+          type: str
+    on_create_timestamp:
+      type: map
+      mapping:
+        enable:
+          type: bool
+        default_field:
+          type: str
+
+schema;tables:
+  type: seq
+  sequence:
+    - type: map
+      mapping:
+        name:
+          type: str
+          required: True
+        alias:
+          type: str
+        id_field:
+          type: str
+        fields_excluded:
+          include: database_fields_excluded
+        api_endpoints:
+          include: api_endpoints
+        extensions:
+          include: table_extension_table

@@ -1,0 +1,260 @@
+app:
+  name: ChillApi
+  version: '0.1'
+  swagger_url: '/swagger'
+  swagger_ui_url: '/doc'
+  host: 0.0.0.0
+  port: 8000
+  debug: True
+  audit_logger:
+    package: my_app.audit
+    audit_log_handler: MyAuditHandler
+    audit_log_handler_args:
+      name: hello
+environment:
+  APP_DB_URL: '$DB_URL'
+  APP_SECRET_KEY: 'super-secret-key'
+logger:
+  app:
+    output: stdout
+    level: 10
+  audit_logger:
+    output: stdout
+    level: 10
+  error_handler:
+    output: stdout
+    level: 10
+  sqlalchemy:
+    output: stdout
+    level: 10
+database:
+  name: chillapi
+  schema: public
+  defaults:
+    tables:
+      id_field: id
+      fields_excluded: # silent check if exists in the table
+        all:
+          - created_at
+          - updated_by
+          - updated_at
+          - created_by
+          - deleted_at
+          - deleted_by
+        GET:
+          SINGLE: [ ] # request only
+          LIST: [ ] # request only
+        POST:
+          SINGLE:
+            - id
+          LIST: [ ]
+        PUT:
+          SINGLE:
+            - id
+          LIST:
+            - id
+      api_endpoints:
+        PUT: [ SINGLE, LIST ]
+        GET: [ SINGLE, LIST ]
+        POST: [ SINGLE, LIST ]
+        DELETE: [ SINGLE, LIST ]
+      extensions:
+        soft_delete:
+          enable: True
+          default_field: deleted_at
+        on_update_timestamp:
+          enable: True
+          default_field: updated_at
+        on_create_timestamp:
+          enable: True
+          default_field: created_at
+  tables:
+    - name: book_category
+      alias: ~
+      id_field: ~ # id by default
+      extensions:
+        soft_delete:
+          cascade:
+            one_to_many:
+              - table: book
+                column_id: id
+                column_fk: book_category_id
+    - name: book
+      alias: ~
+      id_field: ~ # id by default
+      #      extensions:
+      #        soft_delete:
+      #          enable: False
+      fields_excluded: # extends defaults
+        #        all: [ ]
+        #        GET:
+        #          SINGLE:
+        #            - name
+        #          LIST: [ ]
+        POST:
+          SINGLE:
+            - asin
+    #          LIST: [ ]
+    #        PUT:
+    #          SINGLE:
+    #            - name
+    #          LIST: [ ]
+    #        DELETE:
+    #          SINGLE: [ ]
+    #          LIST: [ ]
+    #      api_endpoints:   #overwrite defaults
+    #        GET: [ SINGLE ]
+    - name: author
+      alias: ~
+      #      id_field: iso
+      extensions:
+        soft_delete:
+          cascade:
+            many_to_many:
+              - table: author
+                column_id: id
+                join_table: book_has_author
+                join_columns:
+                  main: author_id
+                  join: book_id
+      fields_excluded:
+        #        all: []
+        GET:
+          SINGLE:
+            - name
+      #          LIST: [ ]
+      #        POST:
+      #          SINGLE: []
+      #          LIST: [ ]
+      #        PUT:
+      #          SINGLE: []
+      #          LIST: [ ]
+      #        DELETE:
+      #          SINGLE: [ ]
+      #          LIST: [ ]
+      api_endpoints: { }
+    - name: dummy
+      alias: ~
+      id_field: ~
+      extensions:
+        soft_delete:
+          enable: False
+        on_update_timestamp:
+          enable: False
+        on_create_timestamp:
+          enable: False
+      #      fields_excluded:
+      #        all: [ ]
+      #        GET:
+      #          SINGLE: [ ]
+      #          LIST: [ ]
+      #        POST:
+      #          SINGLE: [ ]
+      #          LIST: [ ]
+      #        PUT:
+      #          SINGLE: [ ]
+      #          LIST: [ ]
+      #        DELETE:
+      #          SINGLE: [ ]
+      #          LIST: [ ]
+      api_endpoints: { }
+    - name: dummy_create
+      alias: ~
+      id_field: ~
+      extensions:
+        soft_delete:
+          enable: False
+        on_update_timestamp:
+          enable: False
+        on_create_timestamp:
+          enable: True
+          default_field: creation
+      #      fields_excluded:
+      #        all: [ ]
+      #        GET:
+      #          SINGLE: [ ]
+      #          LIST: [ ]
+      #        POST:
+      #          SINGLE: [ ]
+      #          LIST: [ ]
+      #        PUT:
+      #          SINGLE: [ ]
+      #          LIST: [ ]
+      #        DELETE:
+      #          SINGLE: [ ]
+      #          LIST: [ ]
+      api_endpoints:
+        GET: [ SINGLE, LIST ]
+  sql:
+    - name: test
+      method: GET
+      url: /test/test_sql
+      sql: |
+        select * from author
+      query_parameters: [ ] # swagger schema for url query parameters in sql
+      response_schema:
+        type: object
+        parameters:
+          test:
+            type: string
+    - name: test
+      method: GET
+      url: /test/test_sql2
+      sql: |
+        select c.name as book_name, cr.*
+        from book c
+        inner join book_category cr ON cr.id = c.book_category_id AND c.name = :name
+      query_parameters: # swagger schema for url query parameters in sql
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+    - name: test_params
+      method: POST
+      url: /test_params_post
+      sql: |
+        select c.name as book_name, cr.*
+        from book c
+        inner join book_category cr ON cr.id = c.book_category_id AND c.name = :name
+      request_schema: # swagger schema for url query parameters in sql
+        type: object
+        properties:
+          name:
+            type: string
+            required: true
+  templates:
+    - name: test
+      method: GET
+      url: /test_template # swagger route format
+      template: ./api_sql_templates/test.sql
+      query_parameters: [ ] # swagger schema for url query parameters in sql
+    - name: test_params
+      method: GET
+      url: /test_template_params
+      template: ./api_sql_templates/test_params.sql
+      query_parameters: # swagger schema for url query parameters in sql
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+    - name: test_params
+      method: GET
+      url: /test_template_params_url/<name>
+      template: ./api_sql_templates/test_params.sql
+      query_parameters: # swagger schema for url query parameters in sql
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+    - name: test_params
+      method: POST
+      url: /test_template_params
+      template: ./api_sql_templates/test_params.sql
+      request_schema: # swagger schema for url query parameters in sql
+        type: object
+        properties:
+          name:
+            type: string

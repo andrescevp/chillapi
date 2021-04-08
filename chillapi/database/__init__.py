@@ -1,0 +1,5 @@
+DB_DIALECT_POSTGRES = 'postgres'
+
+_ALLOWED_DRIVERS = {
+    'psycopg2': DB_DIALECT_POSTGRES
+}
