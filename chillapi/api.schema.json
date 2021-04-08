@@ -1,0 +1,1054 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "required": [
+    "app",
+    "environment",
+    "logger",
+    "database"
+  ],
+  "properties": {
+    "app": {
+      "$ref": "#/$defs/app"
+    },
+    "environment": {
+      "$ref": "#/$defs/environment"
+    },
+    "logger": {
+      "$ref": "#/$defs/logger"
+    },
+    "database": {
+      "$ref": "#/$defs/database"
+    }
+  },
+  "$defs": {
+    "app": {
+      "type": "object",
+      "title": "The config schema",
+      "description": "App Api Config.",
+      "default": {},
+      "required": [
+        "name",
+        "version",
+        "swagger_url",
+        "swagger_ui_url",
+        "host",
+        "port"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "API Name",
+          "default": "Api"
+        },
+        "version": {
+          "type": "string",
+          "title": "The version",
+          "default": "0.0"
+        },
+        "swagger_url": {
+          "type": "string",
+          "title": "The swagger_url schema",
+          "description": "Url where swagger json doc will be exposed",
+          "default": "/swagger"
+        },
+        "swagger_ui_url": {
+          "type": "string",
+          "title": "The swagger_ui_url schema",
+          "description": "URL where be exposed the swagger UI",
+          "default": "/doc"
+        },
+        "externalDocs": {
+          "type": "object",
+          "description": "Maps External Documentation Object Spec: https://swagger.io/specification/#componentsObject"
+        },
+        "contact": {
+          "type": "object",
+          "description": "Maps Contact Object Spec: https://swagger.io/specification/#componentsObject"
+        },
+        "license": {
+          "type": "object",
+          "description": "Maps License Object\n Spec: https://swagger.io/specification/#componentsObject"
+        },
+        "host": {
+          "type": "string",
+          "title": "The host IP",
+          "default": "0.0.0.0"
+        },
+        "port": {
+          "type": "integer",
+          "title": "The port host IP/domain",
+          "default": 8000
+        },
+        "debug": {
+          "type": "boolean",
+          "title": "App debug flag",
+          "description": "Enables debug mode - do not setup logger levels",
+          "default": false
+        },
+        "security": {
+          "type": "array",
+          "title": "A declaration of which security mechanisms can be used across the API. The list of values includes alternative security requirement objects that can be used. Only one of the security requirement objects need to be satisfied to authorize a request. Individual operations can override this definition. Maps to the security field of the OpenAPI Object. https://swagger.io/specification/#openapiObject"
+        },
+        "security_level": {
+          "type": "string",
+          "title": "The swagger_url schema",
+          "description": "If STRICT, the api resource will be hidden in the docs if you are not authorized",
+          "default": "STANDARD",
+          "enum": [
+            "STANDARD",
+            "STRICT"
+          ]
+        },
+        "securitySchemes": {
+          "type": "object",
+          "title": "Defines a security scheme that can be used by the operations. Maps to the securitySchemes field of components Object (https://swagger.io/specification/#componentsObject)"
+        },
+        "security_handler": {
+          "type": "object",
+          "title": "auth method handler",
+          "description": "A method: ```def auth(security_schemes, security, request_obj, endpoint, method):\n    print(request_obj, endpoint, method, security_schemes, security)\n    return False```",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "environment": {
+      "type": "object",
+      "title": "The environment schema",
+      "description": "raw string or an os env prefixed by $. Example: $APP_SECRET",
+      "required": [
+        "__CHILLAPI_DB_DSN__",
+        "__CHILLAPI_APP_SECRET_KEY__"
+      ],
+      "properties": {
+        "__CHILLAPI_DB_DSN__": {
+          "type": "string",
+          "title": "The __CHILLAPI_DB_DSN__ schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "postgresql://root:root@postgres/chillapi"
+        },
+        "__CHILLAPI_APP_SECRET_KEY__": {
+          "type": "string",
+          "title": "The __CHILLAPI_APP_SECRET_KEY__ schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "super-secret-key"
+        }
+      },
+      "additionalProperties": false
+    },
+    "logger": {
+      "type": "object",
+      "title": "The logger schema",
+      "description": "An explanation about the purpose of this instance.",
+      "required": [
+        "app",
+        "audit_logger",
+        "error_handler",
+        "sqlalchemy"
+      ],
+      "properties": {
+        "app": {
+          "$ref": "#/$defs/logger_setup"
+        },
+        "audit_logger": {
+          "$ref": "#/$defs/logger_setup"
+        },
+        "error_handler": {
+          "$ref": "#/$defs/logger_setup"
+        },
+        "sqlalchemy": {
+          "$ref": "#/$defs/logger_setup"
+        }
+      },
+      "additionalProperties": false
+    },
+    "logger_setup": {
+      "type": "object",
+      "title": "The app schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {
+        "output": "stdout",
+        "level": 10
+      },
+      "examples": [
+        {
+          "output": "stdout",
+          "level": 10
+        }
+      ],
+      "required": [
+        "output",
+        "level"
+      ],
+      "properties": {
+        "output": {
+          "type": "string",
+          "title": "The output schema",
+          "description": "Allows null, stdout and a UNIX file path",
+          "default": "stdout",
+          "pattern": "(stdout|null|^\\/$|(^(?=\\/)|^\\.|^\\.\\.)(\\/(?=[^0])[^0]+)*\\/?$)"
+        },
+        "level": {
+          "type": "integer",
+          "title": "The level schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": 40,
+          "enum": [
+            10,
+            20,
+            30,
+            40,
+            50,
+            60
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "database": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "title": "Postgres api schema",
+          "default": "public"
+        },
+        "defaults": {
+          "$ref": "#/$defs/table_defaults"
+        },
+        "tables": {
+          "$ref": "#/$defs/table_endpoints"
+        },
+        "sql": {
+          "$ref": "#/$defs/sql_endpoints"
+        },
+        "templates": {
+          "$ref": "#/$defs/sql_template_endpoints"
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_defaults": {
+      "type": "object",
+      "description": "Default endpoints settings",
+      "required": [
+        "tables"
+      ],
+      "properties": {
+        "tables": {
+          "type": "object",
+          "title": "Table defaults settings",
+          "properties": {
+            "id_field": {
+              "type": "string",
+              "description": "Column name that references to the primary key of the table. Used to fetch records CRUD operations",
+              "default": "id"
+            },
+            "fields_excluded": {
+              "$ref": "#/$defs/table_setting_fields_excluded"
+            },
+            "api_endpoints": {
+              "$ref": "#/$defs/table_setting_endpoints"
+            },
+            "extensions": {
+              "$ref": "#/$defs/table_setting_defaults_extensions"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_setting_defaults_extensions": {
+      "type": "object",
+      "description": "Table extensions",
+      "properties": {
+        "soft_delete": {
+          "$ref": "#/$defs/table_extension_default_config"
+        },
+        "on_update_timestamp": {
+          "$ref": "#/$defs/table_extension_default_config"
+        },
+        "on_create_timestamp": {
+          "$ref": "#/$defs/table_extension_default_config"
+        },
+        "audit_logger": {
+          "type": "object",
+          "title": "Audit log handler",
+          "description": "A `chillapi.extensions.audit.AuditLogHandler` based class reference",
+          "default": {},
+          "required": [
+            "package",
+            "handler",
+            "handler_args"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "class name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "before_request": {
+          "type": "object",
+          "title": "BeforeRequestEvent",
+          "description": "Class with `chillapi.extensions.events.BeforeRequestEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "before_response": {
+          "type": "object",
+          "title": "BeforeResponseEvent",
+          "description": "Class with `chillapi.extensions.events.BeforeResponseEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "after_response": {
+          "type": "object",
+          "title": "AfterResponseEvent",
+          "description": "Class with `chillapi.extensions.events.AfterResponseEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_setting_extensions": {
+      "type": "object",
+      "description": "Table extensions",
+      "properties": {
+        "soft_delete": {
+          "type": "object",
+          "description": "Apply a timestamp in a field and apply UPDATE instead os DELETE. If this extension is enabled, also the lookup will apply a filter to do not show the records within a date the delete column",
+          "properties": {
+            "enable": {
+              "type": "boolean",
+              "default": false
+            },
+            "default_field": {
+              "type": "string",
+              "description": "Column name",
+              "default": "action_at"
+            },
+            "cascade": {
+              "type": "object",
+              "description": "Tables mapping to propagate this action in other tables",
+              "properties": {
+                "one_to_many": {
+                  "type": "array",
+                  "description": "one to many relations mapping to cascade the operation",
+                  "additionalItems": true,
+                  "items": {
+                    "$ref": "#/$defs/table_setting_extension_one_to_many"
+                  }
+                },
+                "many_to_many": {
+                  "type": "array",
+                  "description": "many to many relations mapping to cascade the operation",
+                  "additionalItems": true,
+                  "items": {
+                    "$ref": "#/$defs/table_setting_extension_many_to_many"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "on_update_timestamp": {
+          "$ref": "#/$defs/table_extension_default_config"
+        },
+        "on_create_timestamp": {
+          "$ref": "#/$defs/table_extension_default_config"
+        },
+        "audit_logger": {
+          "type": "object",
+          "title": "Audit log handler",
+          "description": "A `chillapi.extensions.audit.AuditLogHandler` based class reference",
+          "default": {},
+          "required": [
+            "package",
+            "handler",
+            "handler_args"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "class name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "before_request": {
+          "type": "object",
+          "title": "BeforeRequestEvent",
+          "description": "Class with `chillapi.extensions.events.BeforeRequestEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "before_response": {
+          "type": "object",
+          "title": "BeforeResponseEvent",
+          "description": "Class with `chillapi.extensions.events.BeforeResponseEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "validators": {
+          "patternProperties": {
+            ".*": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "title": "Validator",
+                  "description": "Class `wtforms.validators.*`",
+                  "default": {},
+                  "required": [
+                    "package",
+                    "handler"
+                  ],
+                  "properties": {
+                    "package": {
+                      "type": "string",
+                      "title": "package python path",
+                      "default": null
+                    },
+                    "handler": {
+                      "type": "string",
+                      "title": "method name name"
+                    },
+                    "handler_args": {
+                      "type": "object",
+                      "title": "Class arguments",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "patternProperties": {
+                        "^.*$": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_setting_extension_one_to_many": {
+      "type": "object",
+      "description": "Relation mapping",
+      "required": [
+        "table",
+        "column_id",
+        "column_fk"
+      ],
+      "properties": {
+        "table": {
+          "type": "string",
+          "description": "Table name"
+        },
+        "column_id": {
+          "type": "string",
+          "description": "Columns that reference the PK of the relation table"
+        },
+        "column_fk": {
+          "type": "string",
+          "description": "Columns that reference the PK of the main table in the relation table"
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_setting_extension_many_to_many": {
+      "type": "object",
+      "description": "An explanation about the purpose of this instance.",
+      "required": [
+        "table",
+        "column_id",
+        "join_table",
+        "join_columns"
+      ],
+      "properties": {
+        "table": {
+          "type": "string",
+          "description": "Table name"
+        },
+        "column_id": {
+          "type": "string",
+          "description": "Columns that reference the PK of the relation table"
+        },
+        "join_table": {
+          "type": "string",
+          "title": "The join_table schema",
+          "description": "The intermediate table between the main table and the relation table"
+        },
+        "join_columns": {
+          "type": "object",
+          "title": "The join_columns schema",
+          "description": "Columns in the join_table that maps the relation between the main and the relation table",
+          "required": [
+            "main",
+            "join"
+          ],
+          "properties": {
+            "main": {
+              "type": "string",
+              "description": "Column that maps the id column in the main table"
+            },
+            "join": {
+              "type": "string",
+              "description": "Column that maps the id column in the relation table"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_setting_endpoints": {
+      "type": "object",
+      "description": "API Endpoints to be generated",
+      "properties": {
+        "PUT": {
+          "$ref": "#/$defs/table_api_endpoints_type_settings"
+        },
+        "GET": {
+          "$ref": "#/$defs/table_api_endpoints_type_settings"
+        },
+        "POST": {
+          "$ref": "#/$defs/table_api_endpoints_type_settings"
+        },
+        "DELETE": {
+          "$ref": "#/$defs/table_api_endpoints_type_settings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_setting_fields_excluded": {
+      "type": "object",
+      "properties": {
+        "all": {
+          "type": "array",
+          "description": "Columns to be excluded in all tables",
+          "default": [],
+          "additionalItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "GET": {
+          "$ref": "#/$defs/table_endpoint_endpoint_exclude_fields"
+        },
+        "POST": {
+          "$ref": "#/$defs/table_endpoint_endpoint_exclude_fields"
+        },
+        "PUT": {
+          "$ref": "#/$defs/table_endpoint_endpoint_exclude_fields"
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_endpoint_endpoint_exclude_fields": {
+      "type": "object",
+      "description": "Fields excluded in request/response",
+      "properties": {
+        "SINGLE": {
+          "type": "array",
+          "default": [],
+          "additionalItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "LIST": {
+          "type": "array",
+          "default": [],
+          "additionalItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "table_api_endpoints_type_settings": {
+      "type": "array",
+      "title": "The PUT schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": [
+        "SINGLE",
+        "LIST"
+      ],
+      "additionalItems": false,
+      "items": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "Type of endpoint",
+            "examples": [
+              "SINGLE",
+              "LIST"
+            ]
+          }
+        ]
+      }
+    },
+    "table_extension_default_config": {
+      "type": "object",
+      "description": "Apply a timestamp in a field and apply UPDATE instead os DELETE. If this extension is enabled, also the lookup will apply a filter to do not show the records within a date the delete column",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "default": false
+        },
+        "default_field": {
+          "type": "string",
+          "description": "Column name",
+          "default": "action_at"
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_endpoint_setup": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "table name"
+        },
+        "alias": {
+          "type": "string",
+          "description": "Table alias for the API model",
+          "default": null
+        },
+        "id_field": {
+          "type": "string",
+          "title": "The id_field schema",
+          "description": "Overwrite the default id_field"
+        },
+        "extensions": {
+          "$ref": "#/$defs/table_setting_extensions"
+        },
+        "fields_excluded": {
+          "$ref": "#/$defs/table_setting_fields_excluded"
+        },
+        "api_endpoints": {
+          "$ref": "#/$defs/table_setting_endpoints"
+        }
+      },
+      "additionalProperties": true
+    },
+    "table_endpoints": {
+      "type": "array",
+      "additionalItems": true,
+      "items": {
+        "$refs": "#/$defs/table_endpoint_setup"
+      }
+    },
+    "sql_endpoint_setup": {
+      "type": "object",
+      "title": "The first anyOf schema",
+      "examples": [
+        {
+          "name": "test",
+          "method": "GET",
+          "url": "/test/test_sql",
+          "sql": "select * from country\n",
+          "query_parameters": [],
+          "response_schema": {
+            "type": "object",
+            "parameters": {
+              "test": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "required": [
+        "name",
+        "method",
+        "url",
+        "sql"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE"
+          ]
+        },
+        "url": {
+          "type": "string"
+        },
+        "sql": {
+          "type": "string"
+        },
+        "query_parameters": {
+          "type": "array",
+          "description": "query parameters describes as swagger type: https://swagger.io/docs/specification/describing-parameters/"
+        },
+        "response_schema": {
+          "type": "object",
+          "description": "response body describes as swagger type: https://swagger.io/docs/specification/describing-responses/"
+        },
+        "request_schema": {
+          "type": "object",
+          "description": "response body describes as swagger type: https://swagger.io/docs/specification/describing-request-body/"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sql_template_endpoint_setup": {
+      "type": "object",
+      "title": "The first anyOf schema",
+      "examples": [
+        {
+          "name": "test",
+          "method": "GET",
+          "url": "/test/test_sql",
+          "sql": "select * from country\n",
+          "query_parameters": [],
+          "response_schema": {
+            "type": "object",
+            "parameters": {
+              "test": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "required": [
+        "name",
+        "method",
+        "url",
+        "template"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE"
+          ]
+        },
+        "url": {
+          "type": "string"
+        },
+        "template": {
+          "type": "string",
+          "pattern": "^\\/$|(^(?=\\/)|^\\.|^\\.\\.)(\\/(?=[^0])[^0]+)*\\/?$"
+        },
+        "query_parameters": {
+          "type": "array",
+          "description": "query parameters describes as swagger type: https://swagger.io/docs/specification/describing-parameters/"
+        },
+        "response_schema": {
+          "type": "object",
+          "description": "response body describes as swagger type: https://swagger.io/docs/specification/describing-responses/"
+        },
+        "request_schema": {
+          "type": "object",
+          "description": "response body describes as swagger type: https://swagger.io/docs/specification/describing-request-body/"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sql_endpoints": {
+      "type": "array",
+      "items": {
+        "$refs": "#/$defs/sql_endpoint_setup"
+      },
+      "additionalItems": true
+    },
+    "sql_template_endpoints": {
+      "$refs": "#/$defs/sql_endpoint_setup",
+      "additionalItems": true
+    }
+  },
+  "additionalProperties": false
+}

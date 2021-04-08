@@ -1,0 +1,48 @@
+name: Pull Request
+
+on:
+  push:
+    branches:
+      - develop
+#      - main
+
+jobs:
+  testing:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python-version: [ 3.8 ]
+
+    steps:
+      # Use preinstalled PostgreSQL
+      - name: Start PostgreSQL on Ubuntu
+        run: |
+          sudo systemctl start postgresql.service
+          pg_isready
+      # Change user name and password to meet your requirements
+      - name: Create additional user
+        run: |
+          sudo -u postgres psql --command="CREATE USER root PASSWORD 'root'" --command="\du"
+      # Change database name to meet your requirements
+      - name: Create additional database
+        run: |
+          sudo -u postgres createdb --owner=root chillapi
+          PGPASSWORD=root psql --username=root --host=localhost --list chillapi
+
+      - uses: actions/checkout@v2
+      #      - name: Setup Graphviz
+      #        uses: ts-graphviz/setup-graphviz@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: set environment variables
+        uses: allenevans/set-env@v2.0.0
+        with:
+          __CHILLAPI_SETUP_TESTING_DB_DSN__: 'postgresql://root:root@localhost/chillapi'
+      - name: Install dependencies
+        run: |
+          python -m pip install -U pip
+          pip install -U wheel --user
+      - name: Running library tests
+        run: python setup.py test

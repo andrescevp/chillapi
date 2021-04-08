@@ -18,7 +18,6 @@ lib/
 lib64/
 parts/
 sdist/
-var/
 wheels/
 share/python-wheels/
 *.egg-info/
@@ -36,7 +35,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Unit tests / coverage reports
 htmlcov/
 htmlcov*/
 .tox/
@@ -141,3 +140,11 @@ cython_debug/
 tmp
 features/temp
 !features/temp/.gitkeep
+profile
+!profile/.gitkeep
+flask_monitoringdashboard.db
+db.sqlite
+var/
+!var/.gitkeep
+.idea
+.vscode

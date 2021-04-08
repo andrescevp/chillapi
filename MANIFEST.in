@@ -1,0 +1,4 @@
+include README.md
+include LICENSE.md
+include chillapi/requirements.txt
+include chillapi/api.schema.json

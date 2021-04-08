@@ -1,10 +1,8 @@
 FROM python:3.8-slim
 
-ARG DASH_DEBUG_MODE=False
-ENV DASH_DEBUG_MODE=$DASH_DEBUG_MODE
-
 RUN apt-get update
-RUN apt-get install -y libpq-dev build-essential
+RUN apt-get install -y libpq-dev build-essential libgraphviz-dev graphviz
+RUN apt-get install -y sqlite3 libsqlite3-dev
 #RUN apt-get install -y default-libmysqlclient-dev  default-mysql-client
 
 #WORKDIR /tmp
@@ -22,8 +20,10 @@ WORKDIR /app
 
 RUN mkdir var
 RUN touch var/app.log
-
+RUN python -m pip install -U pip
+RUN pip install pipreqs
 RUN set -ex && \
-    pip install -r requirements.txt
+    pip install -r chillapi/requirements.txt && \
+    pip install -r server-requirements.txt
 
 #CMD gunicorn --log-level=debug --bind=0.0.0.0:8000 app:server
