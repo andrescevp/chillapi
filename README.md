@@ -59,6 +59,20 @@ In addition, you can use placeholders in your query and specify the proper swagg
 
 Works in the same way that the SQL type, but you can specify a path to a template (larger sqls)
 
+# setup
+
+```shell
+cd $PROJECT_DIR
+```
+
+```shell
+docker-compose up 
+```
+
+```shell
+make run_dev
+# or install by yourself the venv etc. You will need to have psycopg binary installed 
+```
 
 # Other options
 
