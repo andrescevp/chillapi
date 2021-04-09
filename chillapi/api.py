@@ -15,7 +15,7 @@ from chillapi.app.sitemap import register_routes as register_routes_sitemap
 def ChillApi(app: Flask = None):
     logger_config = api_config['logger']
     audit_logger = api_config['app']['audit_logger'] if 'audit_logger' in api_config['app'] else None
-    _set_logger_config(logger_config, audit_logger, api_config['app']['debug'])
+    _set_logger_config(logger_config, audit_logger)
 
     if app is None:
         app = Flask(api_config['app']['name'])

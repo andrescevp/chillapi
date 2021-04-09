@@ -5,7 +5,7 @@ import os
 from sqlalchemy.orm.scoping import ScopedSession
 from chillapi.app.config import api_config, _get_db_url
 
-SQLALCHEMY_DATABASE_URL = os.getenv('CODEBOOK_DB_URL')
+SQLALCHEMY_DATABASE_URL = os.getenv('APP_DB_URL')
 SQLALCHEMY_DATABASE_SCHEMA = 'public'  # 'schema1,schema2,public'
 
 engine = create_engine(

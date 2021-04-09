@@ -1,11 +1,12 @@
+import json
 import logging
 import os
 
 import yaml
 from dotenv import load_dotenv
 from pathlib import Path
-from pykwalify.core import Core
-from pykwalify.errors import SchemaError as YamlSchemaError
+
+from jsonschema import validate, ValidationError
 
 from chillapi.exceptions.api_manager import ConfigError
 
@@ -29,36 +30,37 @@ def parse_config(app_config: dict):
 
 
 CONFIG_FILE = 'api.yaml'
-SCHEMA_CONFIG_FILE = 'api.schema.yaml'
-
-c = Core(source_file=CONFIG_FILE, schema_files=[SCHEMA_CONFIG_FILE])
-try:
-    c.validate(raise_exception=True)
-except YamlSchemaError as e:
-    raise ConfigError(f'Api config file config error. {e.msg}')
+SCHEMA_CONFIG_FILE = 'api.schema.json'
 
 _virtual_modules_map = {}
 api_config = read_yaml(CONFIG_FILE)
-# simplejson.dump(api_config, open('api.json', 'w'))
 
-def _set_logger_config(logger_config: dict, audit_logger: dict = None, debug: bool = False):
+try:
+    validate(instance=api_config, schema=json.load(open(SCHEMA_CONFIG_FILE, 'r')))
+except ValidationError as e:
+    raise ConfigError(e)
+
+
+def _set_logger_config(logger_config: dict, audit_logger: dict = None):
     log_file_handler = None
     for logger_name, config in logger_config.items():
-        if logger_name == 'audit_logger' and debug is False:
-            log_null_handler = logging.NullHandler()
-            logging.getLogger(logger_name).removeHandler(stout_handler)
-            logging.getLogger(logger_name).addHandler(log_null_handler)
-        if logger_name == 'audit_logger' and audit_logger and debug is False:
+        if logger_name == 'audit_logger' and audit_logger:
             continue
         if logger_name == 'sqlalchemy':
             logger_name = 'sqlalchemy.engine'
 
-        if 'output' in config and config['output'] != 'stdout':
+        if 'output' in config and config['output'] == 'null':
+            log_null_handler = logging.NullHandler()
+            logging.getLogger(logger_name).removeHandler(stout_handler)
+            logging.getLogger(logger_name).addHandler(log_null_handler)
+            continue
+        if 'output' in config and config['output'] not in ['stdout', 'null']:
             if log_file_handler is None:
                 log_file_handler = logging.FileHandler(config['output'])
                 log_file_handler.setFormatter(formatter)
             logging.getLogger(logger_name).removeHandler(stout_handler)
             logging.getLogger(logger_name).addHandler(log_file_handler)
+            continue
         if 'level' in config:
             logging.getLogger(logger_name).setLevel(int(config['level']))
 
@@ -77,6 +79,5 @@ def _get_secret_key(api_config):
     if 'environment' in api_config and 'APP_SECRET_KEY' in api_config['environment']:
         secret_key = api_config['environment']['APP_SECRET_KEY']
     return secret_key
-
 
 # parse_config(api_config)
