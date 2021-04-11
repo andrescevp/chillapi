@@ -18,7 +18,7 @@ from chillapi.database.repository import DataRepository, _MAGIC_QUERIES
 from chillapi.exceptions.api_manager import ConfigError
 from chillapi.exceptions.http import NotFoundException, RequestSchemaError
 from chillapi.logger.app_loggers import logger
-from chillapi.database.query_builder import create_select_filtered_paginated_query, create_select_filtered_paginated_query_count, \
+from chillapi.database.query_builder import create_select_filtered_paginated_ordered_query, create_select_filtered_paginated_query_count, \
     create_select_join_soft_delete_filter
 from chillapi.swagger.http import AutomaticResource, ResourceResponse
 from chillapi.swagger.schemas import get_get_single_endpoint_schema, get_put_single_endpoint_schema, \
@@ -497,7 +497,7 @@ def create_get_list_endpoint_class(
 
             if count > 0:
                 query_params = {k: v['value'] for k, v in query.items() if 'op' in v}
-                sql = create_select_filtered_paginated_query(table_name, allowed_columns, query)
+                sql = create_select_filtered_paginated_ordered_query(table_name, allowed_columns, query)
                 record = repository.execute(sql, query_params)
                 data = record.fetchall()
 

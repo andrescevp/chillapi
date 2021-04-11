@@ -75,49 +75,6 @@
           "title": "App debug flag",
           "description": "Enables debug mode - do not setup logger levels",
           "default": false
-        },
-        "audit_logger": {
-          "type": "object",
-          "title": "Audit log handler",
-          "description": "A `chillapi.extensions.audit.AuditLogHandler` based class reference",
-          "default": {},
-          "required": [
-            "package",
-            "audit_log_handler",
-            "audit_log_handler_args"
-          ],
-          "properties": {
-            "package": {
-              "type": "string",
-              "title": "package python path",
-              "default": null
-            },
-            "audit_log_handler": {
-              "type": "string",
-              "title": "class name",
-              "default": ""
-            },
-            "audit_log_handler_args": {
-              "type": "object",
-              "title": "Class arguments",
-              "description": "An explanation about the purpose of this instance.",
-              "default": {},
-              "patternProperties": {
-                "^.*$": {
-                  "anyOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "integer"
-                    }
-                  ]
-                }
-              },
-              "additionalProperties": true
-            }
-          },
-          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -217,16 +174,7 @@
     },
     "database": {
       "type": "object",
-      "required": [
-        "name",
-        "schema"
-      ],
       "properties": {
-        "name": {
-          "type": "string",
-          "title": "DB name",
-          "default": "chillapi"
-        },
         "schema": {
           "type": "string",
           "title": "Postgres api schema",
@@ -290,6 +238,49 @@
         },
         "on_create_timestamp": {
           "$ref": "#/$defs/table_extension_default_config"
+        },
+        "audit_logger": {
+          "type": "object",
+          "title": "Audit log handler",
+          "description": "A `chillapi.extensions.audit.AuditLogHandler` based class reference",
+          "default": {},
+          "required": [
+            "package",
+            "audit_log_handler",
+            "audit_log_handler_args"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "audit_log_handler": {
+              "type": "string",
+              "title": "class name"
+
+            },
+            "audit_log_handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -496,7 +487,6 @@
           {
             "type": "string",
             "description": "Type of endpoint",
-            "default": "",
             "examples": [
               "SINGLE",
               "LIST"

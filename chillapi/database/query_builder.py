@@ -17,7 +17,7 @@ sql_operators = {
 }
 
 
-def create_select_filtered_paginated_query(table, columns: List[str], filters: dict):
+def create_select_paginated_query(table, columns: List[str], filters: dict):
     table = Table(table)
     table_columns = [table[c] for c in columns]
     query = Query.from_(table).select(*table_columns) \
@@ -28,6 +28,20 @@ def create_select_filtered_paginated_query(table, columns: List[str], filters: d
     query = set_query_filters(filters, query, table)
 
     return query.get_sql()
+
+
+def create_select_filtered_paginated_ordered_query(table, columns: List[str], filters: dict):
+    table = Table(table)
+    table_columns = [table[c] for c in columns]
+    query = Query.from_(table).select(*table_columns) \
+        .orderby(*filters['order']['field'], order=Order[filters['order']['direction']]) \
+        .limit(filters['size']['limit']) \
+        .offset(filters['size']['offset'])
+
+    query = set_query_filters(filters, query, table)
+
+    return query.get_sql()
+
 
 def create_select_filtered_paginated_query_count(table, filters: dict, id_field_where: str):
     table = Table(table)
@@ -72,12 +86,14 @@ def create_select_filtered_query(table, columns: List[str], filters: dict):
 
     return query.get_sql()
 
+
 def create_insert(table, columns: List[str]):
     table = Table(table)
     table_columns = [table[c] for c in columns]
     query = Query.into(table).columns(*table_columns).insert(*[Parameter(f':{c}') for c in columns])
 
     return query.get_sql()
+
 
 def create_update(table, columns: dict, filters: dict):
     table = Table(table)
@@ -88,18 +104,20 @@ def create_update(table, columns: dict, filters: dict):
     query = set_query_filters(filters, query, table)
     return query.get_sql()
 
+
 def create_delete(table, filters):
     table = Table(table)
     query = Query.from_(table).delete()
     query = set_query_filters(filters, query, table)
     return query.get_sql()
 
+
 def create_select_join_soft_delete_filter(table, relation_column_id, relation_join_table, relation_columns):
     _table, _relation_join_table = Tables(table, relation_join_table)
     print(relation_columns)
-    query = Query.from_(_table).select(relation_column_id)\
-        .join(_relation_join_table)\
-        .on(getattr(_relation_join_table,relation_columns['join']) == getattr(_table, relation_column_id))\
+    query = Query.from_(_table).select(relation_column_id) \
+        .join(_relation_join_table) \
+        .on(getattr(_relation_join_table, relation_columns['join']) == getattr(_table, relation_column_id)) \
         .where(getattr(_relation_join_table, relation_columns['main']) == Parameter(':id'))
 
     return query.get_sql()

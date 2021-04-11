@@ -23,6 +23,8 @@ pip_freeze_requirements:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && pip freeze > requirements.txt && chown -Rf 1000:1000 requirements.txt"
 docker_exec_n:
 	${NTDOCKER} ${CMD}
+docker_pyexec:
+	${DOCKER} sh -c "${VENV_ACTIVATE} && $(CMD)"
 docker_exec:
 	${DOCKER} ${CMD}
 docker_fix_permissions:

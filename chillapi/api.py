@@ -4,18 +4,21 @@ from flask_request_id_header.middleware import RequestID
 from flask_restful_swagger_3 import Api
 from swagger_ui import api as api_doc
 
+from chillapi.database.repository import DataRepository
 from chillapi.manager import FlaskTableApiManager
-from chillapi.app.config import api_config, _set_logger_config, _get_db_url, _get_secret_key
+from chillapi.app.config import api_config, _get_db_url, _get_secret_key, config
 from chillapi.app.error_handlers import register_error_handlers
 from chillapi.database.connection import db
 from chillapi.extensions.audit import register_audit_handler
 from chillapi.app.sitemap import register_routes as register_routes_sitemap
 
-
+repository = DataRepository(db)
+config.load_extensions(repository)
+exit(9)
 def ChillApi(app: Flask = None):
-    logger_config = api_config['logger']
+    # logger_config = config.logger
     audit_logger = api_config['app']['audit_logger'] if 'audit_logger' in api_config['app'] else None
-    _set_logger_config(logger_config, audit_logger)
+    # _set_logger_config(logger_config, audit_logger)
 
     if app is None:
         app = Flask(api_config['app']['name'])
@@ -61,7 +64,7 @@ def ChillApi(app: Flask = None):
     )
 
     api_manager.create_api(api)
-    register_audit_handler(app, audit_logger)
+    register_audit_handler(app)
     register_routes_sitemap(app)
 
     return app, api, api_manager, api_config
