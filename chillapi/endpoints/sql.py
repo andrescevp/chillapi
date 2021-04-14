@@ -29,9 +29,12 @@ def create_sql_endpoint_class(
         description: str = None,
         is_from_template : bool = False
 ):
+    schema = get_query_endpoint_schema(name, tags, query_parameters, description, request_schema, response_schema)
+
     class QueryEndpoint(AutomaticResource):
         route = f'/{url.lstrip("/")}'
         endpoint = f'/{name}{"Template" if is_from_template else ""}QueryEndpoint'
+        # representations = schema
 
         def request(self, **args) -> ResourceResponse:
             query = args['query']
@@ -41,28 +44,24 @@ def create_sql_endpoint_class(
             return response
 
         if method == 'GET':
-            @swagger.doc(
-                get_query_endpoint_schema(name, tags, query_parameters, description, request_schema, response_schema))
+            @swagger.doc(schema)
             def get(self, **kwargs):
                 query = {**{k: v for k, v in request.args.items()}, **kwargs}
                 return self.process_request(query=query)
         if method == 'POST':
-            @swagger.doc(
-                get_query_endpoint_schema(name, tags, query_parameters, description, request_schema, response_schema))
+            @swagger.doc(schema)
             def post(self, **kwargs):
                 query = {**{k: v for k, v in request.args.items()}, **kwargs}
                 query = {**query, **request.json}
                 return self.process_request(query=query)
         if method == 'PUT':
-            @swagger.doc(
-                get_query_endpoint_schema(name, tags, query_parameters, description, request_schema, response_schema))
+            @swagger.doc(schema)
             def put(self, **kwargs):
                 query = {**{k: v for k, v in request.args.items()}, **kwargs}
                 query = {**query, **request.json}
                 return self.process_request(query=query)
         if method == 'DELETE':
-            @swagger.doc(
-                get_query_endpoint_schema(name, tags, query_parameters, description, request_schema, response_schema))
+            @swagger.doc(schema)
             def delete(self, **kwargs):
                 query = {**{k: v for k, v in request.args.items()}, **kwargs}
                 query = {**query, **request.json}

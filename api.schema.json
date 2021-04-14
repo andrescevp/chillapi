@@ -511,13 +511,6 @@
       },
       "additionalProperties": false
     },
-    "table_endpoints": {
-      "type": "array",
-      "additionalItems": true,
-      "items": {
-        "$refs": "#/$defs/table_endpoint_setup"
-      }
-    },
     "table_endpoint_setup": {
       "type": "object",
       "required": [
@@ -549,6 +542,13 @@
         }
       },
       "additionalProperties": true
+    },
+    "table_endpoints": {
+      "type": "array",
+      "additionalItems": true,
+      "items": {
+        "$refs": "#/$defs/table_endpoint_setup"
+      }
     },
     "sql_endpoint_setup": {
       "type": "object",

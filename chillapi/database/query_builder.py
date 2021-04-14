@@ -114,7 +114,6 @@ def create_delete(table, filters):
 
 def create_select_join_soft_delete_filter(table, relation_column_id, relation_join_table, relation_columns):
     _table, _relation_join_table = Tables(table, relation_join_table)
-    print(relation_columns)
     query = Query.from_(_table).select(relation_column_id) \
         .join(_relation_join_table) \
         .on(getattr(_relation_join_table, relation_columns['join']) == getattr(_table, relation_column_id)) \

@@ -6,5 +6,6 @@ class MyAuditHandler(AuditLogHandler):
         self.name = name
 
     def log(self, log: AuditLog):
-        print(self.name)
+        print(self.__dict__)
+        print(log.__dict__)
         print(f'AUDIT SHOWS: {log.message}')

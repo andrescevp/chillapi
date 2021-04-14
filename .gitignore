@@ -141,3 +141,6 @@ cython_debug/
 tmp
 features/temp
 !features/temp/.gitkeep
+profile
+!profile/.gitkeep
+flask_monitoringdashboard.db

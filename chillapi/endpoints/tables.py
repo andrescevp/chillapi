@@ -1,38 +1,42 @@
-from datetime import datetime
 from typing import List
 
 import psycopg2
 import simplejson
 import sqlalchemy
 from flask import request
-from flask_restful_swagger_3 import swagger, Schema as SwaggerSchema
+from flask_restful_swagger_3 import swagger
 from wtforms.validators import ValidationError
 import inflect
 from openapi_schema_validator import validate as json_swagger_schema_validator
 from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 from simplejson.errors import JSONDecodeError
 
+from chillapi.abc import Repository
+from chillapi.app.forms import create_form_class, generate_form_swagger_schema_from_form
 from chillapi.extensions.audit import AuditLog
 from chillapi.database import DB_DIALECT_POSTGRES
-from chillapi.database.repository import DataRepository, _MAGIC_QUERIES
+from chillapi.database.repository import _MAGIC_QUERIES
 from chillapi.exceptions.api_manager import ConfigError
 from chillapi.exceptions.http import NotFoundException, RequestSchemaError
 from chillapi.logger.app_loggers import logger
-from chillapi.database.query_builder import create_select_filtered_paginated_ordered_query, create_select_filtered_paginated_query_count, \
-    create_select_join_soft_delete_filter
+from chillapi.database.query_builder import create_select_filtered_paginated_ordered_query, \
+    create_select_filtered_paginated_query_count
+
 from chillapi.swagger.http import AutomaticResource, ResourceResponse
+
 from chillapi.swagger.schemas import get_get_single_endpoint_schema, get_put_single_endpoint_schema, \
     get_post_single_endpoint_schema, get_delete_single_endpoint_schema, get_get_list_endpoint_schema, \
     get_put_list_endpoint_schema, get_post_list_endpoint_schema, get_delete_list_endpoint_schema, \
     create_swagger_type_from_dict
+
 from chillapi.swagger.utils import get_response_swagger_schema, \
     get_revisable_response_swagger_schema, get_error_swagger_schema, get_not_found_swagger_schema, \
     get_list_filtered_response_swagger_schema, get_list_filtered_request_swagger_schema, get_filter_schema, \
     get_order_schema, get_size_schema
 
-revisable_response_swagger_schema = get_revisable_response_swagger_schema()
-error_swagger_schema = get_error_swagger_schema()
-not_found_swagger_schema = get_not_found_swagger_schema()
+revisable_response = get_revisable_response_swagger_schema()
+error_response = get_error_swagger_schema()
+not_found = get_not_found_swagger_schema()
 
 inflector = inflect.engine()
 
@@ -51,35 +55,52 @@ def _get_extension_default_field(table_extensions, extension):
     return _enable, default_field
 
 
+def _get_form(class_name: str, columns_map: dict, method: str, as_array=False):
+    form_class = create_form_class(class_name, method, columns_map)
+    form_schema_json = generate_form_swagger_schema_from_form(method, form_class, as_array=as_array)
+
+    return form_class, form_schema_json
+
+
+def _column_type_to_swagger_type(type):
+    id_field_where_type = f'{type.python_type.__name__}:'
+    if id_field_where_type != 'int:':
+        id_field_where_type = ''
+    return id_field_where_type
+
+
 def create_get_single_endpoint_class(
-        table_name: str,
-        model_name: str,
-        id_field_where_type: str,
-        class_name: str,
-        id_field_where: str,
+        table: dict,
         allowed_columns: List,
-        repository: DataRepository,
-        columns_map: dict,
-        table_extensions: dict,
+        allowed_columns_map: dict,
+        extensions: dict,
+        repository: Repository
 ):
-    response_schema = get_response_swagger_schema(columns_map, f'{class_name}GetSingleEndpoint')
-    soft_delete_enabled, soft_delete_field = _get_extension_default_field(table_extensions, 'soft_delete')
+    table_slug = table['slug']
+    table_name = table['name']
+    model_name = table['model_name']
+    id_field = table['id_field']
+
+    id_field_where_type = _column_type_to_swagger_type(table['columns'][id_field]['type'])
+    response_schema = get_response_swagger_schema(allowed_columns_map, f'{model_name}GetSingleEndpoint')
+    soft_delete_extension = extensions['soft_delete']
+    swagger_docs = get_get_single_endpoint_schema(model_name, id_field_where_type, response_schema)
 
     class GetSingleEndpoint(AutomaticResource):
-        route = f'/read/{model_name}/<{id_field_where_type}id>'
+        route = f'/read/{table_slug}/<{id_field_where_type}id>'
         endpoint = f'/{model_name}GetSingleEndpoint'
+        representations = swagger_docs
 
         def request(self, **args) -> ResourceResponse:
             id = args['id']
             try:
                 response = ResourceResponse()
 
-                query = {f'{id_field_where}': {'op': '=', 'value': id}}
-                query_values = {f'{id_field_where}': id}
+                query = {id_field: {'op': '=', 'value': id}}
+                query_values = {id_field: id}
 
-                if soft_delete_enabled:
-                    query = {**query, **{f'{soft_delete_field}': {'op': 'isnull', 'value': None}}}
-                    query_values = {**query_values, **{f'{soft_delete_field}': None}}
+                if soft_delete_extension.enabled:
+                    query, query_values, soft_delete_extension.add_query_filter(query, query_values)
 
                 record = repository.fetch_by(
                     table_name,
@@ -90,14 +111,14 @@ def create_get_single_endpoint_class(
 
                 response.response = record.one()._asdict()
             except sqlalchemy.exc.NoResultFound:
-                raise NotFoundException(description=f'{class_name} with id: {id} not found')
+                raise NotFoundException(description=f'{model_name} with id: {id} not found')
 
             response.audit = AuditLog(f'Read {table_name} record', action='READ',
                                       current_status=response.response,
-                                      change_parameters={'entity': class_name, 'record_id': id})
+                                      change_parameters={'entity': model_name, 'record_id': id})
             return response
 
-        @swagger.doc(get_get_single_endpoint_schema(class_name, id_field_where_type, response_schema))
+        @swagger.doc(swagger_docs)
         def get(self, id):
             return self.process_request(id=id)
 
@@ -106,25 +127,26 @@ def create_get_single_endpoint_class(
 
 
 def create_put_single_endpoint_class(
-        table_name: str,
-        model_name: str,
-        form_class: classmethod,
-        class_name: str,
-        form_schema_model: type(SwaggerSchema),
-        request_allowed_columns: List,
-        repository: DataRepository,
-        response_columns_map: dict,
-        id_field: str,
-        table_extensions: dict
+        table: dict,
+        allowed_columns: List,
+        allowed_columns_map: dict,
+        extensions: dict,
+        repository: Repository
 ):
-    response_schema = get_response_swagger_schema(response_columns_map, f'{class_name}PutSingleEndpoint')
-    request_schema = get_put_single_endpoint_schema(class_name, form_schema_model, response_schema)
-    extension = 'on_create_timestamp'
-    extension_enabled, extension_field = _get_extension_default_field(table_extensions, extension)
+    table_slug = table['slug']
+    table_name = table['name']
+    model_name = table['model_name']
+    id_field = table['id_field']
+    response_schema = get_response_swagger_schema(allowed_columns_map, f'{model_name}PutSingleEndpoint')
+    extension = extensions['on_create_timestamp']
+    extension_enabled = extension.enabled
+    form_class, form_schema_model = _get_form(table['model_name'], allowed_columns_map, 'put')
+    request_schema = get_put_single_endpoint_schema(model_name, form_schema_model, response_schema)
 
     class PutSingleEndpoint(AutomaticResource):
-        route = f'/create/{model_name}'
+        route = f'/create/{table_slug}'
         endpoint = f'{model_name}PutSingleEndpoint'
+        representations = request_schema
 
         def validate_request(self, **args):
             form = args['form']
@@ -138,24 +160,25 @@ def create_put_single_endpoint_class(
             try:
 
                 params = form_data
-                columns = request_allowed_columns
-                if extension_field and extension_field not in columns:
-                    columns += [extension_field]
-                if extension_field and extension_field not in params:
-                    params[extension_field] = datetime.now().isoformat()
+                columns = allowed_columns
+
+                if extension_enabled:
+                    columns = extension.set_columns(columns)
+                if extension_enabled:
+                    params = extension.set_field_data(params)
 
                 result = repository.insert_record(table_name, columns, params,
                                                   returning_field=id_field)
                 form_data[id_field] = result
 
-                if extension_field and extension_field not in request_allowed_columns:
-                    del (form_data[extension_field])
+                if extension_enabled:
+                    params = extension.unset_field_data(params)
 
                 response.response = form_data
 
                 response.audit = AuditLog(f'Create {table_name} record', action='CREATE',
                                           current_status=response.response,
-                                          change_parameters={**{'entity': class_name}, **params})
+                                          change_parameters={**{'entity': model_name}, **params})
 
             except sqlalchemy.exc.IntegrityError as e:
                 if isinstance(e.orig, psycopg2.errors.UniqueViolation):
@@ -177,29 +200,31 @@ def create_put_single_endpoint_class(
 
 
 def create_post_single_endpoint_class(
-        table_name: str,
-        model_name: str,
-        form_class: classmethod,
-        id_field: str,
-        class_name: str,
-        form_schema_model: type(SwaggerSchema),
-        request_allowed_columns: List,
-        repository: DataRepository,
-        columns_map: dict,
-        id_field_where: str,
-        id_field_where_type: str,
-        table_extensions: dict
+        table: dict,
+        allowed_columns: List,
+        allowed_columns_map: dict,
+        extensions: dict,
+        repository: Repository
 ):
-    response_schema = get_response_swagger_schema(columns_map, f'{class_name}PostSingleEndpoint')
-    request_schema = get_post_single_endpoint_schema(class_name, form_schema_model,
-                                                     response_schema, id_field_where_type)
+    table_slug = table['slug']
+    table_name = table['name']
+    model_name = table['model_name']
+    id_field = table['id_field']
 
-    update_extension_enabled, update_field = _get_extension_default_field(table_extensions, 'on_update_timestamp')
-    soft_delete_extension_enabled, soft_delete_field = _get_extension_default_field(table_extensions, 'soft_delete')
+    response_schema = get_response_swagger_schema(allowed_columns_map, f'{model_name}PostSingleEndpoint')
+    update_extension = extensions['on_update_timestamp']
+    soft_delete_extension = extensions['soft_delete']
+
+    form_class, form_schema_model = _get_form(table['model_name'], allowed_columns_map, 'post')
+
+    id_field_where_type = _column_type_to_swagger_type(table['columns'][id_field]['type'])
+    request_schema = get_post_single_endpoint_schema(model_name, form_schema_model, response_schema,
+                                                     id_field_where_type)
 
     class PostSingleEndpoint(AutomaticResource):
-        route = f'/update/{model_name}/<{id_field_where_type}id>'
+        route = f'/update/{table_slug}/<{id_field_where_type}id>'
         endpoint = f'/{model_name}PostSingleEndpoint'
+        representations = request_schema
 
         def request(self, **args) -> ResourceResponse:
             form = args['form']
@@ -208,18 +233,18 @@ def create_post_single_endpoint_class(
             response = ResourceResponse()
 
             try:
-                if update_extension_enabled and update_field not in form_data:
-                    form_data[update_field] = datetime.now().isoformat()
+                if update_extension.enabled:
+                    form_data = update_extension.set_field_data(form_data)
 
                 repository.update_record(
                     table_name,
-                    id_field_where,
+                    id_field,
                     oid,
-                    {**form_data, **{id_field_where: oid}}
+                    {**form_data, **{id_field: oid}}
                 )
 
-                if update_extension_enabled and update_field in form_data:
-                    del (form_data[update_field])
+                if update_extension.enabled:
+                    form_data = update_extension.unset_field_data(form_data)
                 response.response = form_data
 
             except sqlalchemy.exc.IntegrityError as e:
@@ -231,7 +256,7 @@ def create_post_single_endpoint_class(
             response.audit = AuditLog(f'Update {table_name} record', action='UPDATE',
                                       current_status=response.response,
                                       prev_status=args['validation_output'],
-                                      change_parameters={**{'entity': class_name, f'{id_field}': oid}, **form_data})
+                                      change_parameters={**{'entity': model_name, f'{id_field}': oid}, **form_data})
 
             return response
 
@@ -242,12 +267,11 @@ def create_post_single_endpoint_class(
                 logger.debug('Check entity exists',
                              extra=args)
 
-                query = {f'{id_field_where}': {'op': '=', 'value': id}}
-                query_values = {f'{id_field_where}': id}
+                query = {f'{id_field}': {'op': '=', 'value': id}}
+                query_values = {f'{id_field}': id}
 
-                if soft_delete_extension_enabled:
-                    query = {**query, **{f'{soft_delete_field}': {'op': 'isnull', 'value': None}}}
-                    query_values = {**query_values, **{f'{soft_delete_field}': None}}
+                if soft_delete_extension.enabled:
+                    query, query_values = soft_delete_extension.add_query_filter(query, query_values)
 
                 record = repository.fetch_by(
                     table_name,
@@ -261,7 +285,7 @@ def create_post_single_endpoint_class(
 
                 return record.one()._asdict()
             except sqlalchemy.exc.NoResultFound:
-                raise NotFoundException(description=f'{class_name} with id: {id} not found')
+                raise NotFoundException(description=f'{model_name} with id: {id} not found')
             except JsonSchemaValidationError:
                 raise RequestSchemaError()
 
@@ -277,21 +301,26 @@ def create_post_single_endpoint_class(
 
 
 def create_delete_single_endpoint_class(
-        table_name: str,
-        model_name: str,
-        class_name: str,
+        table: dict,
         allowed_columns: List,
-        repository: DataRepository,
-        id_field_where: str,
-        id_field_where_type: str,
-        table_extensions: dict
+        allowed_columns_map: dict,
+        extensions: dict,
+        repository: Repository
 ):
-    extension = 'soft_delete'
-    extension_enabled, extension_field = _get_extension_default_field(table_extensions, extension)
+    table_slug = table['slug']
+    table_name = table['name']
+    model_name = table['model_name']
+    id_field = table['id_field']
+
+    id_field_where_type = _column_type_to_swagger_type(table['columns'][id_field]['type'])
+
+    soft_delete_extension = extensions['soft_delete']
+    request_schema = get_delete_single_endpoint_schema(model_name, id_field_where_type)
 
     class DeleteSingleEndpoint(AutomaticResource):
-        route = f'/delete/{model_name}/<{id_field_where_type}id>'
+        route = f'/delete/{table_slug}/<{id_field_where_type}id>'
         endpoint = f'/{model_name}DeleteSingleEndpoint'
+        representations = request_schema
 
         def request(self, **args) -> ResourceResponse:
             id = args['id']
@@ -303,62 +332,22 @@ def create_delete_single_endpoint_class(
             }
 
             try:
-                now = datetime.now().isoformat()
-                if extension_enabled:
-                    repository.update_record(
-                        table_name,
-                        id_field_where,
-                        id,
-                        {id_field_where: id, extension_field: now}
-                    )
-                    response.response['message'] = 'ok'
-                    response.response['code'] = 200
-
-                    if 'cascade' in table_extensions[extension]:
-                        _cascades = table_extensions[extension]['cascade']
-                        if 'one_to_many' in _cascades:
-                            _one_to_many = _cascades['one_to_many']
-                            for _otm, _relation in enumerate(_one_to_many):
-                                _relation_table = _relation['table']
-                                _pk = _relation['column_id']
-                                _fk = _relation['column_fk']
-                                _relation_ids = repository.fetch_by(
-                                    _relation_table,
-                                    [_pk],
-                                    {_fk: {'op': '=', 'value': id}},
-                                    {_fk: id}
-                                )
-                                _cascade_ids = [x[0] for x in _relation_ids.fetchall()]
-                                soft_deletes_one_to_many = [{extension_field: now, _pk: x} for x in _cascade_ids]
-                                repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
-                        if 'many_to_many' in _cascades:
-                            _one_to_many = _cascades['many_to_many']
-                            for _otm, _relation in enumerate(_one_to_many):
-                                _relation_table = _relation['table']
-                                _relation_join_table = _relation['join_table']
-                                _pk = _relation['column_id']
-                                _relation_columns = _relation['join_columns']
-                                _relation_column_id = _relation['column_id']
-                                sql = create_select_join_soft_delete_filter(_relation_table, _relation_column_id,
-                                                                            _relation_join_table, _relation_columns)
-                                _relation_ids = repository.execute(sql, {'id': id})
-                                _cascade_ids = [x[0] for x in _relation_ids.fetchall()]
-                                soft_deletes_one_to_many = [{extension_field: now, _pk: x} for x in _cascade_ids]
-                                repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
+                if soft_delete_extension.enabled:
+                    response = soft_delete_extension.soft_delete(id_field, id, response)
 
                     response.audit = AuditLog(f'Delete {table_name} record', action='SOFT DELETE',
                                               current_status={'deleted': 'deleted'},
                                               prev_status=args['validation_output'],
-                                              change_parameters={'entity': class_name, 'id': id})
+                                              change_parameters={'entity': model_name, 'id': id})
                 else:
-                    repository.delete_record(table_name, id_field_where, id)
+                    repository.delete_record(table_name, id_field, id)
                     response.response['message'] = 'ok'
                     response.response['code'] = 200
 
                     response.audit = AuditLog(f'Delete {table_name} record', action='DELETE',
                                               current_status={'deleted': 'deleted'},
                                               prev_status=args['validation_output'],
-                                              change_parameters={'entity': class_name, 'id': id})
+                                              change_parameters={'entity': model_name, 'id': id})
 
             except sqlalchemy.exc.IntegrityError as e:
                 if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
@@ -377,11 +366,11 @@ def create_delete_single_endpoint_class(
             try:
                 logger.debug('Check entity exists',
                              extra=args)
-                query = {f'{id_field_where}': {'op': '=', 'value': oid}}
-                query_values = {f'{id_field_where}': oid}
-                if extension_enabled:
-                    query = {**query, **{f'{extension_field}': {'op': 'isnull', 'value': None}}}
-                    query_values = {**query_values, **{f'{extension_field}': None}}
+                query = {f'{id_field}': {'op': '=', 'value': oid}}
+                query_values = {f'{id_field}': oid}
+
+                if soft_delete_extension.enabled:
+                    query, query_values, soft_delete_extension.add_query_filter(query, query_values)
 
                 record = repository.fetch_by(
                     table_name,
@@ -392,9 +381,9 @@ def create_delete_single_endpoint_class(
 
                 return record.one()._asdict()
             except sqlalchemy.exc.NoResultFound:
-                raise NotFoundException(description=f'{class_name} with id: {oid} not found')
+                raise NotFoundException(description=f'{model_name} with id: {oid} not found')
 
-        @swagger.doc(get_delete_single_endpoint_schema(class_name, id_field_where_type))
+        @swagger.doc(request_schema)
         def delete(self, id):
             return self.process_request(id=id)
 
@@ -404,41 +393,43 @@ def create_delete_single_endpoint_class(
 
 
 def create_get_list_endpoint_class(
-        table_name: str,
-        model_name: str,
-        class_name: str,
-        id_field_where: str,
+        table: dict,
         allowed_columns: List,
-        repository: DataRepository,
-        columns_map: dict,
-        table_extensions: dict
+        allowed_columns_map: dict,
+        extensions: dict,
+        repository: Repository
 ):
-    request_schema_query_filters = get_list_filtered_request_swagger_schema(class_name, columns_map)
-    response_schema_query_filters = get_list_filtered_request_swagger_schema(class_name, columns_map)
-    response_schema = get_list_filtered_response_swagger_schema(columns_map, response_schema_query_filters,
-                                                                f'{class_name}GetListEndpoint')
-    swagger_schema = get_get_list_endpoint_schema(class_name, response_schema, request_schema_query_filters)
-    filter_schema = get_filter_schema(class_name).definitions()
-    order_schema = get_order_schema(class_name).definitions()
-    size_schema = get_size_schema(class_name).definitions()
+    table_slug = table['slug']
+    table_name = table['name']
+    model_name = table['model_name']
+    id_field = table['id_field']
 
-    soft_delete_enabled, soft_delete_field = _get_extension_default_field(table_extensions, 'soft_delete')
+    request_schema_query_filters = get_list_filtered_request_swagger_schema(model_name, allowed_columns_map)
+    response_schema_query_filters = get_list_filtered_request_swagger_schema(model_name, allowed_columns_map)
+    response_schema = get_list_filtered_response_swagger_schema(allowed_columns_map, response_schema_query_filters,
+                                                                f'{model_name}GetListEndpoint')
+    swagger_schema = get_get_list_endpoint_schema(model_name, response_schema, request_schema_query_filters)
+    filter_schema = get_filter_schema(model_name).definitions()
+    order_schema = get_order_schema(model_name).definitions()
+    size_schema = get_size_schema(model_name).definitions()
+    soft_delete_extension = extensions['soft_delete']
 
     class GetListEndpoint(AutomaticResource):
-        route = f'/read/{inflector.plural(model_name)}'
+        route = f'/read/{inflector.plural(table_slug)}'
         endpoint = f'/{model_name}GetListEndpoint'
+        representations = swagger_schema
 
         def validate_request(self, **args):
             query = {}
             errors = {}
             schema = filter_schema
-            for parameter_name in columns_map.keys():
+            for parameter_name in allowed_columns_map.keys():
                 self.validate_query_parameter(errors, parameter_name, query, schema)
 
             parameter_name = 'order'
             schema = order_schema
             self.validate_query_parameter(errors, parameter_name, query, schema, default={
-                'field': [id_field_where],
+                'field': [id_field],
                 'direction': 'asc'
             })
 
@@ -482,12 +473,12 @@ def create_get_list_endpoint_class(
 
         def request(self, **args) -> ResourceResponse:
             query = args['validation_output']
-            if soft_delete_enabled:
-                query[soft_delete_field] = {'op': 'isnull', 'value': None}
+            if soft_delete_extension.enabled:
+                query, = soft_delete_extension.add_query_filter(query, {})
             query_no_limit = query.copy()
             del (query_no_limit['size'])
             query_no_limit_params = {k: v['value'] for k, v in query_no_limit.items() if 'op' in v}
-            count_sql = create_select_filtered_paginated_query_count(table_name, query_no_limit, id_field_where)
+            count_sql = create_select_filtered_paginated_query_count(table_name, query_no_limit, id_field)
 
             count_record = repository.execute(count_sql, query_no_limit_params)
             count = count_record.one()._asdict().get('count')
@@ -501,8 +492,8 @@ def create_get_list_endpoint_class(
                 record = repository.execute(sql, query_params)
                 data = record.fetchall()
 
-            if soft_delete_enabled:
-                del query[soft_delete_field]
+            if soft_delete_extension.enabled:
+                query = soft_delete_extension.unset_field_data(query)
 
             response.response = {
                 'data': data,
@@ -515,7 +506,7 @@ def create_get_list_endpoint_class(
             response.audit = AuditLog(f'Read List {table_name} record', action='READ',
                                       current_status={'deleted': 'deleted'},
                                       prev_status=args['validation_output'],
-                                      change_parameters={'entity': class_name})
+                                      change_parameters={'entity': model_name})
 
             return response
 
@@ -528,26 +519,31 @@ def create_get_list_endpoint_class(
 
 
 def create_put_list_endpoint_class(
-        table_name: str,
-        model_name: str,
-        form_class: classmethod,
-        class_name: str,
-        form_schema_model: type(SwaggerSchema),
-        request_allowed_columns: List,
-        repository: DataRepository,
-        id_field: str,
-        table_extensions: dict
+        table: dict,
+        allowed_columns: List,
+        allowed_columns_map: dict,
+        extensions: dict,
+        repository: Repository
 ):
-    request_schema = get_put_list_endpoint_schema(class_name, form_schema_model)
-    extension = 'on_create_timestamp'
-    extension_enabled, extension_field = _get_extension_default_field(table_extensions, extension)
-    columns = request_allowed_columns
-    if extension_enabled:
-        columns += [extension_field]
+    table_slug = table['slug']
+    table_name = table['name']
+    model_name = table['model_name']
+    id_field = table['id_field']
+
+    create_extension = extensions['on_create_timestamp']
+
+    form_class, form_schema_model = _get_form(table['model_name'], allowed_columns_map, 'putList')
+
+    request_schema = get_put_list_endpoint_schema(model_name, form_schema_model)
+
+    columns = allowed_columns
+    if create_extension.enabled:
+        columns += [create_extension.config['default_field']]
 
     class PutListEndpoint(AutomaticResource):
-        route = f'/create/{inflector.plural(model_name)}'
+        route = f'/create/{inflector.plural(table_slug)}'
         endpoint = f'{model_name}PutListEndpoint'
+        representations = request_schema
 
         def validate_request(self, **args):
             if len(args['data']) > form_schema_model.maxItems:
@@ -568,8 +564,8 @@ def create_put_list_endpoint_class(
             form_data = []
             for form in forms:
                 _form_data = form.data
-                if extension_enabled:
-                    _form_data[extension_field] = datetime.now().isoformat()
+                if create_extension.enabled:
+                    _form_data = create_extension.set_field_data(_form_data)
                 form_data.append(_form_data)
             # form_data = [form.data for form in forms]
             response = ResourceResponse()
@@ -605,22 +601,25 @@ def create_put_list_endpoint_class(
 
 
 def create_post_list_endpoint_class(
-        table_name: str,
-        model_name: str,
-        form_class: classmethod,
-        class_name: str,
-        form_schema_model: type(SwaggerSchema),
-        repository: DataRepository,
-        id_field: str,
-        table_extensions: dict
+        table: dict,
+        allowed_columns: List,
+        allowed_columns_map: dict,
+        extensions: dict,
+        repository: Repository
 ):
-    request_schema = get_post_list_endpoint_schema(class_name, form_schema_model)
-    extension = 'on_update_timestamp'
-    extension_enabled, extension_field = _get_extension_default_field(table_extensions, extension)
+    table_slug = table['slug']
+    table_name = table['name']
+    model_name = table['model_name']
+    id_field = table['id_field']
+    form_class, form_schema_model = _get_form(model_name, allowed_columns_map, 'postList')
+
+    request_schema = get_post_list_endpoint_schema(model_name, form_schema_model)
+    extension = extensions['on_update_timestamp']
 
     class PostListEndpoint(AutomaticResource):
-        route = f'/update/{inflector.plural(model_name)}'
+        route = f'/update/{inflector.plural(table_slug)}'
         endpoint = f'{model_name}PostListEndpoint'
+        representations = request_schema
 
         def validate_request(self, **args):
             forms = args['form']
@@ -641,7 +640,7 @@ def create_post_list_endpoint_class(
                 'values': [f':{id}' for id in ids],
                 'id_field': id_field,
                 'table': table_name,
-                'where': f'WHERE {extension_field} IS NULL' if extension_enabled else '',
+                'where': f'WHERE {extension.config["default_field"]} IS NULL' if extension.enabled else '',
             })
 
             ids_check = repository.execute(ids_check_sql, {str(id): id for id in ids})
@@ -657,8 +656,9 @@ def create_post_list_endpoint_class(
             form_data = []
             for form in forms:
                 _form_data = form.data
-                if extension_enabled:
-                    _form_data[extension_field] = datetime.now().isoformat()
+                if extension.enabled:
+                    _form_data = extension.set_field_data(_form_data)
+
                 form_data.append(_form_data)
             response = ResourceResponse()
             try:
@@ -684,29 +684,32 @@ def create_post_list_endpoint_class(
 
 
 def create_delete_list_endpoint_class(
-        table_name: str,
-        model_name: str,
-        class_name: str,
-        repository: DataRepository,
-        id_field: str,
-        id_field_where_type: str,
-        table_extensions: dict
+        table: dict,
+        allowed_columns: List,
+        allowed_columns_map: dict,
+        extensions: dict,
+        repository: Repository
 ):
-    id_field_swagger_type = 'string'
-    if id_field_where_type == 'int:':
-        id_field_swagger_type = 'integer'
-    request_body_schema = create_swagger_type_from_dict(f'{class_name}DeleteListRequestSchema', {
+    table_slug = table['slug']
+    table_name = table['name']
+    model_name = table['model_name']
+    id_field = table['id_field']
+
+    id_field_where_type = _column_type_to_swagger_type(table['columns'][id_field]['type'])
+
+    request_body_schema = create_swagger_type_from_dict(f'{model_name}DeleteListRequestSchema', {
         'type': 'array',
         'description': 'Id list',
-        'items': {'type': id_field_swagger_type}
+        'items': {'type': id_field_where_type}
     })
-    request_schema = get_delete_list_endpoint_schema(class_name, request_body_schema)
-    extension = 'soft_delete'
-    extension_enabled, extension_field = _get_extension_default_field(table_extensions, extension)
+    request_schema = get_delete_list_endpoint_schema(model_name, request_body_schema)
+
+    extension = extensions['soft_delete']
 
     class DeleteListEndpoint(AutomaticResource):
-        route = f'/delete/{inflector.plural(model_name)}'
+        route = f'/delete/{inflector.plural(table_slug)}'
         endpoint = f'{model_name}DeleteListEndpoint'
+        representations = request_schema
 
         def validate_request(self, **args):
             ids = args['data']
@@ -720,7 +723,7 @@ def create_delete_list_endpoint_class(
                 'values': [f':{id}' for id in ids],
                 'id_field': id_field,
                 'table': table_name,
-                'where': f'WHERE {extension_field} IS NULL' if extension_enabled else '',
+                'where': f'WHERE {extension.config["default_field"]} IS NULL' if extension.enabled else '',
             })
 
             ids_check = repository.execute(ids_check_sql, {str(id): id for id in ids})
@@ -735,46 +738,8 @@ def create_delete_list_endpoint_class(
 
             response = ResourceResponse()
             try:
-                if extension_enabled:
-                    now = datetime.now().isoformat()
-                    soft_deletes = [{extension_field: now, id_field: x} for x in data]
-                    repository.update_batch(table_name, soft_deletes, where_field=id_field)
-
-                    if 'cascade' in table_extensions[extension]:
-                        _cascades = table_extensions[extension]['cascade']
-                        if 'one_to_many' in _cascades:
-                            _one_to_many = _cascades['one_to_many']
-                            for _otm, _relation in enumerate(_one_to_many):
-                                _relation_table = _relation['table']
-                                _pk = _relation['column_id']
-                                _fk = _relation['column_fk']
-                                _cascade_ids = []
-                                for _fk_id in data:
-                                    _relation_ids = repository.fetch_by(
-                                        _relation_table,
-                                        [_pk],
-                                        {_fk: {'op': '=', 'value': _fk_id}},
-                                        {_fk: _fk_id}
-                                    )
-                                    _cascade_ids += [x[0] for x in _relation_ids.fetchall()]
-                                soft_deletes_one_to_many = [{extension_field: now, _pk: x} for x in _cascade_ids]
-                                repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
-                        if 'many_to_many' in _cascades:
-                            _one_to_many = _cascades['many_to_many']
-                            for _otm, _relation in enumerate(_one_to_many):
-                                _relation_table = _relation['table']
-                                _relation_join_table = _relation['join_table']
-                                _pk = _relation['column_id']
-                                _relation_columns = _relation['join_columns']
-                                _relation_column_id = _relation['column_id']
-                                _cascade_ids = []
-                                for _fk_id in data:
-                                    sql = create_select_join_soft_delete_filter(_relation_table, _relation_column_id,
-                                                                                _relation_join_table, _relation_columns)
-                                    _relation_ids = repository.execute(sql, {'id': _fk_id})
-                                    _cascade_ids += [x[0] for x in _relation_ids.fetchall()]
-                                soft_deletes_one_to_many = [{extension_field: now, _pk: x} for x in _cascade_ids]
-                                repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
+                if extension.enabled:
+                    extension.soft_delete_batch(table_name, extension.config['default_field'], id_field, data)
                 else:
                     repository.delete_batch(table_name, data)
                 response.response = 'ok'

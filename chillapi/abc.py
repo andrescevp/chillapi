@@ -1,12 +1,10 @@
 from abc import abstractmethod, ABC
 from typing import List
 
-from sqlalchemy.engine import CursorResult
+from sqlalchemy.engine import CursorResult, Inspector
 from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.orm.scoping import ScopedSession
 
-from chillapi.database.query_builder import create_select_filtered_query, \
-    create_select_filtered_paginated_ordered_query, create_select_paginated_query
 from chillapi.exceptions.api_manager import ConfigError
 from chillapi.database import _ALLOWED_DRIVERS
 
@@ -73,12 +71,15 @@ class Extension(ABC, dict):
 
 
 class TableExtension(Extension):
-    enabled: dict = False
+    enabled: bool = False
     table: str = None
     config: dict = None
     repository: Repository = None
+    inspector: Inspector
 
-    def __init__(self, config: dict, columns: dict = None, repository: Repository = None, table: str = None):
+    def __init__(self, config: dict, columns: dict = None, repository: Repository = None, table: str = None,
+                 inspector: Inspector = None):
+        self.inspector = inspector
         self.columns = columns
         self.repository = repository
         self.config = config
@@ -107,7 +108,7 @@ class AuditLog(ABC, dict):
         pass
 
 
-class AuditLogHandler(TableExtension):
+class AuditLogHandler(Extension):
     @abstractmethod
     def log(self, log: AuditLog):
         pass

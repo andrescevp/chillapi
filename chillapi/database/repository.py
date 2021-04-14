@@ -5,13 +5,9 @@ from sqlalchemy.engine import CursorResult
 from sqlalchemy.exc import InternalError
 from typing import List
 
-from sqlalchemy.orm.scoping import ScopedSession
-
 from chillapi.abc import Repository
-from chillapi.exceptions.api_manager import ConfigError
 from chillapi.logger.app_loggers import logger
 from chillapi.database.query_builder import create_select_filtered_query, create_insert, create_update, create_delete
-from chillapi.database import _ALLOWED_DRIVERS
 
 DB_DIALECT_POSTGRES = 'postgres'
 

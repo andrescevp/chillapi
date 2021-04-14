@@ -31,6 +31,7 @@ flask-restplus==0.13.0
 Flask-SQLAlchemy==2.4.3
 Flask-WTF==0.14.3
 gelf-formatter==0.2.0
+gprof2dot==2021.2.21
 greenlet==1.0.0
 gunicorn==20.0.4
 h11==0.12.0
@@ -79,6 +80,8 @@ s3transfer==0.3.6
 schemainspect==3.0.1616029793
 simplejson==3.17.2
 six==1.15.0
+slug==2.0
+snakeviz==2.1.0
 SQLAlchemy==1.4.3
 sqlalchemy-filters==0.12.0
 SQLAlchemy-Utils==0.36.8
@@ -87,6 +90,7 @@ starlette==0.13.6
 strict-rfc3339==0.7
 swagger-ui==0.1.2
 toml==0.10.2
+tornado==6.1
 typed-ast==1.4.2
 typing-extensions==3.7.4.3
 urllib3==1.26.4
@@ -98,3 +102,4 @@ WTForms==2.3.3
 WTForms-Alchemy==0.17.0
 WTForms-Components==0.10.5
 WTForms-JSON==0.3.3
+xeger==0.3.5

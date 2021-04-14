@@ -313,7 +313,6 @@ def get_query_endpoint_schema(class_name: str, tags: list, query_parameters: Lis
     schema = {
         'tags': tags,
         'description': description,
-        'parameters': query_parameters,
         'responses': {
             '200': {
                 'description': f'{class_name} response model',
@@ -341,6 +340,9 @@ def get_query_endpoint_schema(class_name: str, tags: list, query_parameters: Lis
             }
         }
     }
+
+    if query_parameters:
+        schema['parameters'] = query_parameters
 
     if request_schema:
         schema['requestBody'] = {

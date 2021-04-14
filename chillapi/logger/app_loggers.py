@@ -28,11 +28,9 @@ audit_logger.addHandler(stout_handler)
 logging.getLogger('sqlalchemy.engine').addHandler(stout_handler)
 
 
-def set_logger_config(logger_config: dict, audit_logger: bool = False):
+def set_logger_config(logger_config: dict):
     log_file_handler = None
     for logger_name, config in logger_config.items():
-        if logger_name == 'audit_logger' and audit_logger:
-            continue
         if logger_name == 'sqlalchemy':
             logger_name = 'sqlalchemy.engine'
 

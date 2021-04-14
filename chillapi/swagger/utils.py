@@ -93,7 +93,7 @@ def columns_map_to_swagger_properties(
 
     for property_name, column_info in columns_map.items():
         properties[property_name] = {
-            'type': python_to_swagger_types(column_info.pytype.__name__)
+            'type': python_to_swagger_types(column_info['type'].python_type.__name__)
         }
 
         if columns_swagger_definition:

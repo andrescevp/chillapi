@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/codebook-api.iml" filepath="$PROJECT_DIR$/.idea/codebook-api.iml" />
+      <module fileurl="file://C:/workspace/survey-generator/.idea/survey-generator.iml" filepath="C:/workspace/survey-generator/.idea/survey-generator.iml" />
     </modules>
   </component>
 </project>

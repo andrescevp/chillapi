@@ -1,6 +1,9 @@
+import copy
 import importlib
 import json
 import os
+from sqlalchemy.engine import Inspector
+from sqlalchemy.orm.scoping import ScopedSession
 from typing import List
 
 from dotenv import load_dotenv
@@ -8,14 +11,16 @@ from pathlib import Path
 
 from jsonschema import validate, ValidationError
 from mergedeep import merge as dict_deepmerge
-from schemainspect import get_inspector
-from sqlbag import S
+import slug
 
 from chillapi import SingletonMeta
 from chillapi.abc import TableExtension, Repository
 from chillapi.app.file_utils import read_yaml
+from chillapi.database.connection import create_db
+from chillapi.database.repository import DataRepository
 from chillapi.exceptions.api_manager import ConfigError
 from chillapi.extensions.record_livecycle import INTERNAL_EXTENSION_DEFAULTS
+from chillapi.logger.app_loggers import set_logger_config
 
 env_path = Path(os.getcwd()) / ".env"
 load_dotenv(dotenv_path=env_path)
@@ -154,7 +159,42 @@ _tables_default_config = {
     }
 }
 
-_table_default_config = {**_tables_default_config, **{'alias': None}}
+_table_default_config = {
+    'id_field': 'id',
+    'alias': None,
+    'fields_excluded': {
+        'all': None
+    },
+    'GET': {
+        'SINGLE': None,
+        'LIST': None,
+    },
+    'POST': {
+        'SINGLE': None,
+        'LIST': None,
+    },
+    'PUT': {
+        'SINGLE': None,
+        'LIST': None,
+    },
+    'api_endpoints': {
+        'PUT': ['SINGLE', 'LIST'],
+        'GET': ['SINGLE', 'LIST'],
+        'POST': ['SINGLE', 'LIST'],
+        'DELETE': ['SINGLE', 'LIST'],
+    },
+    'extensions': {
+        'soft_delete': {
+            'enable': False
+        },
+        'on_update_timestamp': {
+            'enable': False
+        },
+        'on_create_timestamp': {
+            'enable': False
+        },
+    }
+}
 
 _sql_default_config = {
     'name': None,
@@ -242,16 +282,16 @@ class TableExtensions(dict, metaclass=SingletonMeta):
         setattr(self, type, _attr)
 
     def set_livecycle_table_extension(self, extension_name: str, columns: dict, extension_config: dict, table_name: str,
-                                      repository: Repository):
+                                      repository: Repository, inspector: Inspector):
         _extension = self.internal_extension_map['livecycle'][extension_name]
-        print(table_name, extension_config)
         extension = _extension(
-            **{'config': extension_config, 'table': table_name, 'repository': repository, 'columns': columns})
+            **{'config': extension_config, 'table': table_name, 'repository': repository, 'columns': columns,
+               'inspector': inspector})
         extension.validate()
 
-        if not hasattr(self.tables, table_name):
+        if table_name not in self.tables.keys():
             self.tables[table_name] = {}
-        self.tables[table_name] = extension
+        self.tables[table_name][extension_name] = extension
 
     def is_extension_enabled(self, extension_name: str, type: str = 'app') -> bool:
         return hasattr(getattr(self, type), extension_name)
@@ -262,7 +302,10 @@ class TableExtensions(dict, metaclass=SingletonMeta):
         return False
 
     def get_extension(self, extension_name: str, type: str = 'app') -> TableExtension:
-        return getattr(getattr(self, type), extension_name)
+        return getattr(self, type)[extension_name]
+
+    def get_table_extension(self, table_name: str, extension_name: str) -> TableExtension:
+        return getattr(getattr(self.tables, table_name), extension_name)
 
 
 class ApiConfig(metaclass=SingletonMeta):
@@ -271,6 +314,8 @@ class ApiConfig(metaclass=SingletonMeta):
     logger: dict = {}
     database: dict = {}
     model_names: List = []
+    db: ScopedSession
+    db_inspector: Inspector
 
     def __init__(self, table_extensions: TableExtensions, app: dict, environment: dict = None, logger: dict = None,
                  database: dict = None):
@@ -279,6 +324,14 @@ class ApiConfig(metaclass=SingletonMeta):
         environment = {} if environment is None else environment
         logger = {} if logger is None else logger
         database = {} if database is None else database
+
+        self.logger = dict(dict_deepmerge(
+            {},
+            _logger_defaults,
+            logger
+        ))
+
+        set_logger_config(self.logger)
 
         self.app = dict(dict_deepmerge(
             {},
@@ -298,15 +351,6 @@ class ApiConfig(metaclass=SingletonMeta):
         for _env_key in self.environment.keys():
             os.environ.setdefault(_env_key, self.environment.get(_env_key))
 
-        with S(self.environment.get('APP_DB_URL')) as s:
-            self.db_inspector = get_inspector(s)
-
-        self.logger = dict(dict_deepmerge(
-            {},
-            _logger_defaults,
-            logger
-        ))
-
         self.database = dict(dict_deepmerge(
             {},
             _database_defaults,
@@ -323,22 +367,41 @@ class ApiConfig(metaclass=SingletonMeta):
             self.database['defaults']['tables'] = _tables_default_config
 
         if 'tables' in self.database and len(self.database['tables']) > 0:
+            _global_defaults = copy.deepcopy(self.database['defaults']['tables'])
+            if 'audit_logger' in _global_defaults['extensions']:
+                del _global_defaults['extensions']['audit_logger']
+
             self.database['tables'] = [dict(dict_deepmerge(
                 {},
                 dict_deepmerge(
                     {},
                     _table_default_config,
-                    self.database['defaults']['tables'],
+                    _global_defaults,
 
                 ),
                 t
             )) for t in self.database['tables']]
 
             for key, _table in enumerate(self.database['tables']):
-                _model_name = self.get_class_name_from_model_name(_table['name'])
-                if _table['alias']:
-                    _model_name = self.get_class_name_from_model_name(_table['alias'])
+                if self.database['tables'][key]['fields_excluded']['all']:
+                    for _method in self.database['tables'][key]['fields_excluded'].keys():
+                        if _method == 'all':
+                            continue
+                        for _endpoint in self.database['tables'][key]['fields_excluded'][_method].keys():
+                            if self.database['tables'][key]['fields_excluded'][_method][_endpoint]:
+                                self.database['tables'][key]['fields_excluded'][_method][_endpoint] \
+                                    .extend(x for x in self.database['tables'][key]['fields_excluded']['all'] if
+                                            x not in self.database['tables'][key]['fields_excluded'][_method][
+                                                _endpoint])
+                            else:
+                                self.database['tables'][key]['fields_excluded'][_method][_endpoint] = \
+                                    self.database['tables'][key]['fields_excluded']['all']
+
+                _model_name = self.get_class_name_from_model_name(
+                    _table['name'] if not _table['alias'] else _table['alias'])
                 self.database['tables'][key]['model_name'] = _model_name
+                self.database['tables'][key]['slug'] = slug.slug(
+                    _table['name'] if not _table['alias'] else _table['alias'])
                 if _model_name in self.model_names:
                     raise ConfigError(
                         f"""
@@ -362,10 +425,14 @@ class ApiConfig(metaclass=SingletonMeta):
                 t
             )) for t in self.database['templates']]
 
+        self.db, self.db_inspector = create_db(self.environment['APP_DB_URL'], self.database['schema'])
+        self.repository = DataRepository(self.db)
+
         self.load_table_columns()
+        self.load_extensions()
 
     def get_columns_table_details(self, table_name):
-        return self.db_inspector.tables[f'"{self.database.get("schema")}"."{table_name}"'].columns
+        return self.db_inspector.get_columns(table_name)
 
     def get_class_name_from_model_name(self, model_name):
         class_name = model_name.replace("_", " ").title().replace(" ", "")
@@ -376,7 +443,7 @@ class ApiConfig(metaclass=SingletonMeta):
 
     def get_table_columns(self, name):
         table_columns = self.get_columns_table_details(name)
-        return {name: v for name, v in table_columns.items()}
+        return {v['name']: v for i, v in enumerate(table_columns)}
 
     def load_table_columns(self):
         for _it, table in enumerate(self.database['tables']):
@@ -384,33 +451,29 @@ class ApiConfig(metaclass=SingletonMeta):
             _table_columns = self.get_table_columns(table_name)
             self.database['tables'][_it]['columns'] = _table_columns
 
-    def load_extension(self, repository: Repository, table_config: dict, extension_name : str):
-        table_name = table_config['name']
-        if not self.extensions.is_table_extension_enabled(table_name, extension_name):
+    def load_extension(self, table_config: dict, extension_name: str):
+        table_name = table_config['model_name']
+        if self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
             self.extensions.set_livecycle_table_extension(
                 extension_name,
                 table_config['columns'],
                 table_config['extensions'][extension_name],
                 table_name,
-                repository
+                self.repository,
+                self.db_inspector
             )
 
-    def load_extensions(self, repository: Repository):
+    def load_extensions(self):
         if not self.extensions.is_extension_enabled('audit'):
             self.extensions.set_extension('audit', self.database['defaults']['tables']['extensions']['audit_logger'])
 
-        for table in self.database['tables']:
+        for _it, table in enumerate(self.database['tables']):
             for _extension_name in table['extensions'].keys():
-                if _extension_name == 'audit_logger':
-                    continue
-                self.load_extension(repository, table, _extension_name)
-
-        # set_logger_config(self.logger, _custom_audit_logger_setup)
+                self.load_extension(table, _extension_name)
 
 
 module_loader = ChillApiModuleLoader()
 table_extension = TableExtensions(module_loader)
 config = ApiConfig(**{**api_config, **{'table_extensions': table_extension}})
-
-# print(config.database['tables'][1])
-# exit(9)
+db = config.db
+data_repository = config.repository
