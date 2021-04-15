@@ -144,3 +144,4 @@ features/temp
 profile
 !profile/.gitkeep
 flask_monitoringdashboard.db
+db.sqlite
