@@ -26,4 +26,4 @@ jobs:
           pip install -U wheel --user
           pip install -r requirements.txt
       - name: Update Docs
-          run: python -m unittest tests.app.config tests.api
+        run: python -m unittest tests.app.config tests.api
