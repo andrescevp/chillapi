@@ -84,10 +84,6 @@ def create_form_class(class_name: str, method: str, columns_map: dict):
     class FormResource(Form):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            # for column_name, column_info in columns_map.items():
-            #     property_type = column_to_flask_form_property(column_name, column_info)
-            #     setattr(self, column_name, property_type)
-            #     self._fields[column_name] = property_type
 
         def for_json(self) -> dict:
             return self.data

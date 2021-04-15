@@ -1,236 +1,24 @@
 import copy
 import importlib
-import json
 import os
+
 from sqlalchemy.engine import Inspector
 from sqlalchemy.orm.scoping import ScopedSession
 from typing import List
-
-from dotenv import load_dotenv
-from pathlib import Path
-
-from jsonschema import validate, ValidationError
 from mergedeep import merge as dict_deepmerge
 import slug
 
 from chillapi import SingletonMeta
 from chillapi.abc import TableExtension, Repository
-from chillapi.app.file_utils import read_yaml
 from chillapi.database.connection import create_db
 from chillapi.database.repository import DataRepository
-from chillapi.exceptions.api_manager import ConfigError
+from chillapi.exceptions.api_manager import ConfigError, TableNotExist
 from chillapi.extensions.record_livecycle import INTERNAL_EXTENSION_DEFAULTS
 from chillapi.logger.app_loggers import set_logger_config
+from chillapi.app import _app_defaults, _environment_defaults, _logger_defaults, _database_defaults, \
+    _tables_default_config, _table_default_config, _sql_default_config, _sql_template_default_config
 
-env_path = Path(os.getcwd()) / ".env"
-load_dotenv(dotenv_path=env_path)
-
-CONFIG_FILE = 'api.yaml'
-SCHEMA_CONFIG_FILE = 'api.schema.json'
-
-_virtual_modules_map = {}
-api_config = read_yaml(CONFIG_FILE)
-api_schema = json.load(open(SCHEMA_CONFIG_FILE, 'r'))
-
-try:
-    validate(instance=api_config, schema=api_schema)
-except ValidationError as e:
-    raise ConfigError(e)
-
-# parse_config(api_config)
-
-_app_defaults = {
-    'name': 'api',
-    'version': '0.0',
-    'swagger_url': '/swagger',
-    'swagger_ui_url': '/doc',
-    'host': '0.0.0.0',
-    'port': 8000,
-    'debug': True,
-}
-
-_environment_defaults = {
-    'APP_DB_URL': None,
-    'APP_SECRET_KEY': 'this-is-not-so-secret',
-}
-
-_logger_defaults = {
-    'app': {
-        'output': 'stdout',
-        'level': 10,
-    },
-    'audit_logger': {
-        'output': 'stdout',
-        'level': 10,
-    },
-    'error_handler': {
-        'output': 'stdout',
-        'level': 10,
-    },
-    'sqlalchemy': {
-        'output': 'stdout',
-        'level': 10,
-    },
-}
-
-_database_defaults = {
-    'name': None,
-    'schema': 'public',
-    'defaults': {
-        'tables': {
-            'id_field': 'id',
-            'fields_excluded': {
-                'all': None,
-                'GET': {
-                    'SINGLE': None,
-                    'LIST': None,
-                },
-                'PUT': {
-                    'SINGLE': None,
-                    'LIST': None,
-                },
-                'POST': {
-                    'SINGLE': None,
-                    'LIST': None,
-                },
-            },
-            'api_endpoints': {
-                'PUT': ['SINGLE', 'LIST'],
-                'GET': ['SINGLE', 'LIST'],
-                'POST': ['SINGLE', 'LIST'],
-                'DELETE': ['SINGLE', 'LIST'],
-            },
-            'extensions': {
-                'soft_delete': {
-                    'enable': False
-                },
-                'on_update_timestamp': {
-                    'enable': False
-                },
-                'on_create_timestamp': {
-                    'enable': False
-                },
-            }
-        }
-    },
-    'tables': [],
-    'sql': [],
-    'templates': [],
-}
-
-_tables_default_config = {
-    'id_field': 'id',
-    'fields_excluded': {
-        'all': None
-    },
-    'GET': {
-        'SINGLE': None,
-        'LIST': None,
-    },
-    'POST': {
-        'SINGLE': None,
-        'LIST': None,
-    },
-    'PUT': {
-        'SINGLE': None,
-        'LIST': None,
-    },
-    'api_endpoints': {
-        'PUT': ['SINGLE', 'LIST'],
-        'GET': ['SINGLE', 'LIST'],
-        'POST': ['SINGLE', 'LIST'],
-        'DELETE': ['SINGLE', 'LIST'],
-    },
-    'extensions': {
-        'audit_logger': {
-            'package': 'chillapi.extensions.audit',
-            'audit_log_handler': 'NullAuditHandler',
-            'audit_log_handler_args': {},
-        },
-        'soft_delete': {
-            'enable': False
-        },
-        'on_update_timestamp': {
-            'enable': False
-        },
-        'on_create_timestamp': {
-            'enable': False
-        },
-    }
-}
-
-_table_default_config = {
-    'id_field': 'id',
-    'alias': None,
-    'fields_excluded': {
-        'all': None
-    },
-    'GET': {
-        'SINGLE': None,
-        'LIST': None,
-    },
-    'POST': {
-        'SINGLE': None,
-        'LIST': None,
-    },
-    'PUT': {
-        'SINGLE': None,
-        'LIST': None,
-    },
-    'api_endpoints': {
-        'PUT': ['SINGLE', 'LIST'],
-        'GET': ['SINGLE', 'LIST'],
-        'POST': ['SINGLE', 'LIST'],
-        'DELETE': ['SINGLE', 'LIST'],
-    },
-    'extensions': {
-        'soft_delete': {
-            'enable': False
-        },
-        'on_update_timestamp': {
-            'enable': False
-        },
-        'on_create_timestamp': {
-            'enable': False
-        },
-    }
-}
-
-_sql_default_config = {
-    'name': None,
-    'method': 'GET',
-    'url': None,
-    'sql': None,
-    'query_parameters': None,
-    'response_schema': None,
-    'request_schema': None
-}
-
-_sql_template_default_config = {
-    'name': None,
-    'method': 'GET',
-    'url': None,
-    'template': None,
-    'query_parameters': None,
-    'response_schema': None,
-    'request_schema': None
-}
-
-
-def _get_db_url(api_config):
-    db_url = os.getenv("APP_DB_URL")
-    if 'environment' in api_config and 'APP_DB_URL' in api_config['environment']:
-        db_url = api_config['environment']['APP_DB_URL']
-        if db_url.startswith('$'):
-            db_url = os.getenv(db_url.replace('$', '', 1))
-    return db_url
-
-
-def _get_secret_key(api_config):
-    secret_key = os.getenv("APP_SECRET_KEY", 'super-secret-key')
-    if 'environment' in api_config and 'APP_SECRET_KEY' in api_config['environment']:
-        secret_key = api_config['environment']['APP_SECRET_KEY']
-    return secret_key
+CWD = os.getcwd()
 
 
 class ChillApiModuleLoader(dict, metaclass=SingletonMeta):
@@ -238,13 +26,13 @@ class ChillApiModuleLoader(dict, metaclass=SingletonMeta):
     loaded = False
 
     def add_module(self, module: str):
-        if hasattr(self._modules, module):
+        if self.has_module(module):
             return
 
         self._modules[module] = importlib.import_module(module)
 
     def get_module(self, module: str):
-        if module not in self._modules.keys():
+        if not self.has_module(module):
             raise ConfigError(f'{module} not loaded!')
 
         return self._modules.get(module)
@@ -256,7 +44,7 @@ class ChillApiModuleLoader(dict, metaclass=SingletonMeta):
         return hasattr(self.get_module(module), attr)
 
     def has_module(self, module: str):
-        return module not in self._modules.keys()
+        return module in self._modules.keys()
 
 
 class TableExtensions(dict, metaclass=SingletonMeta):
@@ -273,8 +61,8 @@ class TableExtensions(dict, metaclass=SingletonMeta):
 
         extension = self.module_loader.get_module_attr(
             package_config['package'],
-            package_config['audit_log_handler'],
-            package_config['audit_log_handler_args'] if 'audit_log_handler_args' in package_config else {},
+            package_config['handler'],
+            package_config['handler_args'] if 'handler_args' in package_config else {},
         )
 
         _attr = getattr(self, type)
@@ -381,26 +169,25 @@ class ApiConfig(metaclass=SingletonMeta):
                 ),
                 t
             )) for t in self.database['tables']]
-
             for key, _table in enumerate(self.database['tables']):
-                if self.database['tables'][key]['fields_excluded']['all']:
-                    for _method in self.database['tables'][key]['fields_excluded'].keys():
+                if _table['fields_excluded']:
+                    for _method in _table['fields_excluded'].keys():
                         if _method == 'all':
                             continue
-                        for _endpoint in self.database['tables'][key]['fields_excluded'][_method].keys():
-                            if self.database['tables'][key]['fields_excluded'][_method][_endpoint]:
-                                self.database['tables'][key]['fields_excluded'][_method][_endpoint] \
-                                    .extend(x for x in self.database['tables'][key]['fields_excluded']['all'] if
-                                            x not in self.database['tables'][key]['fields_excluded'][_method][
+                        for _endpoint in _table['fields_excluded'][_method].keys():
+                            if _table['fields_excluded'][_method][_endpoint]:
+                                _table['fields_excluded'][_method][_endpoint] \
+                                    .extend(x for x in _table['fields_excluded']['all'] if
+                                            x not in _table['fields_excluded'][_method][
                                                 _endpoint])
                             else:
-                                self.database['tables'][key]['fields_excluded'][_method][_endpoint] = \
-                                    self.database['tables'][key]['fields_excluded']['all']
+                                _table['fields_excluded'][_method][_endpoint] = \
+                                    _table['fields_excluded']['all']
 
                 _model_name = self.get_class_name_from_model_name(
                     _table['name'] if not _table['alias'] else _table['alias'])
-                self.database['tables'][key]['model_name'] = _model_name
-                self.database['tables'][key]['slug'] = slug.slug(
+                _table['model_name'] = _model_name
+                _table['slug'] = slug.slug(
                     _table['name'] if not _table['alias'] else _table['alias'])
                 if _model_name in self.model_names:
                     raise ConfigError(
@@ -427,6 +214,12 @@ class ApiConfig(metaclass=SingletonMeta):
 
         self.db, self.db_inspector = create_db(self.environment['APP_DB_URL'], self.database['schema'])
         self.repository = DataRepository(self.db)
+
+        _db_tables = self.db_inspector.get_table_names()
+        for key, _table in enumerate(self.database['tables']):
+            _table_name = _table['name']
+            if _table_name not in _db_tables:
+                raise TableNotExist(f'Table {_table_name} do not exist!')
 
         self.load_table_columns()
         self.load_extensions()
@@ -471,9 +264,10 @@ class ApiConfig(metaclass=SingletonMeta):
             for _extension_name in table['extensions'].keys():
                 self.load_extension(table, _extension_name)
 
-
-module_loader = ChillApiModuleLoader()
-table_extension = TableExtensions(module_loader)
-config = ApiConfig(**{**api_config, **{'table_extensions': table_extension}})
-db = config.db
-data_repository = config.repository
+    def to_dict(self):
+        return {
+            'app': self.app,
+            'logger': self.logger,
+            'environment': self.environment,
+            'database': self.database,
+        }

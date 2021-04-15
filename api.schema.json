@@ -246,8 +246,8 @@
           "default": {},
           "required": [
             "package",
-            "audit_log_handler",
-            "audit_log_handler_args"
+            "handler",
+            "handler_args"
           ],
           "properties": {
             "package": {
@@ -255,12 +255,12 @@
               "title": "package python path",
               "default": null
             },
-            "audit_log_handler": {
+            "handler": {
               "type": "string",
               "title": "class name"
 
             },
-            "audit_log_handler_args": {
+            "handler_args": {
               "type": "object",
               "title": "Class arguments",
               "description": "An explanation about the purpose of this instance.",

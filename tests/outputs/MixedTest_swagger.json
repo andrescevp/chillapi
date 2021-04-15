@@ -1,0 +1,3742 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MixedTest",
+    "description": "",
+    "termsOfService": "",
+    "contact": {},
+    "license": {},
+    "version": "0.1"
+  },
+  "servers": [],
+  "components": {
+    "schemas": {
+      "BookCategoryPutFormPutRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "required": true,
+            "type": "object"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "description": "BookCategoryPutForm Form validated model"
+      },
+      "BookCategoryPutSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "object"
+          }
+        }
+      },
+      "ErrorResponseModel": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "BookCategoryPutlistFormPutlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "required": true,
+            "type": "object"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "description": "BookCategoryPutlistForm Form validated model"
+      },
+      "RevisableOperationResponseModel": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "errors"
+            ]
+          },
+          "details": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "BookCategoryGetSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "Invalid type"
+          },
+          "name": {
+            "type": "object"
+          }
+        }
+      },
+      "NotFoundResponseModel": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "BookCategoryFilterModel": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "enum": [
+              "=",
+              "!=",
+              "<>",
+              ">",
+              ">=",
+              "<=",
+              "<",
+              "like",
+              "isnotnull",
+              "isnull"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "op"
+        ]
+      },
+      "BookCategoryOrderByModel": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "direction"
+        ]
+      },
+      "BookCategoryLimitOffsetListModel": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "default": 100
+          },
+          "offset": {
+            "type": "integer",
+            "default": 0
+          }
+        },
+        "required": [
+          "limit",
+          "offset"
+        ]
+      },
+      "BookCategoryGetListEndpointListResponseModel": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "Invalid type"
+                },
+                "name": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "_meta": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookCategoryFilterModel"
+                }
+              },
+              "name": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookCategoryFilterModel"
+                }
+              },
+              "order": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookCategoryOrderByModel"
+                }
+              },
+              "size": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookCategoryLimitOffsetListModel"
+                }
+              },
+              "total_records": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "BookCategoryPostFormPostRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "required": true,
+            "type": "object"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "description": "BookCategoryPostForm Form validated model"
+      },
+      "BookCategoryPostSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "object"
+          }
+        }
+      },
+      "BookCategoryPostlistFormPostlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "required": true,
+            "type": "object"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "description": "BookCategoryPostlistForm Form validated model"
+      },
+      "BookCategoryDeleteListRequestSchema": {
+        "type": "array",
+        "description": "Id list",
+        "items": {
+          "type": ""
+        }
+      },
+      "BookPutFormPutRequestModel": {
+        "type": "object",
+        "properties": {
+          "book_category_id": {
+            "required": true,
+            "type": "integer"
+          },
+          "name": {
+            "required": true,
+            "type": "string"
+          },
+          "asin": {
+            "required": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "book_category_id",
+          "name",
+          "asin"
+        ],
+        "description": "BookPutForm Form validated model"
+      },
+      "BookPutSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "book_category_id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "asin": {
+            "type": "string"
+          }
+        }
+      },
+      "BookPutlistFormPutlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "book_category_id": {
+            "required": true,
+            "type": "integer"
+          },
+          "name": {
+            "required": true,
+            "type": "string"
+          },
+          "asin": {
+            "required": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "book_category_id",
+          "name",
+          "asin"
+        ],
+        "description": "BookPutlistForm Form validated model"
+      },
+      "BookGetSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "Invalid type"
+          },
+          "book_category_id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "asin": {
+            "type": "string"
+          }
+        }
+      },
+      "BookFilterModel": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "enum": [
+              "=",
+              "!=",
+              "<>",
+              ">",
+              ">=",
+              "<=",
+              "<",
+              "like",
+              "isnotnull",
+              "isnull"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "op"
+        ]
+      },
+      "BookOrderByModel": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "direction"
+        ]
+      },
+      "BookLimitOffsetListModel": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "default": 100
+          },
+          "offset": {
+            "type": "integer",
+            "default": 0
+          }
+        },
+        "required": [
+          "limit",
+          "offset"
+        ]
+      },
+      "BookGetListEndpointListResponseModel": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "Invalid type"
+                },
+                "book_category_id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "asin": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "_meta": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookFilterModel"
+                }
+              },
+              "book_category_id": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookFilterModel"
+                }
+              },
+              "name": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookFilterModel"
+                }
+              },
+              "asin": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookFilterModel"
+                }
+              },
+              "order": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookOrderByModel"
+                }
+              },
+              "size": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/BookLimitOffsetListModel"
+                }
+              },
+              "total_records": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "BookPostFormPostRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "book_category_id": {
+            "required": true,
+            "type": "integer"
+          },
+          "name": {
+            "required": true,
+            "type": "string"
+          },
+          "asin": {
+            "required": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "book_category_id",
+          "name",
+          "asin"
+        ],
+        "description": "BookPostForm Form validated model"
+      },
+      "BookPostSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "Invalid type"
+          },
+          "book_category_id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "asin": {
+            "type": "string"
+          }
+        }
+      },
+      "BookPostlistFormPostlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "book_category_id": {
+            "required": true,
+            "type": "integer"
+          },
+          "name": {
+            "required": true,
+            "type": "string"
+          },
+          "asin": {
+            "required": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "book_category_id",
+          "name",
+          "asin"
+        ],
+        "description": "BookPostlistForm Form validated model"
+      },
+      "BookDeleteListRequestSchema": {
+        "type": "array",
+        "description": "Id list",
+        "items": {
+          "type": ""
+        }
+      },
+      "AuthorPutFormPutRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "required": true,
+            "type": "object"
+          },
+          "asin": {
+            "required": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "asin"
+        ],
+        "description": "AuthorPutForm Form validated model"
+      },
+      "AuthorPutSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "object"
+          },
+          "asin": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthorPutlistFormPutlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "required": true,
+            "type": "object"
+          },
+          "asin": {
+            "required": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "asin"
+        ],
+        "description": "AuthorPutlistForm Form validated model"
+      },
+      "AuthorGetSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "Invalid type"
+          },
+          "asin": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthorFilterModel": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "enum": [
+              "=",
+              "!=",
+              "<>",
+              ">",
+              ">=",
+              "<=",
+              "<",
+              "like",
+              "isnotnull",
+              "isnull"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "op"
+        ]
+      },
+      "AuthorOrderByModel": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "direction"
+        ]
+      },
+      "AuthorLimitOffsetListModel": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "default": 100
+          },
+          "offset": {
+            "type": "integer",
+            "default": 0
+          }
+        },
+        "required": [
+          "limit",
+          "offset"
+        ]
+      },
+      "AuthorGetListEndpointListResponseModel": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "Invalid type"
+                },
+                "name": {
+                  "type": "object"
+                },
+                "asin": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "_meta": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorFilterModel"
+                }
+              },
+              "name": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorFilterModel"
+                }
+              },
+              "asin": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorFilterModel"
+                }
+              },
+              "order": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorOrderByModel"
+                }
+              },
+              "size": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorLimitOffsetListModel"
+                }
+              },
+              "total_records": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "AuthorPostFormPostRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "required": true,
+            "type": "object"
+          },
+          "asin": {
+            "required": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "asin"
+        ],
+        "description": "AuthorPostForm Form validated model"
+      },
+      "AuthorPostSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "object"
+          },
+          "asin": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthorPostlistFormPostlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "required": true,
+            "type": "object"
+          },
+          "asin": {
+            "required": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "asin"
+        ],
+        "description": "AuthorPostlistForm Form validated model"
+      },
+      "AuthorDeleteListRequestSchema": {
+        "type": "array",
+        "description": "Id list",
+        "items": {
+          "type": ""
+        }
+      },
+      "DummyPutFormPutRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "description": "DummyPutForm Form validated model"
+      },
+      "DummyPutSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "DummyPutlistFormPutlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "description": "DummyPutlistForm Form validated model"
+      },
+      "DummyGetSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "Invalid type"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "DummyFilterModel": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "enum": [
+              "=",
+              "!=",
+              "<>",
+              ">",
+              ">=",
+              "<=",
+              "<",
+              "like",
+              "isnotnull",
+              "isnull"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "op"
+        ]
+      },
+      "DummyOrderByModel": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "direction"
+        ]
+      },
+      "DummyLimitOffsetListModel": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "default": 100
+          },
+          "offset": {
+            "type": "integer",
+            "default": 0
+          }
+        },
+        "required": [
+          "limit",
+          "offset"
+        ]
+      },
+      "DummyGetListEndpointListResponseModel": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "Invalid type"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "_meta": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/DummyFilterModel"
+                }
+              },
+              "name": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/DummyFilterModel"
+                }
+              },
+              "order": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/DummyOrderByModel"
+                }
+              },
+              "size": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/DummyLimitOffsetListModel"
+                }
+              },
+              "total_records": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "DummyPostFormPostRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "description": "DummyPostForm Form validated model"
+      },
+      "DummyPostSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "DummyPostlistFormPostlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "description": "DummyPostlistForm Form validated model"
+      },
+      "DummyDeleteListRequestSchema": {
+        "type": "array",
+        "description": "Id list",
+        "items": {
+          "type": ""
+        }
+      },
+      "DummyCreatePutFormPutRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "creation": {
+            "type": "string"
+          }
+        },
+        "description": "DummyCreatePutForm Form validated model"
+      },
+      "DummyCreatePutSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "creation": {
+            "type": "Invalid type"
+          }
+        }
+      },
+      "DummyCreatePutlistFormPutlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "creation": {
+            "type": "string"
+          }
+        },
+        "description": "DummyCreatePutlistForm Form validated model"
+      },
+      "DummyCreateGetSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "Invalid type"
+          },
+          "name": {
+            "type": "string"
+          },
+          "creation": {
+            "type": "Invalid type"
+          }
+        }
+      },
+      "DummyCreateFilterModel": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "enum": [
+              "=",
+              "!=",
+              "<>",
+              ">",
+              ">=",
+              "<=",
+              "<",
+              "like",
+              "isnotnull",
+              "isnull"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "op"
+        ]
+      },
+      "DummyCreateOrderByModel": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "direction"
+        ]
+      },
+      "DummyCreateLimitOffsetListModel": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "default": 100
+          },
+          "offset": {
+            "type": "integer",
+            "default": 0
+          }
+        },
+        "required": [
+          "limit",
+          "offset"
+        ]
+      },
+      "DummyCreateGetListEndpointListResponseModel": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "Invalid type"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "creation": {
+                  "type": "Invalid type"
+                }
+              }
+            }
+          },
+          "_meta": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreateFilterModel"
+                }
+              },
+              "name": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreateFilterModel"
+                }
+              },
+              "creation": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreateFilterModel"
+                }
+              },
+              "order": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreateOrderByModel"
+                }
+              },
+              "size": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreateLimitOffsetListModel"
+                }
+              },
+              "total_records": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "DummyCreatePostFormPostRequestModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "creation": {
+            "type": "string"
+          }
+        },
+        "description": "DummyCreatePostForm Form validated model"
+      },
+      "DummyCreatePostSingleEndpointResponseModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "creation": {
+            "type": "Invalid type"
+          }
+        }
+      },
+      "DummyCreatePostlistFormPostlistRequestModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "creation": {
+            "type": "string"
+          }
+        },
+        "description": "DummyCreatePostlistForm Form validated model"
+      },
+      "DummyCreateDeleteListRequestSchema": {
+        "type": "array",
+        "description": "Id list",
+        "items": {
+          "type": ""
+        }
+      },
+      "testsGet0_SQLSqlRequestSchema": {
+        "type": "object",
+        "parameters": {
+          "test": {
+            "type": "string"
+          }
+        }
+      },
+      "test_paramsPost2_SQLSqlRequestSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          }
+        }
+      },
+      "test_paramsPost3_TSQLSqlRequestSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/create/book_category": {
+      "put": {
+        "tags": [
+          "BookCategory"
+        ],
+        "description": "Create a BookCategory",
+        "requestBody": {
+          "description": "BookCategory request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookCategoryPutFormPutRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "BookCategory response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookCategoryPutSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/book_categories": {
+      "put": {
+        "tags": [
+          "BookCategory"
+        ],
+        "description": "Create several BookCategory",
+        "requestBody": {
+          "description": "BookCategory request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookCategoryPutlistFormPutlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "BookCategory response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/book_category/{id}": {
+      "get": {
+        "tags": [
+          "BookCategory"
+        ],
+        "description": "Get a BookCategory model representation",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "BookCategory identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "BookCategory response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookCategoryGetSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/book_categories": {
+      "get": {
+        "tags": [
+          "BookCategory"
+        ],
+        "description": "Get BookCategory model list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/BookCategoryFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/BookCategoryFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/BookCategoryOrderByModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/BookCategoryLimitOffsetListModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "BookCategory list response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookCategoryGetListEndpointListResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/book_category/{id}": {
+      "post": {
+        "tags": [
+          "BookCategory"
+        ],
+        "description": "Update a BookCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "BookCategory identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "BookCategory request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookCategoryPostFormPostRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "BookCategory response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookCategoryPostSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/book_categories": {
+      "post": {
+        "tags": [
+          "BookCategory"
+        ],
+        "description": "Update several BookCategory",
+        "requestBody": {
+          "description": "BookCategory request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookCategoryPostlistFormPostlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "BookCategory response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookCategoryPostlistFormPostlistRequestModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/book_category/{id}": {
+      "delete": {
+        "tags": [
+          "BookCategory"
+        ],
+        "description": "Update a BookCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "BookCategory identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/book_categories": {
+      "delete": {
+        "tags": [
+          "BookCategory"
+        ],
+        "description": "Delete several BookCategory",
+        "requestBody": {
+          "description": "Delete BookCategory list request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookCategoryDeleteListRequestSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "BookCategory response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "ok"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/book": {
+      "put": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Create a Book",
+        "requestBody": {
+          "description": "Book request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookPutFormPutRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookPutSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/books": {
+      "put": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Create several Book",
+        "requestBody": {
+          "description": "Book request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookPutlistFormPutlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/book/{id}": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Get a Book model representation",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Book identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookGetSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/books": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Get Book model list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/BookFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "book_category_id",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/BookFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/BookFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "asin",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/BookFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/BookOrderByModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/BookLimitOffsetListModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book list response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookGetListEndpointListResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/book/{id}": {
+      "post": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Update a Book",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Book identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Book request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookPostFormPostRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookPostSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/books": {
+      "post": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Update several Book",
+        "requestBody": {
+          "description": "Book request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookPostlistFormPostlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookPostlistFormPostlistRequestModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/book/{id}": {
+      "delete": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Update a Book",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Book identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/books": {
+      "delete": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Delete several Book",
+        "requestBody": {
+          "description": "Delete Book list request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookDeleteListRequestSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "ok"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/author": {
+      "put": {
+        "tags": [
+          "Author"
+        ],
+        "description": "Create a Author",
+        "requestBody": {
+          "description": "Author request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorPutFormPutRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Author response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorPutSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/authors": {
+      "put": {
+        "tags": [
+          "Author"
+        ],
+        "description": "Create several Author",
+        "requestBody": {
+          "description": "Author request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorPutlistFormPutlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Author response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/author/{id}": {
+      "get": {
+        "tags": [
+          "Author"
+        ],
+        "description": "Get a Author model representation",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Author identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Author response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorGetSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/authors": {
+      "get": {
+        "tags": [
+          "Author"
+        ],
+        "description": "Get Author model list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/AuthorFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/AuthorFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "asin",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/AuthorFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/AuthorOrderByModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/AuthorLimitOffsetListModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Author list response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorGetListEndpointListResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/author/{id}": {
+      "post": {
+        "tags": [
+          "Author"
+        ],
+        "description": "Update a Author",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Author identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Author request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorPostFormPostRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Author response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorPostSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/authors": {
+      "post": {
+        "tags": [
+          "Author"
+        ],
+        "description": "Update several Author",
+        "requestBody": {
+          "description": "Author request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorPostlistFormPostlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Author response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorPostlistFormPostlistRequestModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/author/{id}": {
+      "delete": {
+        "tags": [
+          "Author"
+        ],
+        "description": "Update a Author",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Author identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/authors": {
+      "delete": {
+        "tags": [
+          "Author"
+        ],
+        "description": "Delete several Author",
+        "requestBody": {
+          "description": "Delete Author list request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorDeleteListRequestSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Author response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "ok"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/dummy": {
+      "put": {
+        "tags": [
+          "Dummy"
+        ],
+        "description": "Create a Dummy",
+        "requestBody": {
+          "description": "Dummy request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyPutFormPutRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dummy response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyPutSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/dummies": {
+      "put": {
+        "tags": [
+          "Dummy"
+        ],
+        "description": "Create several Dummy",
+        "requestBody": {
+          "description": "Dummy request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyPutlistFormPutlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dummy response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/dummy/{id}": {
+      "get": {
+        "tags": [
+          "Dummy"
+        ],
+        "description": "Get a Dummy model representation",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Dummy identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dummy response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyGetSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/dummies": {
+      "get": {
+        "tags": [
+          "Dummy"
+        ],
+        "description": "Get Dummy model list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/DummyFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/DummyFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DummyOrderByModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DummyLimitOffsetListModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dummy list response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyGetListEndpointListResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/dummy/{id}": {
+      "post": {
+        "tags": [
+          "Dummy"
+        ],
+        "description": "Update a Dummy",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Dummy identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dummy request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyPostFormPostRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dummy response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyPostSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/dummies": {
+      "post": {
+        "tags": [
+          "Dummy"
+        ],
+        "description": "Update several Dummy",
+        "requestBody": {
+          "description": "Dummy request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyPostlistFormPostlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dummy response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyPostlistFormPostlistRequestModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/dummy/{id}": {
+      "delete": {
+        "tags": [
+          "Dummy"
+        ],
+        "description": "Update a Dummy",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Dummy identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/dummies": {
+      "delete": {
+        "tags": [
+          "Dummy"
+        ],
+        "description": "Delete several Dummy",
+        "requestBody": {
+          "description": "Delete Dummy list request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyDeleteListRequestSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dummy response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "ok"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/dummy_create": {
+      "put": {
+        "tags": [
+          "DummyCreate"
+        ],
+        "description": "Create a DummyCreate",
+        "requestBody": {
+          "description": "DummyCreate request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyCreatePutFormPutRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DummyCreate response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreatePutSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/dummy_creates": {
+      "put": {
+        "tags": [
+          "DummyCreate"
+        ],
+        "description": "Create several DummyCreate",
+        "requestBody": {
+          "description": "DummyCreate request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyCreatePutlistFormPutlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DummyCreate response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/dummy_create/{id}": {
+      "get": {
+        "tags": [
+          "DummyCreate"
+        ],
+        "description": "Get a DummyCreate model representation",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "DummyCreate identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DummyCreate response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreateGetSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/read/dummy_creates": {
+      "get": {
+        "tags": [
+          "DummyCreate"
+        ],
+        "description": "Get DummyCreate model list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/DummyCreateFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/DummyCreateFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "creation",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/DummyCreateFilterModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DummyCreateOrderByModel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "allowEmptyValue": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DummyCreateLimitOffsetListModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DummyCreate list response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreateGetListEndpointListResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/dummy_create/{id}": {
+      "post": {
+        "tags": [
+          "DummyCreate"
+        ],
+        "description": "Update a DummyCreate",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "DummyCreate identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "DummyCreate request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyCreatePostFormPostRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DummyCreate response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreatePostSingleEndpointResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update/dummy_creates": {
+      "post": {
+        "tags": [
+          "DummyCreate"
+        ],
+        "description": "Update several DummyCreate",
+        "requestBody": {
+          "description": "DummyCreate request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyCreatePostlistFormPostlistRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DummyCreate response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyCreatePostlistFormPostlistRequestModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/dummy_create/{id}": {
+      "delete": {
+        "tags": [
+          "DummyCreate"
+        ],
+        "description": "Update a DummyCreate",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "DummyCreate identifier",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisableOperationResponseModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete/dummy_creates": {
+      "delete": {
+        "tags": [
+          "DummyCreate"
+        ],
+        "description": "Delete several DummyCreate",
+        "requestBody": {
+          "description": "Delete DummyCreate list request model",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DummyCreateDeleteListRequestSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DummyCreate response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "ok"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tests/test_sql": {
+      "get": {
+        "tags": [
+          "tests"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "testsGet0_SQL response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/testsGet0_SQLSqlRequestSchema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tests/test_sql2": {
+      "get": {
+        "tags": [
+          "tests"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "testsGet1_SQL response model",
+            "content": {
+              "application/json": {
+                "type": "object"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/test_params_post": {
+      "post": {
+        "tags": [
+          "test_params"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "test_paramsPost2_SQL response model",
+            "content": {
+              "application/json": {
+                "type": "object"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/test_paramsPost2_SQLSqlRequestSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test_template": {
+      "get": {
+        "tags": [
+          "tests"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "testsGet0_TSQL response model",
+            "content": {
+              "application/json": {
+                "type": "object"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test_template_params": {
+      "post": {
+        "tags": [
+          "test_params"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "test_paramsPost3_TSQL response model",
+            "content": {
+              "application/json": {
+                "type": "object"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/test_paramsPost3_TSQLSqlRequestSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test_template_params_url/{name}": {
+      "get": {
+        "tags": [
+          "test_params"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "test_paramsGet2_TSQL response model",
+            "content": {
+              "application/json": {
+                "type": "object"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found response model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponseModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Operation fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "security": [],
+  "tags": [],
+  "externalDocs": {}
+}

@@ -1,5 +1,5 @@
 app:
-  name: ChillApi
+  name: MixedTest
   version: '0.1'
   swagger_url: '/swagger'
   swagger_ui_url: '/doc'
@@ -7,7 +7,7 @@ app:
   port: 8000
   debug: True
 environment:
-  APP_DB_URL: '$DB_URL'
+  APP_DB_URL: 'sqlite:///var/db.sqlite'
   APP_SECRET_KEY: 'super-secret-key'
 logger:
   app:
@@ -23,7 +23,6 @@ logger:
     output: stdout
     level: 10
 database:
-  schema: public
   defaults:
     tables:
       id_field: id
@@ -78,7 +77,7 @@ database:
               - table: book
                 column_id: id
                 column_fk: book_category_id
-    - name: book
+    - name: not_exist
 #      alias: ~
 #      id_field: ~ # id by default
       #      extensions:

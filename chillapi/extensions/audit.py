@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from chillapi.app.config import table_extension
 from chillapi.http.utils import get_request_id, get_traced_request_uuid
 from chillapi.logger.app_loggers import audit_logger
 from chillapi.abc import AuditLog as AuditLogBase, AuditLogHandler
@@ -32,9 +31,7 @@ class AuditLog(AuditLogBase):
 class NullAuditHandler(AuditLogHandler):
     pass
 
-def register_audit_handler(app):
-    audit_logger_handler = table_extension.get_extension('audit')
-
+def register_audit_handler(app, audit_logger_handler):
     @app.after_request
     def response_processor(response):
         # Prepare all the local variables you need since the request context

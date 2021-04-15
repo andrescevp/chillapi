@@ -5,7 +5,7 @@ from sqlalchemy.engine import CursorResult, Inspector
 from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.orm.scoping import ScopedSession
 
-from chillapi.exceptions.api_manager import ConfigError
+from chillapi.exceptions.api_manager import ConfigError, ColumnNotExist
 from chillapi.database import _ALLOWED_DRIVERS
 
 
@@ -92,7 +92,7 @@ class TableExtension(Extension):
         _default_field = self.config['default_field']
 
         if _default_field not in self.columns.keys():
-            raise ConfigError(f'{self.__class__.__name__}: "{_default_field}" not found on table "{self.table}" ')
+            raise ColumnNotExist(f'{self.__class__.__name__}: "{_default_field}" not found on table "{self.table}" ')
 
         return True
 

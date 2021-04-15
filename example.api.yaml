@@ -166,9 +166,9 @@ database:
       api_endpoints:
         GET: [ SINGLE, LIST ]
   sql:
-    - name: test
+    - name: tests
       method: GET
-      url: /test/test_sql
+      url: /tests/test_sql
       sql: |
         select * from country
       query_parameters: [] # swagger schema for url query parameters in sql
@@ -177,9 +177,9 @@ database:
         parameters:
           test:
             type: string
-    - name: test
+    - name: tests
       method: GET
-      url: /test/test_sql2
+      url: /tests/test_sql2
       sql: |
         select c.name as country_name, cr.* from country c
         inner join country_region cr ON cr.country_id = c.id AND c.iso = :country_iso
@@ -201,10 +201,10 @@ database:
           country_iso:
             type: string
   templates:
-    - name: test
+    - name: tests
       method: GET
       url: /test_template # swagger route format
-      template: ./api_sql_templates/test.sql
+      template: ./api_sql_templates/tests.sql
       query_parameters: [] # swagger schema for url query parameters in sql
     - name: test_params
       method: GET

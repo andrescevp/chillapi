@@ -7,3 +7,9 @@ class ConfigError(Exception):
 
     def __init__(self, message):
         self.message = message
+
+class TableNotExist(ConfigError):
+    pass
+
+class ColumnNotExist(ConfigError):
+    pass

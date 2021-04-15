@@ -1,6 +1,6 @@
 from chillapi.api import ChillApi
 
-app, api, api_manager, api_config = ChillApi()
+app, api, api_manager, api_config, db, data_repository = ChillApi()
 
 
 if __name__ == '__main__':

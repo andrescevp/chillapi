@@ -1,5 +1,5 @@
 app:
-  name: ChillApi
+  name: MixedTest
   version: '0.1'
   swagger_url: '/swagger'
   swagger_ui_url: '/doc'
@@ -7,7 +7,7 @@ app:
   port: 8000
   debug: True
 environment:
-  APP_DB_URL: '$DB_URL'
+  APP_DB_URL: 'sqlite:///var/db.sqlite'
   APP_SECRET_KEY: 'super-secret-key'
 logger:
   app:

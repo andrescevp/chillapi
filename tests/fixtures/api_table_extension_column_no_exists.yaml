@@ -1,5 +1,5 @@
 app:
-  name: ChillApi
+  name: MixedTest
   version: '0.1'
   swagger_url: '/swagger'
   swagger_ui_url: '/doc'
@@ -7,7 +7,7 @@ app:
   port: 8000
   debug: True
 environment:
-  APP_DB_URL: '$DB_URL'
+  APP_DB_URL: 'sqlite:///var/db.sqlite'
   APP_SECRET_KEY: 'super-secret-key'
 logger:
   app:
@@ -23,7 +23,6 @@ logger:
     output: stdout
     level: 10
 database:
-  schema: public
   defaults:
     tables:
       id_field: id
@@ -66,7 +65,7 @@ database:
           default_field: updated_at
         on_create_timestamp:
           enable: True
-          default_field: created_at
+          default_field: nope
   tables:
     - name: book_category
 #      alias: ~
@@ -84,15 +83,15 @@ database:
       #      extensions:
       #        soft_delete:
       #          enable: False
-      fields_excluded: # extends defaults
+#      fields_excluded: # extends defaults
         #        all: [ ]
         #        GET:
         #          SINGLE:
         #            - name
         #          LIST: [ ]
-        POST:
-          SINGLE:
-            - isin
+#        POST:
+#          SINGLE:
+#            - asin
     #          LIST: [ ]
     #        PUT:
     #          SINGLE:
