@@ -6,7 +6,7 @@ import inflect
 from chillapi.app.config import ApiConfig
 from chillapi.exceptions.api_manager import ConfigError
 from chillapi.app.forms import create_form_class, generate_form_swagger_schema_from_form
-from chillapi import SingletonMeta, ApiManager
+from chillapi import ApiManager
 from chillapi.swagger.http import AutomaticResource
 from chillapi.swagger.schemas import create_swagger_type_from_dict
 from chillapi.endpoints.sql import create_sql_endpoint_class
@@ -18,7 +18,7 @@ inflector = inflect.engine()
 created_endpoint_used_names = []
 
 
-class SqlApiManager(ApiManager, metaclass=SingletonMeta):
+class SqlApiManager(ApiManager):
     def __init__(
             self,
             config: ApiConfig
@@ -87,7 +87,7 @@ class SqlApiManager(ApiManager, metaclass=SingletonMeta):
                          endpoint=sql_endpoint_class.endpoint)
 
 
-class TableApiManager(ApiManager, metaclass=SingletonMeta):
+class TableApiManager(ApiManager):
     def __init__(
             self,
             config: ApiConfig
@@ -281,7 +281,7 @@ class TableApiManager(ApiManager, metaclass=SingletonMeta):
                                      endpoint=_endpoint.endpoint)
 
 
-class FlaskApiManager(ApiManager, metaclass=SingletonMeta):
+class FlaskApiManager(ApiManager):
     def __init__(
             self,
             config: ApiConfig

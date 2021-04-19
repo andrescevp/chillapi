@@ -8,7 +8,6 @@ from typing import List
 from mergedeep import merge as dict_deepmerge
 import slug
 
-from chillapi import SingletonMeta
 from chillapi.abc import TableExtension, Repository
 from chillapi.database.connection import create_db
 from chillapi.database.repository import DataRepository
@@ -21,7 +20,7 @@ from chillapi.app import _app_defaults, _environment_defaults, _logger_defaults,
 CWD = os.getcwd()
 
 
-class ChillApiModuleLoader(dict, metaclass=SingletonMeta):
+class ChillApiModuleLoader(dict):
     _modules: dict = {}
     loaded = False
 
@@ -47,7 +46,7 @@ class ChillApiModuleLoader(dict, metaclass=SingletonMeta):
         return module in self._modules.keys()
 
 
-class TableExtensions(dict, metaclass=SingletonMeta):
+class TableExtensions(dict):
     tables: dict = dict({})
     app: dict = dict({})
 
@@ -96,7 +95,7 @@ class TableExtensions(dict, metaclass=SingletonMeta):
         return getattr(getattr(self.tables, table_name), extension_name)
 
 
-class ApiConfig(metaclass=SingletonMeta):
+class ApiConfig:
     app: dict = {}
     environment: dict = {}
     logger: dict = {}
@@ -223,6 +222,14 @@ class ApiConfig(metaclass=SingletonMeta):
 
         self.load_table_columns()
         self.load_extensions()
+
+    @classmethod
+    def reset(cls):
+        cls.app = {}
+        cls.environment = {}
+        cls.logger = {}
+        cls.database = {}
+        cls.model_names = []
 
     def get_columns_table_details(self, table_name):
         return self.db_inspector.get_columns(table_name)

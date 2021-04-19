@@ -37,4 +37,6 @@ jobs:
 #        run: |
 #          flake8 --max-line-length 150 --max-complexity 10 src test
       - name: Testing
+        run: alembic -c sqlite.alembic.ini upgrade head
+      - name: Testing
         run: python -m unittest tests.app.config tests.api

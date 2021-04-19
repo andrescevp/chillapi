@@ -7,7 +7,7 @@ app:
   port: 8000
   debug: True
 environment:
-  APP_DB_URL: 'sqlite:///db.sqlite'
+  APP_DB_URL: 'sqlite:///var/db.sqlite'
   APP_SECRET_KEY: 'super-secret-key'
 logger:
   app:
