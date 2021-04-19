@@ -6,18 +6,13 @@ app:
   host: 0.0.0.0
   port: 8000
   debug: True
-  audit_logger:
-    package: my_app.audit
-    audit_log_handler: MyAuditHandler
-    audit_log_handler_args:
-      name: hello
 environment:
   APP_DB_URL: '$DB_URL'
   APP_SECRET_KEY: 'super-secret-key'
 logger:
   app:
     output: stdout
-    level: 10
+    level: 40
   audit_logger:
     output: stdout
     level: 10
@@ -28,7 +23,6 @@ logger:
     output: stdout
     level: 10
 database:
-  name: chillapi
   schema: public
   defaults:
     tables:
@@ -59,6 +53,11 @@ database:
         POST: [ SINGLE, LIST ]
         DELETE: [ SINGLE, LIST ]
       extensions:
+        audit_logger:
+          package: my_app.audit
+          handler: MyAuditHandler
+          handler_args:
+            name: hello
         soft_delete:
           enable: True
           default_field: deleted_at
@@ -70,8 +69,8 @@ database:
           default_field: created_at
   tables:
     - name: book_category
-      alias: ~
-      id_field: ~ # id by default
+#      alias: ~
+#      id_field: ~ # id by default
       extensions:
         soft_delete:
           cascade:
@@ -80,8 +79,8 @@ database:
                 column_id: id
                 column_fk: book_category_id
     - name: book
-      alias: ~
-      id_field: ~ # id by default
+#      alias: ~
+#      id_field: ~ # id by default
       #      extensions:
       #        soft_delete:
       #          enable: False
@@ -93,7 +92,7 @@ database:
         #          LIST: [ ]
         POST:
           SINGLE:
-            - asin
+            - isin
     #          LIST: [ ]
     #        PUT:
     #          SINGLE:
@@ -105,7 +104,7 @@ database:
     #      api_endpoints:   #overwrite defaults
     #        GET: [ SINGLE ]
     - name: author
-      alias: ~
+#      alias: ~
       #      id_field: iso
       extensions:
         soft_delete:
@@ -134,8 +133,8 @@ database:
       #          LIST: [ ]
       api_endpoints: { }
     - name: dummy
-      alias: ~
-      id_field: ~
+#      alias: ~
+#      id_field: ~
       extensions:
         soft_delete:
           enable: False
@@ -159,8 +158,8 @@ database:
       #          LIST: [ ]
       api_endpoints: { }
     - name: dummy_create
-      alias: ~
-      id_field: ~
+#      alias: ~
+#      id_field: ~
       extensions:
         soft_delete:
           enable: False
@@ -186,9 +185,9 @@ database:
       api_endpoints:
         GET: [ SINGLE, LIST ]
   sql:
-    - name: test
+    - name: tests
       method: GET
-      url: /test/test_sql
+      url: /tests/test_sql
       sql: |
         select * from author
       query_parameters: [ ] # swagger schema for url query parameters in sql
@@ -197,9 +196,9 @@ database:
         parameters:
           test:
             type: string
-    - name: test
+    - name: tests
       method: GET
-      url: /test/test_sql2
+      url: /tests/test_sql2
       sql: |
         select c.name as book_name, cr.*
         from book c
@@ -224,7 +223,7 @@ database:
             type: string
             required: true
   templates:
-    - name: test
+    - name: tests
       method: GET
       url: /test_template # swagger route format
       template: ./api_sql_templates/test.sql

@@ -1,28 +1,26 @@
+from sqlalchemy.engine import Inspector
+from typing import Tuple
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-import os
+from sqlalchemy import inspect
 
 from sqlalchemy.orm.scoping import ScopedSession
-from chillapi.app.config import api_config, _get_db_url
-
-SQLALCHEMY_DATABASE_URL = os.getenv('APP_DB_URL')
-SQLALCHEMY_DATABASE_SCHEMA = 'public'  # 'schema1,schema2,public'
-
-engine = create_engine(
-    _get_db_url(api_config),
-    encoding='utf8',
-    connect_args={'options': f'-csearch_path={SQLALCHEMY_DATABASE_SCHEMA}'}
-)
-
-SessionLocal = scoped_session(sessionmaker(bind=engine))
 
 
-def get_db() -> ScopedSession:
+def create_db(db_url: str, schemas: str = None) -> Tuple[ScopedSession, Inspector]:
+    connect_args = {}
+    if db_url.__contains__('postgresql'):
+        connect_args = {'options': f'-csearch_path={schemas}'}
+    engine = create_engine(
+        db_url,
+        encoding='utf8',
+        connect_args=connect_args
+    )
+
+    SessionLocal = scoped_session(sessionmaker(bind=engine))
     db = SessionLocal()
     try:
-        return db
+        return db, inspect(engine)
     finally:
         db.close()
-
-
-db = get_db()

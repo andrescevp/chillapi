@@ -37,6 +37,7 @@ class ResourceResponse:
 class AutomaticResource(Resource):
     route = '/'
     endpoint = 'root'
+    _swagger_schema = None
     before_request: BeforeRequestEventType = None
     before_response: BeforeResponseEventType = None
 

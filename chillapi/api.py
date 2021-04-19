@@ -1,67 +1,82 @@
+import json
+import os
+import pathlib
+
+import simplejson
 from flask import Flask
 from flask_cors import CORS
 from flask_request_id_header.middleware import RequestID
 from flask_restful_swagger_3 import Api
 from swagger_ui import api as api_doc
+from jsonschema import validate, ValidationError
 
-from chillapi.manager import FlaskTableApiManager
-from chillapi.app.config import api_config, _set_logger_config, _get_db_url, _get_secret_key
+from chillapi.exceptions.api_manager import ConfigError
+from chillapi.logger.formatter import CustomEncoder
+from chillapi.manager import FlaskApiManager
+from chillapi.app.config import CWD, ChillApiModuleLoader, TableExtensions, ApiConfig
+from chillapi.app.file_utils import read_yaml
 from chillapi.app.error_handlers import register_error_handlers
-from chillapi.database.connection import db
 from chillapi.extensions.audit import register_audit_handler
 from chillapi.app.sitemap import register_routes as register_routes_sitemap
 
+_CONFIG_FILE = f'{CWD}/api.yaml'
 
-def ChillApi(app: Flask = None):
-    logger_config = api_config['logger']
-    audit_logger = api_config['app']['audit_logger'] if 'audit_logger' in api_config['app'] else None
-    _set_logger_config(logger_config, audit_logger)
+
+def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: str = CWD):
+    SCHEMA_CONFIG_FILE = os.path.realpath(f'{pathlib.Path(__file__).parent.absolute()}/../api.schema.json')
+    api_config = read_yaml(config_file)
+    api_schema = json.load(open(SCHEMA_CONFIG_FILE, 'r'))
+
+    try:
+        validate(instance=api_config, schema=api_schema)
+    except ValidationError as e:
+        raise ConfigError(e)
+
+    _app_name = api_config['app']['name']
+
+    module_loader = ChillApiModuleLoader()
+    table_extension = TableExtensions(module_loader)
+    config = ApiConfig(**{**api_config, **{'table_extensions': table_extension}})
+    db = config.db
+    data_repository = config.repository
+
+    api_manager = FlaskApiManager(config)
 
     if app is None:
-        app = Flask(api_config['app']['name'])
+        app = Flask(_app_name)
 
-    db_url = _get_db_url(api_config)
-    secret = _get_secret_key(api_config)
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url  # new
-    app.config['SECRET_KEY'] = secret
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('APP_DB_URL')
+    app.config['SECRET_KEY'] = os.environ.get('APP_SECRET_KEY')
     app.config['WTF_CSRF_ENABLED'] = False
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     app.config['REQUEST_ID_UNIQUE_VALUE_PREFIX'] = None
     register_error_handlers(app)
     CORS(app)
     RequestID(app)
-
-    # db = SQLAlchemy(app)
-    # app.app_context().push()
-
     api = Api(app, version=api_config['app']['version'], api_spec_url=api_config['app']['swagger_url'])
-    api_doc.RestfulApi(app, title=api_config['app']['name'], doc=api_config['app']['swagger_ui_url'],
-                       config={  # Swagger UI config overrides
-                           'app_name': api_config['app']['name']
-                       })
-
-    api_manager = FlaskTableApiManager(
-        api_config['database']['name'],
-        api_config['database']['schema'],
-        api_config['database']['defaults']['tables']['fields_excluded'] if 'fields_excluded' in
-                                                                           api_config['database']['defaults'][
-                                                                               'tables'] else {},
-        api_config['database']['defaults']['tables']['api_endpoints'] if 'api_endpoints' in
-                                                                         api_config['database']['defaults'][
-                                                                             'tables'] else {},
-        api_config['database']['defaults']['tables']['extensions'] if 'extensions' in
-                                                                      api_config['database']['defaults'][
-                                                                          'tables'] else {},
-        api_config['database']['tables'],
-        api_config['database']['sql'],
-        api_config['database']['templates'],
-        db,
-        db_url
+    _api_doc = api_doc.RestfulApi(
+        app,
+        title=_app_name,
+        doc=api_config['app']['swagger_ui_url'],
+        config={  # Swagger UI config overrides
+            'app_name': _app_name
+        }
     )
 
     api_manager.create_api(api)
-    register_audit_handler(app, audit_logger)
+    register_audit_handler(app, table_extension.get_extension('audit'))
     register_routes_sitemap(app)
 
-    return app, api, api_manager, api_config
+    if api_config['app']['debug']:
+        from werkzeug.middleware.profiler import ProfilerMiddleware
+        app.config['PROFILE'] = True
+        app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30], profile_dir='./profile')
+
+        simplejson.dump(api.get_swagger_doc(), open(f'{export_path}/{_app_name}_swagger.json', 'w'), indent=2,
+                        cls=CustomEncoder,
+                        for_json=True)
+        simplejson.dump(config.to_dict(), open(f'{export_path}/{_app_name}_api.config.json', 'w'), indent=2,
+                        cls=CustomEncoder,
+                        for_json=True)
+
+    return app, api, api_manager, api_config, db, data_repository

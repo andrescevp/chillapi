@@ -16,6 +16,7 @@ import types
 from datetime import datetime
 
 import simplejson
+from sqlalchemy.sql.type_api import TypeEngine
 
 from chillapi.http.utils import get_request_id, get_traced_request_uuid
 from chillapi.database.query_builder import sql_operators
@@ -29,6 +30,8 @@ class CustomEncoder(simplejson.JSONEncoder):
             return o.__str__
         if isinstance(o, datetime):
             return o.isoformat()
+        if isinstance(o, TypeEngine):
+            return o.python_type.__name__
         return super().default(o)
 
 
