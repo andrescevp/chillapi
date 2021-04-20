@@ -32,7 +32,7 @@ from chillapi.swagger.schemas import get_get_single_endpoint_schema, get_put_sin
 from chillapi.swagger.utils import get_response_swagger_schema, \
     get_revisable_response_swagger_schema, get_error_swagger_schema, get_not_found_swagger_schema, \
     get_list_filtered_response_swagger_schema, get_list_filtered_request_swagger_schema, get_filter_schema, \
-    get_order_schema, get_size_schema
+    get_order_schema, get_size_schema, python_to_swagger_types
 
 revisable_response = get_revisable_response_swagger_schema()
 error_response = get_error_swagger_schema()
@@ -62,7 +62,7 @@ def _get_form(class_name: str, columns_map: dict, method: str, as_array=False):
     return form_class, form_schema_json
 
 
-def _column_type_to_swagger_type(type):
+def _column_type_to_swagger_type_url(type):
     id_field_where_type = f'{type.python_type.__name__}:'
     if id_field_where_type != 'int:':
         id_field_where_type = ''
@@ -81,7 +81,7 @@ def create_get_single_endpoint_class(
     model_name = table['model_name']
     id_field = table['id_field']
 
-    id_field_where_type = _column_type_to_swagger_type(table['columns'][id_field]['type'])
+    id_field_where_type = _column_type_to_swagger_type_url(table['columns'][id_field]['type'])
     response_schema = get_response_swagger_schema(allowed_columns_map, f'{model_name}GetSingleEndpoint')
     soft_delete_extension = extensions['soft_delete']
     swagger_docs = get_get_single_endpoint_schema(model_name, id_field_where_type, response_schema)
@@ -217,7 +217,7 @@ def create_post_single_endpoint_class(
 
     form_class, form_schema_model = _get_form(table['model_name'], allowed_columns_map, 'post')
 
-    id_field_where_type = _column_type_to_swagger_type(table['columns'][id_field]['type'])
+    id_field_where_type = _column_type_to_swagger_type_url(table['columns'][id_field]['type'])
     request_schema = get_post_single_endpoint_schema(model_name, form_schema_model, response_schema,
                                                      id_field_where_type)
 
@@ -312,7 +312,7 @@ def create_delete_single_endpoint_class(
     model_name = table['model_name']
     id_field = table['id_field']
 
-    id_field_where_type = _column_type_to_swagger_type(table['columns'][id_field]['type'])
+    id_field_where_type = _column_type_to_swagger_type_url(table['columns'][id_field]['type'])
 
     soft_delete_extension = extensions['soft_delete']
     request_schema = get_delete_single_endpoint_schema(model_name, id_field_where_type)
@@ -695,7 +695,7 @@ def create_delete_list_endpoint_class(
     model_name = table['model_name']
     id_field = table['id_field']
 
-    id_field_where_type = _column_type_to_swagger_type(table['columns'][id_field]['type'])
+    id_field_where_type = python_to_swagger_types(table['columns'][id_field]['type'].python_type.__name__)
 
     request_body_schema = create_swagger_type_from_dict(f'{model_name}DeleteListRequestSchema', {
         'type': 'array',

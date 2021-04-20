@@ -7,6 +7,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_request_id_header.middleware import RequestID
 from flask_restful_swagger_3 import Api
+from openapi_spec_validator.schemas import read_yaml_file
 from swagger_ui import api as api_doc
 from jsonschema import validate, ValidationError
 
@@ -53,7 +54,15 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
     register_error_handlers(app)
     CORS(app)
     RequestID(app)
-    api = Api(app, version=api_config['app']['version'], api_spec_url=api_config['app']['swagger_url'])
+    api = Api(app,
+              version=api_config['app']['version'],
+              api_spec_url=api_config['app']['swagger_url'],
+              security=api_config['app']['security'],
+              license=api_config['app']['license'],
+              contact=api_config['app']['contact'],
+              externalDocs=api_config['app']['externalDocs'],
+              components={'securitySchemes': api_config['app']['securitySchemes']}
+              )
     _api_doc = api_doc.RestfulApi(
         app,
         title=_app_name,
@@ -69,12 +78,46 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
 
     if api_config['app']['debug']:
         from werkzeug.middleware.profiler import ProfilerMiddleware
+        from openapi_spec_validator.readers import read_from_filename
+        from openapi_spec_validator import get_openapi_schema, JSONSpecValidatorFactory, default_handlers, SpecValidator
+        from pkg_resources import resource_filename
+        from six.moves.urllib import parse, request
+
+        api_spec_file = f'{CWD}/var/api_spec.json'
+        if not os.path.exists(api_spec_file):
+            import requests
+            url = 'https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.yaml'
+            r = requests.get(url, allow_redirects=True)
+            open(api_spec_file, 'wb').write(r.content)
+
+        path_full = api_spec_file
+        schema_v3 = read_yaml_file(path_full)
+        schema_v3_url = parse.urljoin('file:', request.pathname2url(path_full))
+
+        openapi_v3_validator_factory = JSONSpecValidatorFactory(
+            schema_v3, schema_v3_url,
+            resolver_handlers=default_handlers,
+        )
+
+        openapi_v3_spec_validator = SpecValidator(
+            openapi_v3_validator_factory,
+            resolver_handlers=default_handlers,
+        )
+
         app.config['PROFILE'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30], profile_dir='./profile')
 
         simplejson.dump(api.get_swagger_doc(), open(f'{export_path}/{_app_name}_swagger.json', 'w'), indent=2,
                         cls=CustomEncoder,
                         for_json=True)
+
+        spec_dict, spec_url = read_from_filename(f'{export_path}/{_app_name}_swagger.json')
+
+        # If no exception is raised by validate_spec(), the spec is valid.
+        errors_iterator = openapi_v3_spec_validator.iter_errors(spec_dict)
+        for _ie, err in enumerate(errors_iterator):
+            print(err)
+
         simplejson.dump(config.to_dict(), open(f'{export_path}/{_app_name}_api.config.json', 'w'), indent=2,
                         cls=CustomEncoder,
                         for_json=True)

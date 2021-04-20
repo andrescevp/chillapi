@@ -6,6 +6,23 @@ app:
   host: 0.0.0.0
   port: 8000
   debug: True
+  externalDocs:
+    description: Find more info here
+    url: https://example.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: API Support
+    url: http://www.example.com/support
+    email: support@example.com
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  security:
+    - bearerAuth: [ ]
 environment:
   APP_DB_URL: '$DB_URL'
   APP_SECRET_KEY: 'super-secret-key'
@@ -69,8 +86,8 @@ database:
           default_field: created_at
   tables:
     - name: book_category
-#      alias: ~
-#      id_field: ~ # id by default
+      #      alias: ~
+      #      id_field: ~ # id by default
       extensions:
         soft_delete:
           cascade:
@@ -79,8 +96,8 @@ database:
                 column_id: id
                 column_fk: book_category_id
     - name: book
-#      alias: ~
-#      id_field: ~ # id by default
+      #      alias: ~
+      #      id_field: ~ # id by default
       #      extensions:
       #        soft_delete:
       #          enable: False
@@ -104,7 +121,7 @@ database:
     #      api_endpoints:   #overwrite defaults
     #        GET: [ SINGLE ]
     - name: author
-#      alias: ~
+      #      alias: ~
       #      id_field: iso
       extensions:
         soft_delete:
@@ -133,8 +150,8 @@ database:
       #          LIST: [ ]
       api_endpoints: { }
     - name: dummy
-#      alias: ~
-#      id_field: ~
+      #      alias: ~
+      #      id_field: ~
       extensions:
         soft_delete:
           enable: False
@@ -158,8 +175,8 @@ database:
       #          LIST: [ ]
       api_endpoints: { }
     - name: dummy_create
-#      alias: ~
-#      id_field: ~
+      #      alias: ~
+      #      id_field: ~
       extensions:
         soft_delete:
           enable: False
@@ -193,10 +210,10 @@ database:
       query_parameters: [ ] # swagger schema for url query parameters in sql
       response_schema:
         type: object
-        parameters:
-          test:
-            type: string
-    - name: tests
+#        parameters:
+#          test:
+#            type: string
+    - name: tests 2
       method: GET
       url: /tests/test_sql2
       sql: |
@@ -206,7 +223,7 @@ database:
       query_parameters: # swagger schema for url query parameters in sql
         - in: query
           name: name
-          required: true
+#          required: true
           schema:
             type: string
     - name: test_params
@@ -221,7 +238,7 @@ database:
         properties:
           name:
             type: string
-            required: true
+#            required: true
   templates:
     - name: tests
       method: GET
@@ -235,7 +252,7 @@ database:
       query_parameters: # swagger schema for url query parameters in sql
         - in: query
           name: name
-          required: true
+#          required: true
           schema:
             type: string
     - name: test_params
@@ -246,8 +263,8 @@ database:
         - in: path
           name: name
           required: true
-          schema:
-            type: string
+#          schema:
+#            type: string
     - name: test_params
       method: POST
       url: /test_template_params

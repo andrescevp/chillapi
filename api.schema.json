@@ -60,6 +60,18 @@
           "description": "URL where be exposed the swagger UI",
           "default": "/doc"
         },
+        "externalDocs": {
+          "type": "object",
+          "description": "Maps External Documentation Object Spec: https://swagger.io/specification/#componentsObject"
+        },
+        "contact": {
+          "type": "object",
+          "description": "Maps Contact Object Spec: https://swagger.io/specification/#componentsObject"
+        },
+        "license": {
+          "type": "object",
+          "description": "Maps License Object\n Spec: https://swagger.io/specification/#componentsObject"
+        },
         "host": {
           "type": "string",
           "title": "The host IP",
@@ -75,6 +87,14 @@
           "title": "App debug flag",
           "description": "Enables debug mode - do not setup logger levels",
           "default": false
+        },
+        "security": {
+          "type": "array",
+          "title": "A declaration of which security mechanisms can be used across the API. The list of values includes alternative security requirement objects that can be used. Only one of the security requirement objects need to be satisfied to authorize a request. Individual operations can override this definition. Maps to the security field of the OpenAPI Object. https://swagger.io/specification/#openapiObject"
+        },
+        "securitySchemes": {
+          "type": "object",
+          "title": "Defines a security scheme that can be used by the operations. Maps to the securitySchemes field of components Object (https://swagger.io/specification/#componentsObject)"
         }
       },
       "additionalProperties": false

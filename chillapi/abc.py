@@ -2,7 +2,6 @@ from abc import abstractmethod, ABC
 from typing import List
 
 from sqlalchemy.engine import CursorResult, Inspector
-from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.orm.scoping import ScopedSession
 
 from chillapi.exceptions.api_manager import ConfigError, ColumnNotExist

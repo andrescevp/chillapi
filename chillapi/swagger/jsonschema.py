@@ -135,9 +135,9 @@ class WTFormToJSONSchema:
             # 'description': field.description,
         }
         if field.flags.required:
-            target_def['required'] = True
-            json_schema.setdefault('required', list())
-            json_schema['required'].append(name)
+            # target_def['required'] = True
+            target_def.setdefault('required', list())
+            target_def['required'].append(name)
         ftype = type(field).__name__
         if hasattr(self, 'convert_%s' % ftype):
             return getattr(self, 'convert_%s' % ftype)(name, field, json_schema)
@@ -182,10 +182,12 @@ class WTFormToJSONSchema:
             'title': field.label.text,
             'description': field.description,
             'enum': values,
-            'ux-widget-choices': list(field.choices),
+            # 'ux-widget-choices': list(field.choices),
         }
         if field.flags.required:
-            target_def['required'] = True
+            # target_def['required'] = True
+            target_def.setdefault('required', list())
+            target_def['required'].append(name)
         return target_def
 
     def convert_QuerySelectField(self, name, field, json_schema):
@@ -198,13 +200,13 @@ class WTFormToJSONSchema:
             'title': field.label.text,
             'description': field.description,
             'enum': values,
-            'ux-widget-choices': choices,
+            # 'ux-widget-choices': choices,
         }
 
         if field.allow_blank == False:
-            target_def['required'] = True
-            json_schema.setdefault('required', list())
-            json_schema['required'].append(name)
+            # target_def['required'] = True
+            target_def.setdefault('required', list())
+            target_def['required'].append(name)
         return target_def
 
     def convert_RadioField(self, name, field, json_schema):
@@ -216,5 +218,7 @@ class WTFormToJSONSchema:
             'ux-widget-choices': list(field.choices),
         }
         if field.flags.required:
-            target_def['required'] = True
+            # target_def['required'] = True
+            json_schema.setdefault('required', list())
+            json_schema['required'].append(name)
         return target_def

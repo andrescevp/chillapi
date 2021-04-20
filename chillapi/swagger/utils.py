@@ -79,10 +79,11 @@ def python_to_swagger_types(python_type):
         'float': "number",
         'complex': "number",
         'datetime.datetime': "string",
+        'datetime': "string",
         'dict': "object",
         'bool': "boolean"
     }
-    return switcher.get(python_type, "Invalid type")
+    return switcher.get(python_type, "string")
 
 
 def columns_map_to_swagger_properties(
