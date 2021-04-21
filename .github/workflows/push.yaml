@@ -31,4 +31,4 @@ jobs:
       - name: Testing set app behavour
         run: python -m unittest tests.settime.api tests.settime.app.config
       - name: Testing runtime app behavour
-        run: python -m unittest tests.settime.api tests.runtime.api_test
+        run: python -m unittest tests.runtime.api_test
