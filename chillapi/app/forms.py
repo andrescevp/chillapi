@@ -1,7 +1,7 @@
 import json
 
 import wtforms_json
-from wtforms import (BooleanField, DateTimeField, Field, fields, FloatField, Form, IntegerField, StringField)
+from wtforms import BooleanField, DateTimeField, Field, fields, FloatField, Form, IntegerField, StringField
 from wtforms.validators import DataRequired, ValidationError
 
 from chillapi.app.flask_restful_swagger_3 import Schema as SwaggerSchema
@@ -14,7 +14,7 @@ wtform_to_swagger_schema = WTFormToJSONSchema()
 
 class JSONField(fields.Field):
     def _value(self):
-        return json.dumps(self.data) if self.data else ''
+        return json.dumps(self.data) if self.data else ""
 
     def process_formdata(self, valuelist):
         if valuelist:
@@ -22,7 +22,7 @@ class JSONField(fields.Field):
             try:
                 self.data = json.loads(value)
             except ValueError:
-                raise ValidationError('This field contains invalid JSON')
+                raise ValidationError("This field contains invalid JSON")
         else:
             self.data = None
 
@@ -30,53 +30,49 @@ class JSONField(fields.Field):
         super().pre_validate(form)
         if self.data:
             if type(self.data) == str:
-                if self.data[0] not in {'{', '['} and self.data[-1] not in {'}', ']'}:
-                    raise ValidationError('This field contains invalid JSON')
+                if self.data[0] not in {"{", "["} and self.data[-1] not in {"}", "]"}:
+                    raise ValidationError("This field contains invalid JSON")
 
                 try:
                     self.data = json.loads(self.data)
                 except TypeError:
-                    raise ValidationError('This field contains invalid JSON')
+                    raise ValidationError("This field contains invalid JSON")
             else:
                 try:
                     json.dumps(self.data)
                 except TypeError:
-                    raise ValidationError('This field contains invalid JSON')
+                    raise ValidationError("This field contains invalid JSON")
 
 
-def generate_form_swagger_schema_from_form(method: str, form: Form, as_array = False):
+def generate_form_swagger_schema_from_form(method: str, form: Form, as_array=False):
     form_schema = wtform_to_swagger_schema.convert_form(form)
-    form_schema['description'] = f'{form.__name__} Form validated model'
+    form_schema["description"] = f"{form.__name__} Form validated model"
 
-    form_schema_model = type(
-            f'{form.__name__}{method.replace("_", " ").title().replace(" ", "")}RequestModel',
-            (SwaggerSchema,),
-            form_schema
-            )
+    form_schema_model = type(f'{form.__name__}{method.replace("_", " ").title().replace(" ", "")}RequestModel', (SwaggerSchema,), form_schema)
 
     if as_array is False:
         return form_schema_model
 
-    return get_form_array_swagger_schema(form.__name__, form_schema_model, 'ListRequestModel')
+    return get_form_array_swagger_schema(form.__name__, form_schema_model, "ListRequestModel")
 
 
 def column_to_flask_form_property(column_name: str, column_info) -> Field:
     validators = []
 
-    if column_info['nullable'] is False:
+    if column_info["nullable"] is False:
         validators.append(DataRequired())
 
     switcher = {
-            'str':               StringField(column_name, validators, _name = column_name),
-            'int':               IntegerField(column_name, validators, _name = column_name),
-            'float':             FloatField(column_name, validators, _name = column_name),
-            'complex':           FloatField(column_name, validators, _name = column_name),
-            'datetime.datetime': DateTimeField(column_name, validators, _name = column_name),
-            'dict':              JSONField(column_name, validators, _name = column_name),
-            'bool':              BooleanField(column_name, validators, _name = column_name)
-            }
+        "str": StringField(column_name, validators, _name=column_name),
+        "int": IntegerField(column_name, validators, _name=column_name),
+        "float": FloatField(column_name, validators, _name=column_name),
+        "complex": FloatField(column_name, validators, _name=column_name),
+        "datetime.datetime": DateTimeField(column_name, validators, _name=column_name),
+        "dict": JSONField(column_name, validators, _name=column_name),
+        "bool": BooleanField(column_name, validators, _name=column_name),
+    }
 
-    return switcher.get(column_info['type'].python_type.__name__, StringField(column_name))
+    return switcher.get(column_info["type"].python_type.__name__, StringField(column_name))
 
 
 def create_form_class(class_name: str, method: str, columns_map: dict):

@@ -13,32 +13,21 @@ class EventDto:
 
 class BeforeRequestEvent(EventDto):
     @abc.abstractmethod
-    def on_event(
-            self,
-            resource: AutomaticResource,
-            **args
-            ) -> BeforeRequestEventType:
+    def on_event(self, resource: AutomaticResource, **args) -> BeforeRequestEventType:
         pass
 
 
 class BeforeResponseEvent(EventDto):
     @abc.abstractmethod
     def on_event(
-            self,
-            resource: AutomaticResource,
-            response: ResourceResponse,
-            before_request_event: BeforeRequestEvent = None,
-            **args
-            ) -> BeforeResponseEventType:
+        self, resource: AutomaticResource, response: ResourceResponse, before_request_event: BeforeRequestEvent = None, **args
+    ) -> BeforeResponseEventType:
         pass
 
 
 class AfterResponseEvent(EventDto):
     @abc.abstractmethod
-    def on_event(
-            self,
-            response: object
-            ) -> None:
+    def on_event(self, response: object) -> None:
         pass
 
 

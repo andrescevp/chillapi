@@ -13,42 +13,39 @@ class Repository(ABC):
         self.db = db
         driver = self.db.bind.dialect.dbapi.__name__
         if driver not in _ALLOWED_DRIVERS.keys():
-            raise ConfigError(f'{driver} driver not allowed')
+            raise ConfigError(f"{driver} driver not allowed")
         self.db_dialect = _ALLOWED_DRIVERS[driver]
 
     @abstractmethod
-    def execute(self, sql, params = None, commit: bool = True) -> CursorResult:
+    def execute(self, sql, params=None, commit: bool = True) -> CursorResult:
         pass
 
     @abstractmethod
-    def execute_insert(self, sql, params = None) -> CursorResult:
+    def execute_insert(self, sql, params=None) -> CursorResult:
         pass
 
     @abstractmethod
-    def fetch_by(self, table: str, columns: List[str], filters: dict, params = None):
+    def fetch_by(self, table: str, columns: List[str], filters: dict, params=None):
         pass
 
     @abstractmethod
-    def insert(self, table: str, columns: List[str], params: dict,
-               returning: bool = True, returning_field: str = "*") -> CursorResult:
+    def insert(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = "*") -> CursorResult:
         pass
 
     @abstractmethod
-    def insert_batch(self, table: str, columns: List[str], params: List,
-                     returning: bool = True, returning_field: str = "*") -> List:
+    def insert_batch(self, table: str, columns: List[str], params: List, returning: bool = True, returning_field: str = "*") -> List:
         pass
 
     @abstractmethod
-    def update_batch(self, table: str, params: List, where_field: str = 'id') -> List:
+    def update_batch(self, table: str, params: List, where_field: str = "id") -> List:
         pass
 
     @abstractmethod
-    def delete_batch(self, table: str, ids: List, where_field: str = 'id') -> List:
+    def delete_batch(self, table: str, ids: List, where_field: str = "id") -> List:
         pass
 
     @abstractmethod
-    def insert_record(self, table: str, columns: List[str], params: dict,
-                      returning: bool = True, returning_field: str = "*") -> int:
+    def insert_record(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = "*") -> int:
         pass
 
     @abstractmethod
@@ -62,11 +59,11 @@ class Repository(ABC):
 
 class Extension(ABC, dict):
     def execute(self, *args):
-        method_name = getattr(args, 'method')
-        if method_name == 'execute':
-            raise Exception('You can not call myself')
-        method = getattr(self, getattr(args, 'method'))
-        return method(getattr(args, 'args'))
+        method_name = getattr(args, "method")
+        if method_name == "execute":
+            raise Exception("You can not call myself")
+        method = getattr(self, getattr(args, "method"))
+        return method(getattr(args, "args"))
 
 
 class TableExtension(Extension):
@@ -76,19 +73,18 @@ class TableExtension(Extension):
     repository: Repository = None
     inspector: Inspector
 
-    def __init__(self, config: dict, columns: dict = None, repository: Repository = None, table: str = None,
-                 inspector: Inspector = None):
+    def __init__(self, config: dict, columns: dict = None, repository: Repository = None, table: str = None, inspector: Inspector = None):
         self.inspector = inspector
         self.columns = columns
         self.repository = repository
         self.config = config
         self.table = table
-        self.enabled = self.config['enable']
+        self.enabled = self.config["enable"]
 
     def validate(self):
         if not self.enabled:
             return True
-        _default_field = self.config['default_field']
+        _default_field = self.config["default_field"]
 
         if _default_field not in self.columns.keys():
             raise ColumnNotExist(f'{self.__class__.__name__}: "{_default_field}" not found on table "{self.table}" ')
@@ -113,4 +109,4 @@ class AuditLogHandler(Extension):
         pass
 
     def execute(self, *args):
-        self.log(getattr(args, 'log'))
+        self.log(getattr(args, "log"))
