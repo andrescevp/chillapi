@@ -138,6 +138,7 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
     spec_dict, spec_url = read_from_filename(f'{export_path}/{_app_name}_swagger.json')
 
     # If no exception is raised by validate_spec(), the spec is valid.
+    # do not stop the execution but show a critical
     errors_iterator = openapi_v3_spec_validator.iter_errors(spec_dict)
     for _ie, err in enumerate(errors_iterator):
         logger.critical(err)
@@ -160,8 +161,12 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
                     uuid = env["HTTP_X_REQUEST_ID"]
                     )
 
-        app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions = [30], profile_dir = './profile',
-                                          filename_format = filename_format)
+        app.wsgi_app = ProfilerMiddleware(
+                app.wsgi_app,
+                restrictions = [30],
+                profile_dir = './profile',
+                filename_format = filename_format
+                )
 
         register_routes_sitemap(app)
 

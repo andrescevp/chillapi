@@ -16,6 +16,7 @@ from chillapi.app import (
 from chillapi.database.connection import create_db
 from chillapi.database.repository import DataRepository
 from chillapi.exceptions.api_manager import ConfigError, TableNotExist
+from chillapi.extensions import LIVECYCLE_EXTENSIONS, REQUEST_EXTENSIONS
 from chillapi.extensions.record_livecycle import INTERNAL_EXTENSION_DEFAULTS
 from chillapi.logger.app_loggers import set_logger_config
 
@@ -79,6 +80,19 @@ class ChillapiExtensions(dict):
                         'inspector': inspector
                         })
         extension.validate()
+
+        if table_name not in self.tables.keys():
+            self.tables[table_name] = {}
+        self.tables[table_name][extension_name] = extension
+
+    def set_request_table_extension(self, extension_name: str, extension_config: dict, table_name: str):
+        self.module_loader.add_module(extension_config['package'])
+
+        extension = self.module_loader.get_module_attr(
+                extension_config['package'],
+                extension_config['handler'],
+                extension_config['handler_args'],
+                )
 
         if table_name not in self.tables.keys():
             self.tables[table_name] = {}
@@ -257,7 +271,7 @@ class ApiConfig:
 
     def load_extension(self, table_config: dict, extension_name: str):
         table_name = table_config['model_name']
-        if self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
+        if extension_name in LIVECYCLE_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
             self.extensions.set_livecycle_table_extension(
                     extension_name,
                     table_config['columns'],
@@ -266,6 +280,9 @@ class ApiConfig:
                     self.repository,
                     self.db_inspector
                     )
+        if extension_name in REQUEST_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
+            _extension_conf = table_config['extensions'][extension_name]
+            self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)
 
     def load_extensions(self):
         if not self.extensions.is_extension_enabled('audit'):

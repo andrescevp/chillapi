@@ -1,7 +1,5 @@
 import abc
-from typing import List
 
-from chillapi import ApiManager
 from chillapi.swagger import BeforeRequestEventType, BeforeResponseEventType
 from chillapi.swagger.http import AutomaticResource, ResourceResponse
 
@@ -23,22 +21,6 @@ class BeforeRequestEvent(EventDto):
         pass
 
 
-class RequestEvent:
-    def on_event(
-            self,
-            manager: ApiManager,
-            resource: AutomaticResource,
-            model_name: str,
-            table_name: str,
-            columns_map: dict,
-            table_fields_excluded: List[str],
-            id_field: str,
-            record_id: any,
-            response: dict
-            ) -> dict:
-        pass
-
-
 class BeforeResponseEvent(EventDto):
     @abc.abstractmethod
     def on_event(
@@ -57,4 +39,19 @@ class AfterResponseEvent(EventDto):
             self,
             response: object
             ) -> None:
+        pass
+
+
+class NullBeforeRequestEvent(BeforeRequestEvent):
+    def on_event(self, resource: AutomaticResource, **args) -> BeforeRequestEventType:
+        pass
+
+
+class NullBeforeResponseEvent(BeforeResponseEvent):
+    def on_event(self, resource: AutomaticResource, **args) -> BeforeRequestEventType:
+        pass
+
+
+class NullAfterResponseEvent(AfterResponseEvent):
+    def on_event(self, resource: AutomaticResource, **args):
         pass

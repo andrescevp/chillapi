@@ -39,7 +39,7 @@ def register_audit_handler(app, audit_logger_handler):
         # Prepare all the local variables you need since the request context
         # will be gone in the callback function
         log = None
-        if 'audit' in response.__dict__ and isinstance(response.audit, AuditLog):
+        if response and 'audit' in response.__dict__ and isinstance(response.audit, AuditLog):
             log = response.audit
             log.request_id = get_request_id()
             log.prev_request_id = get_traced_request_uuid()

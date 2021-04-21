@@ -108,7 +108,7 @@
         },
         "security_handler": {
           "type": "object",
-          "title": "Audit log handler",
+          "title": "auth method handler",
           "description": "A method: ```def auth(security_schemes, security, request_obj, endpoint, method):\n    print(request_obj, endpoint, method, security_schemes, security)\n    return False```",
           "default": {},
           "required": [
@@ -329,6 +329,129 @@
             "handler": {
               "type": "string",
               "title": "class name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "before_request": {
+          "type": "object",
+          "title": "BeforeRequestEvent",
+          "description": "Class with `chillapi.extensions.events.BeforeRequestEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "before_response": {
+          "type": "object",
+          "title": "BeforeResponseEvent",
+          "description": "Class with `chillapi.extensions.events.BeforeResponseEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "after_response": {
+          "type": "object",
+          "title": "AfterResponseEvent",
+          "description": "Class with `chillapi.extensions.events.AfterResponseEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
             },
             "handler_args": {
               "type": "object",

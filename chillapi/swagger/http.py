@@ -1,5 +1,6 @@
 import abc
 
+import flask
 from flask import jsonify, make_response
 
 from chillapi.app.flask_restful_swagger_3 import Resource
@@ -45,7 +46,6 @@ class AutomaticResource(Resource):
 
     def __init__(
             self,
-            app = None,
             before_request: BeforeRequestEventType = None,
             before_response: BeforeResponseEventType = None,
             after_response: AfterResponseEventType = None
@@ -53,10 +53,11 @@ class AutomaticResource(Resource):
         self.before_response = before_response
         self.before_request = before_request
 
-        if app and after_response:
-            @app.after_request
+        if after_response:
+            @flask.after_this_request
             def response_processor(response):
-                after_response.on_event(response)
+                after_response.on_event(**{'resource': self, 'response': response})
+                return response
 
     @abc.abstractmethod
     def request(self, **args) -> ResourceResponse:
@@ -83,7 +84,7 @@ class AutomaticResource(Resource):
                          extra = request_args)
 
             before_request_event = self.before_request.on_event(
-                    resource = self,
+                    **{'resource': self},
                     **request_args
                     )
 
@@ -102,9 +103,10 @@ class AutomaticResource(Resource):
                          extra = request_args)
 
             before_response_event = self.before_response.on_event(
-                    resource = self,
-                    response = response,
-                    before_request_event = before_request_event,
+                    **{
+                            'resource': self,
+                            'response': response,
+                            },
                     **request_args
                     )
 

@@ -278,8 +278,15 @@ class TableApiManager(ApiManager):
                             'extensions':          table_extensions,
                             })
 
-                    api.add_resource(_endpoint, _endpoint.route,
-                                     endpoint = _endpoint.endpoint)
+                    api.add_resource(
+                            _endpoint,
+                            _endpoint.route,
+                            endpoint = _endpoint.endpoint,
+                            resource_class_kwargs = {
+                                    'before_request':  self.config.extensions.tables[model_name]['before_request'],
+                                    'before_response': self.config.extensions.tables[model_name]['before_response'],
+                                    'after_response':  self.config.extensions.tables[model_name]['after_response'],
+                                    })
 
 
 class FlaskApiManager(ApiManager):

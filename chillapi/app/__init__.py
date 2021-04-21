@@ -152,6 +152,21 @@ _table_default_config = {
                 'on_create_timestamp': {
                         'enable': False
                         },
+                'before_request':      {
+                        'package':      'chillapi.extensions.events',
+                        'handler':      'NullBeforeRequestEvent',
+                        'handler_args': {},
+                        },
+                'before_response':     {
+                        'package':      'chillapi.extensions.events',
+                        'handler':      'NullBeforeResponseEvent',
+                        'handler_args': {},
+                        },
+                'after_response':      {
+                        'package':      'chillapi.extensions.events',
+                        'handler':      'NullAfterResponseEvent',
+                        'handler_args': {},
+                        }
                 }
         }
 
