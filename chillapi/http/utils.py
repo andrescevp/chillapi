@@ -1,4 +1,4 @@
-from flask import request, has_request_context
+from flask import has_request_context, request
 
 
 def get_request_id():

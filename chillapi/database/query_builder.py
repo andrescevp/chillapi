@@ -1,27 +1,27 @@
 import operator
 from typing import List
 
-from pypika import Table, Query, Order, functions as fn, Parameter, Tables
+from pypika import functions as fn, Order, Parameter, Query, Table, Tables
 
 sql_operators = {
-    '=': operator.eq,
-    '!=': operator.ne,
-    '<>': operator.ne,
-    '>': operator.gt,
-    '>=': operator.ge,
-    '<=': operator.le,
-    '<': operator.lt,
-    'like': 'like',
-    'isnotnull': 'isnotnull',
-    'isnull': 'isnull',
-}
+        '=':         operator.eq,
+        '!=':        operator.ne,
+        '<>':        operator.ne,
+        '>':         operator.gt,
+        '>=':        operator.ge,
+        '<=':        operator.le,
+        '<':         operator.lt,
+        'like':      'like',
+        'isnotnull': 'isnotnull',
+        'isnull':    'isnull',
+        }
 
 
 def create_select_paginated_query(table, columns: List[str], filters: dict):
     table = Table(table)
     table_columns = [table[c] for c in columns]
     query = Query.from_(table).select(*table_columns) \
-        .orderby(*filters['order']['field'], order=Order[filters['order']['direction']]) \
+        .orderby(*filters['order']['field'], order = Order[filters['order']['direction']]) \
         .limit(filters['size']['limit']) \
         .offset(filters['size']['offset'])
 
@@ -34,7 +34,7 @@ def create_select_filtered_paginated_ordered_query(table, columns: List[str], fi
     table = Table(table)
     table_columns = [table[c] for c in columns]
     query = Query.from_(table).select(*table_columns) \
-        .orderby(*filters['order']['field'], order=Order[filters['order']['direction']]) \
+        .orderby(*filters['order']['field'], order = Order[filters['order']['direction']]) \
         .limit(filters['size']['limit']) \
         .offset(filters['size']['offset'])
 

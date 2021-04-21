@@ -18,8 +18,8 @@ from datetime import datetime
 import simplejson
 from sqlalchemy.sql.type_api import TypeEngine
 
-from chillapi.http.utils import get_request_id, get_traced_request_uuid
 from chillapi.database.query_builder import sql_operators
+from chillapi.http.utils import get_request_id, get_traced_request_uuid
 
 
 class CustomEncoder(simplejson.JSONEncoder):
@@ -39,41 +39,41 @@ GELF_VERSION = "1.1"
 """str: GELF specification version."""
 
 GELF_LEVELS = {
-    logging.DEBUG: 7,
-    logging.INFO: 6,
-    logging.WARNING: 4,
-    logging.ERROR: 3,
-    logging.CRITICAL: 2,
-}
+        logging.DEBUG:    7,
+        logging.INFO:     6,
+        logging.WARNING:  4,
+        logging.ERROR:    3,
+        logging.CRITICAL: 2,
+        }
 """dict: Map of logging levels vs syslog levels."""
 
 GELF_IGNORED_ATTRS = ["id"]
 """List[str]: Attributes prohibited by the GELF specification."""
 
 RESERVED_ATTRS = (
-    "args",
-    "asctime",
-    "created",
-    "exc_info",
-    "exc_text",
-    "filename",
-    "funcName",
-    "levelname",
-    "levelno",
-    "lineno",
-    "module",
-    "msecs",
-    "message",
-    "msg",
-    "name",
-    "pathname",
-    "process",
-    "processName",
-    "relativeCreated",
-    "stack_info",
-    "thread",
-    "threadName",
-)
+        "args",
+        "asctime",
+        "created",
+        "exc_info",
+        "exc_text",
+        "filename",
+        "funcName",
+        "levelname",
+        "levelno",
+        "lineno",
+        "module",
+        "msecs",
+        "message",
+        "msg",
+        "name",
+        "pathname",
+        "process",
+        "processName",
+        "relativeCreated",
+        "stack_info",
+        "thread",
+        "threadName",
+        )
 """List[str]: The `logging.LogRecord`_ attributes that should be ignored by default.
 
 .. _logging.LogRecord:
@@ -128,7 +128,7 @@ class GelfFormatter(logging.Formatter):
        https://docs.python.org/3/library/logging.html#logrecord-attributes
     """
 
-    def __init__(self, allowed_reserved_attrs=[], ignored_attrs=[]):
+    def __init__(self, allowed_reserved_attrs = [], ignored_attrs = []):
         """Initializes a GelfFormatter."""
         super().__init__()
         self.allowed_reserved_attrs = allowed_reserved_attrs
@@ -154,14 +154,14 @@ class GelfFormatter(logging.Formatter):
         request_uuid = get_request_id()
         traced_request_uuid = get_traced_request_uuid()
         log_record = dict(
-            version=GELF_VERSION,
-            short_message=record.getMessage(),
-            timestamp=record.created,
-            level=GELF_LEVELS[record.levelno],
-            host=self._hostname,
-            _request_uuid=request_uuid,
-            _traced_request_uuid=traced_request_uuid,
-        )
+                version = GELF_VERSION,
+                short_message = record.getMessage(),
+                timestamp = record.created,
+                level = GELF_LEVELS[record.levelno],
+                host = self._hostname,
+                _request_uuid = request_uuid,
+                _traced_request_uuid = traced_request_uuid,
+                )
 
         # Capture exception info, if any
         if record.exc_info is not None:
@@ -173,8 +173,8 @@ class GelfFormatter(logging.Formatter):
 
         # Compute excluded attributes
         excluded_attrs = [
-            x for x in RESERVED_ATTRS if x not in self.allowed_reserved_attrs
-        ]
+                x for x in RESERVED_ATTRS if x not in self.allowed_reserved_attrs
+                ]
         excluded_attrs += self.ignored_attrs
 
         # Everything else is considered an additional attribute
@@ -187,4 +187,4 @@ class GelfFormatter(logging.Formatter):
                 log_record[_prefix(key)] = value
 
         # Serialize as JSON
-        return simplejson.dumps(log_record, cls=CustomEncoder, for_json=True)
+        return simplejson.dumps(log_record, cls = CustomEncoder, for_json = True)

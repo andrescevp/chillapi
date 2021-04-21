@@ -13,7 +13,6 @@ class SoftDeleteExtension(TableExtension):
 
         return query, query_values
 
-
     def unset_field_data(self, form_data):
         _field = self.config['default_field']
         del form_data[_field]
@@ -28,7 +27,8 @@ class SoftDeleteExtension(TableExtension):
                     _relation_table = _relation['table']
                     _pk = _relation['column_id']
                     _fk = _relation['column_fk']
-                    one_to_many(_relation_table=_relation_table, _pk=_pk, _fk=_fk, _inspector=self.inspector, _extension_field=self.config['default_field'])
+                    one_to_many(_relation_table = _relation_table, _pk = _pk, _fk = _fk, _inspector = self.inspector,
+                                _extension_field = self.config['default_field'])
 
             if 'many_to_many' in _cascades:
                 _one_to_many = _cascades['many_to_many']
@@ -37,9 +37,9 @@ class SoftDeleteExtension(TableExtension):
                     _relation_join_table = _relation['join_table']
                     _pk = _relation['column_id']
                     _relation_columns = _relation['join_columns']
-                    many_to_many(_relation_table=_relation_table, _pk=_pk, _relation_join_table=_relation_join_table,
-                                 _relation_columns=_relation_columns, _inspector=self.inspector,
-                                 _repository=self.repository, _extension_field=self.config['default_field'])
+                    many_to_many(_relation_table = _relation_table, _pk = _pk, _relation_join_table = _relation_join_table,
+                                 _relation_columns = _relation_columns, _inspector = self.inspector,
+                                 _repository = self.repository, _extension_field = self.config['default_field'])
 
     def validate(self):
         super().validate()
@@ -77,13 +77,13 @@ class SoftDeleteExtension(TableExtension):
 
             if _relation_columns['main'] not in _relation_join_table_columns:
                 raise ConfigError(
-                    f'join_columns[main]: {_relation_columns["main"]} in Table {_relation_join_table} does not exists!')
+                        f'join_columns[main]: {_relation_columns["main"]} in Table {_relation_join_table} does not exists!')
 
             if _relation_columns['join'] not in _relation_join_table_columns:
                 raise ConfigError(
-                    f'join_columns[join]: {_relation_columns["join"]} in Table {_relation_join_table} does not exists!')
+                        f'join_columns[join]: {_relation_columns["join"]} in Table {_relation_join_table} does not exists!')
 
-        self._walk_cascade_options(one_to_many=one_to_many, many_to_many=many_to_many)
+        self._walk_cascade_options(one_to_many = one_to_many, many_to_many = many_to_many)
 
     def soft_delete(self, id_field, id, response):
         def one_to_many(**args):
@@ -93,14 +93,14 @@ class SoftDeleteExtension(TableExtension):
             _repository = args['_repository']
             _extension_field = args['_extension_field']
             _relation_ids = _repository.fetch_by(
-                _relation_table,
-                [_pk],
-                {_fk: {'op': '=', 'value': id}},
-                {_fk: id}
-            )
+                    _relation_table,
+                    [_pk],
+                    {_fk: {'op': '=', 'value': id}},
+                    {_fk: id}
+                    )
             _cascade_ids = [x[0] for x in _relation_ids.fetchall()]
             soft_deletes_one_to_many = [{_extension_field: now, _pk: x} for x in _cascade_ids]
-            _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
+            _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field = _pk)
 
         def many_to_many(**args):
             _relation_table = args['_relation_table']
@@ -114,18 +114,18 @@ class SoftDeleteExtension(TableExtension):
             _relation_ids = self.repository.execute(sql, {'id': id})
             _cascade_ids = [x[0] for x in _relation_ids.fetchall()]
             soft_deletes_one_to_many = [{_extension_field: now, _pk: x} for x in _cascade_ids]
-            _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
+            _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field = _pk)
 
         now = datetime.now().isoformat()
         _field = self.config['default_field']
         self.repository.update_record(
-            self.table,
-            id_field,
-            id,
-            {id_field: id, _field: now}
-        )
+                self.table,
+                id_field,
+                id,
+                {id_field: id, _field: now}
+                )
 
-        self._walk_cascade_options(one_to_many=one_to_many, many_to_many=many_to_many)
+        self._walk_cascade_options(one_to_many = one_to_many, many_to_many = many_to_many)
 
         response.response['message'] = 'ok'
         response.response['code'] = 200
@@ -141,14 +141,14 @@ class SoftDeleteExtension(TableExtension):
             _cascade_ids = []
             for _fk_id in data:
                 _relation_ids = self.repository.fetch_by(
-                    _relation_table,
-                    [_pk],
-                    {_fk: {'op': '=', 'value': _fk_id}},
-                    {_fk: _fk_id}
-                )
+                        _relation_table,
+                        [_pk],
+                        {_fk: {'op': '=', 'value': _fk_id}},
+                        {_fk: _fk_id}
+                        )
                 _cascade_ids += [x[0] for x in _relation_ids.fetchall()]
             soft_deletes_one_to_many = [{extension_field: now, _pk: x} for x in _cascade_ids]
-            _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
+            _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field = _pk)
 
         def many_to_many(**args):
             _relation_table = args['_relation_table']
@@ -163,13 +163,13 @@ class SoftDeleteExtension(TableExtension):
                 _relation_ids = self.repository.execute(sql, {'id': _fk_id})
                 _cascade_ids += [x[0] for x in _relation_ids.fetchall()]
             soft_deletes_one_to_many = [{extension_field: now, _pk: x} for x in _cascade_ids]
-            _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
+            _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field = _pk)
 
         now = datetime.now().isoformat()
         soft_deletes = [{extension_field: now, id_field: x} for x in data]
-        self.repository.update_batch(table_name, soft_deletes, where_field=id_field)
+        self.repository.update_batch(table_name, soft_deletes, where_field = id_field)
 
-        self._walk_cascade_options(one_to_many=one_to_many, many_to_many=many_to_many)
+        self._walk_cascade_options(one_to_many = one_to_many, many_to_many = many_to_many)
 
 
 class OnUpdateTimestampExtension(TableExtension):
@@ -205,9 +205,9 @@ class OnCreateTimestampExtension(TableExtension):
 
 
 INTERNAL_EXTENSION_DEFAULTS = {
-    'livecycle': {
-        'soft_delete': SoftDeleteExtension,
-        'on_update_timestamp': OnUpdateTimestampExtension,
-        'on_create_timestamp': OnCreateTimestampExtension
-    }
-}
+        'livecycle': {
+                'soft_delete':         SoftDeleteExtension,
+                'on_update_timestamp': OnUpdateTimestampExtension,
+                'on_create_timestamp': OnCreateTimestampExtension
+                }
+        }

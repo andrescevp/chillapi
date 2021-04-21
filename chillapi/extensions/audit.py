@@ -1,8 +1,8 @@
 from datetime import datetime
 
+from chillapi.abc import AuditLog as AuditLogBase, AuditLogHandler
 from chillapi.http.utils import get_request_id, get_traced_request_uuid
 from chillapi.logger.app_loggers import audit_logger
-from chillapi.abc import AuditLog as AuditLogBase, AuditLogHandler
 
 
 class AuditLog(AuditLogBase):
@@ -18,18 +18,20 @@ class AuditLog(AuditLogBase):
 
     def for_json(self) -> dict:
         return {
-            'action': self.action,
-            'user': self.user,
-            'request_id': self.request_id,
-            'prev_request_id': self.prev_request_id,
-            'date': self.date,
-            'change_parameters': self.change_parameters,
-            'current_status': self.current_status,
-            'prev_status': self.prev_status
-        }
+                'action':            self.action,
+                'user':              self.user,
+                'request_id':        self.request_id,
+                'prev_request_id':   self.prev_request_id,
+                'date':              self.date,
+                'change_parameters': self.change_parameters,
+                'current_status':    self.current_status,
+                'prev_status':       self.prev_status
+                }
+
 
 class NullAuditHandler(AuditLogHandler):
     pass
+
 
 def register_audit_handler(app, audit_logger_handler):
     @app.after_request
@@ -46,7 +48,7 @@ def register_audit_handler(app, audit_logger_handler):
         @response.call_on_close
         def process_after_request():
             if log is not None:
-                audit_logger.info(log.message, extra=log.for_json())
+                audit_logger.info(log.message, extra = log.for_json())
                 if audit_logger_handler is not None:
                     audit_logger_handler.log(log)
 

@@ -6,7 +6,6 @@ from chillapi.swagger import BeforeRequestEventType, BeforeResponseEventType
 from chillapi.swagger.http import AutomaticResource, ResourceResponse
 
 
-
 class EventDto:
     bag: dict = None
 
@@ -20,7 +19,7 @@ class BeforeRequestEvent(EventDto):
             self,
             resource: AutomaticResource,
             **args
-    ) -> BeforeRequestEventType:
+            ) -> BeforeRequestEventType:
         pass
 
 
@@ -36,7 +35,7 @@ class RequestEvent:
             id_field: str,
             record_id: any,
             response: dict
-    ) -> dict:
+            ) -> dict:
         pass
 
 
@@ -48,7 +47,7 @@ class BeforeResponseEvent(EventDto):
             response: ResourceResponse,
             before_request_event: BeforeRequestEvent = None,
             **args
-    ) -> BeforeResponseEventType:
+            ) -> BeforeResponseEventType:
         pass
 
 
@@ -57,5 +56,5 @@ class AfterResponseEvent(EventDto):
     def on_event(
             self,
             response: object
-    ) -> None:
+            ) -> None:
         pass

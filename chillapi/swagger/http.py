@@ -1,11 +1,12 @@
 import abc
 
 from flask import jsonify, make_response
-from flask_restful_swagger_3 import Resource
 
+from chillapi.app.flask_restful_swagger_3 import Resource
 from chillapi.extensions.audit import AuditLog
-from chillapi.swagger import BeforeRequestEventType, BeforeResponseEventType, AfterResponseEventType
 from chillapi.logger.app_loggers import logger
+from chillapi.swagger import AfterResponseEventType, BeforeRequestEventType, BeforeResponseEventType
+
 
 class ResourceResponse:
     response = {}
@@ -29,10 +30,11 @@ class ResourceResponse:
 
     def for_json(self) -> dict:
         return {
-            'response': self.response,
-            'headers': self.headers,
-            'http_code': self.http_code,
-        }
+                'response':  self.response,
+                'headers':   self.headers,
+                'http_code': self.http_code,
+                }
+
 
 class AutomaticResource(Resource):
     route = '/'
@@ -43,11 +45,11 @@ class AutomaticResource(Resource):
 
     def __init__(
             self,
-            app=None,
+            app = None,
             before_request: BeforeRequestEventType = None,
             before_response: BeforeResponseEventType = None,
             after_response: AfterResponseEventType = None
-    ):
+            ):
         self.before_response = before_response
         self.before_request = before_request
 
@@ -65,26 +67,30 @@ class AutomaticResource(Resource):
         pass
 
     def process_request(self, **args):
-        logger.debug('Request start', extra=args)
+        logger.debug('Request start', extra = args)
         before_response_event = None
         before_request_event = None
 
-        request_args = {**args, **{'before_request_event': before_request_event,
-                                   'before_response_event': before_response_event}}
+        request_args = {
+                **args, **{
+                        'before_request_event':  before_request_event,
+                        'before_response_event': before_response_event
+                        }
+                }
 
         if self.before_request:
             logger.debug('Before request event trigger',
-                         extra=request_args)
+                         extra = request_args)
 
             before_request_event = self.before_request.on_event(
-                resource=self,
-                **request_args
-            )
+                    resource = self,
+                    **request_args
+                    )
 
             request_args['before_request_event'] = before_request_event
 
         logger.debug('Validate request event trigger',
-                     extra={**request_args})
+                     extra = {**request_args})
 
         validation_output = self.validate_request(**request_args)
         request_args['validation_output'] = validation_output
@@ -93,18 +99,18 @@ class AutomaticResource(Resource):
 
         if self.before_response:
             logger.debug('Before response event trigger',
-                         extra=request_args)
+                         extra = request_args)
 
             before_response_event = self.before_response.on_event(
-                resource=self,
-                response=response,
-                before_request_event=before_request_event,
-                **request_args
-            )
+                    resource = self,
+                    response = response,
+                    before_request_event = before_request_event,
+                    **request_args
+                    )
 
             request_args['before_response_event'] = before_response_event
 
         request_args['response'] = response
-        logger.debug('Response finish', extra=request_args)
+        logger.debug('Response finish', extra = request_args)
 
         return response.make_response()

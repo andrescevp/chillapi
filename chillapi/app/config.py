@@ -1,21 +1,23 @@
 import copy
 import importlib
 import os
+from typing import List
 
+import slug
+from mergedeep import merge as dict_deepmerge
 from sqlalchemy.engine import Inspector
 from sqlalchemy.orm.scoping import ScopedSession
-from typing import List
-from mergedeep import merge as dict_deepmerge
-import slug
 
-from chillapi.abc import TableExtension, Repository
+from chillapi.abc import Repository, TableExtension
+from chillapi.app import (
+    _app_defaults, _database_defaults, _environment_defaults, _logger_defaults, _sql_default_config, _sql_template_default_config,
+    _table_default_config, _tables_default_config,
+    )
 from chillapi.database.connection import create_db
 from chillapi.database.repository import DataRepository
 from chillapi.exceptions.api_manager import ConfigError, TableNotExist
 from chillapi.extensions.record_livecycle import INTERNAL_EXTENSION_DEFAULTS
 from chillapi.logger.app_loggers import set_logger_config
-from chillapi.app import _app_defaults, _environment_defaults, _logger_defaults, _database_defaults, \
-    _tables_default_config, _table_default_config, _sql_default_config, _sql_template_default_config
 
 CWD = os.getcwd()
 
@@ -46,7 +48,7 @@ class ChillApiModuleLoader(dict):
         return module in self._modules.keys()
 
 
-class TableExtensions(dict):
+class ChillapiExtensions(dict):
     tables: dict = dict({})
     app: dict = dict({})
 
@@ -59,10 +61,10 @@ class TableExtensions(dict):
         self.module_loader.add_module(package_config['package'])
 
         extension = self.module_loader.get_module_attr(
-            package_config['package'],
-            package_config['handler'],
-            package_config['handler_args'] if 'handler_args' in package_config else {},
-        )
+                package_config['package'],
+                package_config['handler'],
+                package_config['handler_args'] if 'handler_args' in package_config else {},
+                )
 
         _attr = getattr(self, type)
         _attr[name] = extension
@@ -72,8 +74,10 @@ class TableExtensions(dict):
                                       repository: Repository, inspector: Inspector):
         _extension = self.internal_extension_map['livecycle'][extension_name]
         extension = _extension(
-            **{'config': extension_config, 'table': table_name, 'repository': repository, 'columns': columns,
-               'inspector': inspector})
+                **{
+                        'config':    extension_config, 'table': table_name, 'repository': repository, 'columns': columns,
+                        'inspector': inspector
+                        })
         extension.validate()
 
         if table_name not in self.tables.keys():
@@ -88,7 +92,7 @@ class TableExtensions(dict):
             return hasattr(getattr(self.tables, table_name), extension_name)
         return False
 
-    def get_extension(self, extension_name: str, type: str = 'app') -> TableExtension:
+    def get_extension(self, extension_name: str, type: str = 'app'):
         return getattr(self, type)[extension_name]
 
     def get_table_extension(self, table_name: str, extension_name: str) -> TableExtension:
@@ -104,33 +108,33 @@ class ApiConfig:
     db: ScopedSession
     db_inspector: Inspector
 
-    def __init__(self, table_extensions: TableExtensions, app: dict, environment: dict = None, logger: dict = None,
+    def __init__(self, extensions: ChillapiExtensions, app: dict, environment: dict = None, logger: dict = None,
                  database: dict = None):
-        self.extensions = table_extensions
+        self.extensions = extensions
         app = {} if app is None else app
         environment = {} if environment is None else environment
         logger = {} if logger is None else logger
         database = {} if database is None else database
 
         self.logger = dict(dict_deepmerge(
-            {},
-            _logger_defaults,
-            logger
-        ))
+                {},
+                _logger_defaults,
+                logger
+                ))
 
         set_logger_config(self.logger)
 
         self.app = dict(dict_deepmerge(
-            {},
-            _app_defaults,
-            app
-        ))
+                {},
+                _app_defaults,
+                app
+                ))
 
         self.environment = dict(dict_deepmerge(
-            {},
-            _environment_defaults,
-            environment
-        ))
+                {},
+                _environment_defaults,
+                environment
+                ))
 
         if 'APP_DB_URL' in self.environment and self.environment['APP_DB_URL'].startswith('$'):
             self.environment['APP_DB_URL'] = os.getenv(self.environment['APP_DB_URL'].replace('$', '', 1))
@@ -139,17 +143,17 @@ class ApiConfig:
             os.environ.setdefault(_env_key, self.environment.get(_env_key))
 
         self.database = dict(dict_deepmerge(
-            {},
-            _database_defaults,
-            database
-        ))
+                {},
+                _database_defaults,
+                database
+                ))
 
         if 'defaults' in self.database and 'tables' in self.database['defaults']:
             self.database['defaults']['tables'] = dict(dict_deepmerge(
-                {},
-                _tables_default_config,
-                self.database['defaults']['tables']
-            ))
+                    {},
+                    _tables_default_config,
+                    self.database['defaults']['tables']
+                    ))
         else:
             self.database['defaults']['tables'] = _tables_default_config
 
@@ -159,15 +163,15 @@ class ApiConfig:
                 del _global_defaults['extensions']['audit_logger']
 
             self.database['tables'] = [dict(dict_deepmerge(
-                {},
-                dict_deepmerge(
                     {},
-                    _table_default_config,
-                    _global_defaults,
+                    dict_deepmerge(
+                            {},
+                            _table_default_config,
+                            _global_defaults,
 
-                ),
-                t
-            )) for t in self.database['tables']]
+                            ),
+                    t
+                    )) for t in self.database['tables']]
             for key, _table in enumerate(self.database['tables']):
                 if _table['fields_excluded']:
                     for _method in _table['fields_excluded'].keys():
@@ -184,32 +188,32 @@ class ApiConfig:
                                     _table['fields_excluded']['all']
 
                 _model_name = self.get_class_name_from_model_name(
-                    _table['name'] if not _table['alias'] else _table['alias'])
+                        _table['name'] if not _table['alias'] else _table['alias'])
                 _table['model_name'] = _model_name
                 _table['slug'] = slug.slug(
-                    _table['name'] if not _table['alias'] else _table['alias'])
+                        _table['name'] if not _table['alias'] else _table['alias'])
                 if _model_name in self.model_names:
                     raise ConfigError(
-                        f"""
+                            f"""
                         Table '{_table['name']}' with alias '{_table['alias']}' is already defined.
                         Please add or change the alias
                         """
-                    )
+                            )
                 self.model_names.append(_model_name)
 
         if 'sql' in self.database and len(self.database['sql']) > 0:
             self.database['sql'] = [dict(dict_deepmerge(
-                {},
-                _sql_default_config,
-                t
-            )) for t in self.database['sql']]
+                    {},
+                    _sql_default_config,
+                    t
+                    )) for t in self.database['sql']]
 
         if 'templates' in self.database and len(self.database['templates']) > 0:
             self.database['templates'] = [dict(dict_deepmerge(
-                {},
-                _sql_template_default_config,
-                t
-            )) for t in self.database['templates']]
+                    {},
+                    _sql_template_default_config,
+                    t
+                    )) for t in self.database['templates']]
 
         self.db, self.db_inspector = create_db(self.environment['APP_DB_URL'], self.database['schema'])
         self.repository = DataRepository(self.db)
@@ -255,13 +259,13 @@ class ApiConfig:
         table_name = table_config['model_name']
         if self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
             self.extensions.set_livecycle_table_extension(
-                extension_name,
-                table_config['columns'],
-                table_config['extensions'][extension_name],
-                table_name,
-                self.repository,
-                self.db_inspector
-            )
+                    extension_name,
+                    table_config['columns'],
+                    table_config['extensions'][extension_name],
+                    table_name,
+                    self.repository,
+                    self.db_inspector
+                    )
 
     def load_extensions(self):
         if not self.extensions.is_extension_enabled('audit'):
@@ -273,8 +277,8 @@ class ApiConfig:
 
     def to_dict(self):
         return {
-            'app': self.app,
-            'logger': self.logger,
-            'environment': self.environment,
-            'database': self.database,
-        }
+                'app':         self.app,
+                'logger':      self.logger,
+                'environment': self.environment,
+                'database':    self.database,
+                }

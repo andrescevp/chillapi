@@ -6,23 +6,26 @@ app:
   host: 0.0.0.0
   port: 8000
   debug: True
-  externalDocs:
-    description: Find more info here
-    url: https://example.com
-  license:
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
-  contact:
-    name: API Support
-    url: http://www.example.com/support
-    email: support@example.com
+#  externalDocs:
+#    description: Find more info here
+#    url: https://example.com
+#  license:
+#    name: Apache 2.0
+#    url: https://www.apache.org/licenses/LICENSE-2.0.html
+#  contact:
+#    name: API Support
+#    url: http://www.example.com/support
+#    email: support@example.com
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme
       type: http
       scheme: bearer
       bearerFormat: JWT
   security:
-    - bearerAuth: [ ]
+    - bearerAuth: []
+  security_handler:
+    package: my_app.auth
+    handler: auth
 environment:
   APP_DB_URL: '$DB_URL'
   APP_SECRET_KEY: 'super-secret-key'
@@ -32,13 +35,13 @@ logger:
     level: 40
   audit_logger:
     output: stdout
-    level: 10
+    level: 40
   error_handler:
     output: stdout
-    level: 10
+    level: 40
   sqlalchemy:
     output: stdout
-    level: 10
+    level: 40
 database:
   schema: public
   defaults:

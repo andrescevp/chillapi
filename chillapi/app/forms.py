@@ -1,13 +1,12 @@
 import json
 
 import wtforms_json
-
-from wtforms import StringField, IntegerField, FloatField, DateTimeField, BooleanField, Form, fields, \
-    Field
+from wtforms import (BooleanField, DateTimeField, Field, fields, FloatField, Form, IntegerField, StringField)
 from wtforms.validators import DataRequired, ValidationError
+
+from chillapi.app.flask_restful_swagger_3 import Schema as SwaggerSchema
 from chillapi.swagger.jsonschema import WTFormToJSONSchema
 from chillapi.swagger.utils import get_form_array_swagger_schema
-from flask_restful_swagger_3 import Schema as SwaggerSchema
 
 wtforms_json.init()
 wtform_to_swagger_schema = WTFormToJSONSchema()
@@ -45,15 +44,15 @@ class JSONField(fields.Field):
                     raise ValidationError('This field contains invalid JSON')
 
 
-def generate_form_swagger_schema_from_form(method: str, form: Form, as_array=False):
+def generate_form_swagger_schema_from_form(method: str, form: Form, as_array = False):
     form_schema = wtform_to_swagger_schema.convert_form(form)
     form_schema['description'] = f'{form.__name__} Form validated model'
 
     form_schema_model = type(
-        f'{form.__name__}{method.replace("_", " ").title().replace(" ", "")}RequestModel',
-        (SwaggerSchema,),
-        form_schema
-    )
+            f'{form.__name__}{method.replace("_", " ").title().replace(" ", "")}RequestModel',
+            (SwaggerSchema,),
+            form_schema
+            )
 
     if as_array is False:
         return form_schema_model
@@ -68,14 +67,14 @@ def column_to_flask_form_property(column_name: str, column_info) -> Field:
         validators.append(DataRequired())
 
     switcher = {
-        'str': StringField(column_name, validators, _name=column_name),
-        'int': IntegerField(column_name, validators, _name=column_name),
-        'float': FloatField(column_name, validators, _name=column_name),
-        'complex': FloatField(column_name, validators, _name=column_name),
-        'datetime.datetime': DateTimeField(column_name, validators, _name=column_name),
-        'dict': JSONField(column_name, validators, _name=column_name),
-        'bool': BooleanField(column_name, validators, _name=column_name)
-    }
+            'str':               StringField(column_name, validators, _name = column_name),
+            'int':               IntegerField(column_name, validators, _name = column_name),
+            'float':             FloatField(column_name, validators, _name = column_name),
+            'complex':           FloatField(column_name, validators, _name = column_name),
+            'datetime.datetime': DateTimeField(column_name, validators, _name = column_name),
+            'dict':              JSONField(column_name, validators, _name = column_name),
+            'bool':              BooleanField(column_name, validators, _name = column_name)
+            }
 
     return switcher.get(column_info['type'].python_type.__name__, StringField(column_name))
 

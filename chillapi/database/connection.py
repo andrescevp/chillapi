@@ -1,10 +1,8 @@
-from sqlalchemy.engine import Inspector
 from typing import Tuple
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import inspect
-
+from sqlalchemy import create_engine, inspect
+from sqlalchemy.engine import Inspector
+from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.orm.scoping import ScopedSession
 
 
@@ -13,12 +11,12 @@ def create_db(db_url: str, schemas: str = None) -> Tuple[ScopedSession, Inspecto
     if db_url.__contains__('postgresql'):
         connect_args = {'options': f'-csearch_path={schemas}'}
     engine = create_engine(
-        db_url,
-        encoding='utf8',
-        connect_args=connect_args
-    )
+            db_url,
+            encoding = 'utf8',
+            connect_args = connect_args
+            )
 
-    SessionLocal = scoped_session(sessionmaker(bind=engine))
+    SessionLocal = scoped_session(sessionmaker(bind = engine))
     db = SessionLocal()
     try:
         return db, inspect(engine)

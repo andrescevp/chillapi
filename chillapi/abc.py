@@ -1,11 +1,11 @@
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 from typing import List
 
 from sqlalchemy.engine import CursorResult, Inspector
 from sqlalchemy.orm.scoping import ScopedSession
 
-from chillapi.exceptions.api_manager import ConfigError, ColumnNotExist
 from chillapi.database import _ALLOWED_DRIVERS
+from chillapi.exceptions.api_manager import ColumnNotExist, ConfigError
 
 
 class Repository(ABC):
@@ -17,15 +17,15 @@ class Repository(ABC):
         self.db_dialect = _ALLOWED_DRIVERS[driver]
 
     @abstractmethod
-    def execute(self, sql, params=None, commit: bool = True) -> CursorResult:
+    def execute(self, sql, params = None, commit: bool = True) -> CursorResult:
         pass
 
     @abstractmethod
-    def execute_insert(self, sql, params=None) -> CursorResult:
+    def execute_insert(self, sql, params = None) -> CursorResult:
         pass
 
     @abstractmethod
-    def fetch_by(self, table: str, columns: List[str], filters: dict, params=None):
+    def fetch_by(self, table: str, columns: List[str], filters: dict, params = None):
         pass
 
     @abstractmethod

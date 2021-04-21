@@ -1,19 +1,20 @@
+from typing import List
+
 import simplejson
 import sqlalchemy
 from sqlalchemy import text
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.exc import InternalError
-from typing import List
 
 from chillapi.abc import Repository
+from chillapi.database.query_builder import create_delete, create_insert, create_select_filtered_query, create_update
 from chillapi.logger.app_loggers import logger
-from chillapi.database.query_builder import create_select_filtered_query, create_insert, create_update, create_delete
 
 DB_DIALECT_POSTGRES = 'postgres'
 
 _MAGIC_QUERIES = {
-    DB_DIALECT_POSTGRES: {
-        'get_ids_not_in_table_from_list': lambda x: f"""
+        DB_DIALECT_POSTGRES: {
+                'get_ids_not_in_table_from_list': lambda x: f"""
             SELECT id
             FROM (VALUES({'),('.join(x['values'])})) V({x['id_field']})
             EXCEPT
@@ -21,8 +22,8 @@ _MAGIC_QUERIES = {
             FROM  {x['table']}
             {x['where']}
         """
-    }
-}
+                }
+        }
 
 
 class DataRepository(Repository):
@@ -34,7 +35,7 @@ class DataRepository(Repository):
                 adapted_params[key] = str(simplejson.dumps(value))
         return adapted_params
 
-    def execute(self, sql, params=None, commit: bool = True) -> CursorResult:
+    def execute(self, sql, params = None, commit: bool = True) -> CursorResult:
         try:
             r = self.db.execute(text(sql), params)
 
@@ -50,7 +51,7 @@ class DataRepository(Repository):
             raise e
         return r
 
-    def execute_insert(self, sql, params=None) -> CursorResult:
+    def execute_insert(self, sql, params = None) -> CursorResult:
         try:
             r = self.db.execute(sql, params)
             self.db.commit()
@@ -64,7 +65,7 @@ class DataRepository(Repository):
             raise e
         return r
 
-    def fetch_by(self, table: str, columns: List[str], filters: dict, params=None):
+    def fetch_by(self, table: str, columns: List[str], filters: dict, params = None):
         sql = create_select_filtered_query(table, columns, filters)
         return self.execute(sql, params)
 

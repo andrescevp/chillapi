@@ -4,11 +4,11 @@ import sys
 from chillapi.logger.formatter import GelfFormatter
 
 allowed_reserved_attrs = [
-    "levelname",
-    "name",
-]
+        "levelname",
+        "name",
+        ]
 
-formatter = GelfFormatter(allowed_reserved_attrs=allowed_reserved_attrs)
+formatter = GelfFormatter(allowed_reserved_attrs = allowed_reserved_attrs)
 
 stout_handler = logging.StreamHandler(sys.stdout)
 stout_handler.setLevel(logging.DEBUG)

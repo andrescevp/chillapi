@@ -1,38 +1,39 @@
 from typing import List
 
+import inflect
 import psycopg2
 import simplejson
 import sqlalchemy
 from flask import request
-from flask_restful_swagger_3 import swagger
-from wtforms.validators import ValidationError
-import inflect
-from openapi_schema_validator import validate as json_swagger_schema_validator
 from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
+from openapi_schema_validator import validate as json_swagger_schema_validator
 from simplejson.errors import JSONDecodeError
+from wtforms.validators import ValidationError
 
 from chillapi.abc import Repository
+from chillapi.app.flask_restful_swagger_3 import swagger
 from chillapi.app.forms import create_form_class, generate_form_swagger_schema_from_form
-from chillapi.extensions.audit import AuditLog
 from chillapi.database import DB_DIALECT_POSTGRES
+from chillapi.database.query_builder import (
+    create_select_filtered_paginated_ordered_query,
+    create_select_filtered_paginated_query_count,
+    )
 from chillapi.database.repository import _MAGIC_QUERIES
 from chillapi.exceptions.api_manager import ConfigError
 from chillapi.exceptions.http import NotFoundException, RequestSchemaError
+from chillapi.extensions.audit import AuditLog
 from chillapi.logger.app_loggers import logger
-from chillapi.database.query_builder import create_select_filtered_paginated_ordered_query, \
-    create_select_filtered_paginated_query_count
-
 from chillapi.swagger.http import AutomaticResource, ResourceResponse
-
-from chillapi.swagger.schemas import get_get_single_endpoint_schema, get_put_single_endpoint_schema, \
-    get_post_single_endpoint_schema, get_delete_single_endpoint_schema, get_get_list_endpoint_schema, \
-    get_put_list_endpoint_schema, get_post_list_endpoint_schema, get_delete_list_endpoint_schema, \
-    create_swagger_type_from_dict
-
-from chillapi.swagger.utils import get_response_swagger_schema, \
-    get_revisable_response_swagger_schema, get_error_swagger_schema, get_not_found_swagger_schema, \
-    get_list_filtered_response_swagger_schema, get_list_filtered_request_swagger_schema, get_filter_schema, \
-    get_order_schema, get_size_schema, python_to_swagger_types
+from chillapi.swagger.schemas import (
+    create_swagger_type_from_dict, get_delete_list_endpoint_schema, get_delete_single_endpoint_schema, get_get_list_endpoint_schema,
+    get_get_single_endpoint_schema, get_post_list_endpoint_schema, get_post_single_endpoint_schema, get_put_list_endpoint_schema,
+    get_put_single_endpoint_schema,
+    )
+from chillapi.swagger.utils import (
+    get_error_swagger_schema, get_filter_schema, get_list_filtered_request_swagger_schema, get_list_filtered_response_swagger_schema,
+    get_not_found_swagger_schema, get_order_schema, get_response_swagger_schema, get_revisable_response_swagger_schema, get_size_schema,
+    python_to_swagger_types,
+    )
 
 revisable_response = get_revisable_response_swagger_schema()
 error_response = get_error_swagger_schema()
@@ -55,9 +56,9 @@ def _get_extension_default_field(table_extensions, extension):
     return _enable, default_field
 
 
-def _get_form(class_name: str, columns_map: dict, method: str, as_array=False):
+def _get_form(class_name: str, columns_map: dict, method: str, as_array = False):
     form_class = create_form_class(class_name, method, columns_map)
-    form_schema_json = generate_form_swagger_schema_from_form(method, form_class, as_array=as_array)
+    form_schema_json = generate_form_swagger_schema_from_form(method, form_class, as_array = as_array)
 
     return form_class, form_schema_json
 
@@ -75,7 +76,7 @@ def create_get_single_endpoint_class(
         allowed_columns_map: dict,
         extensions: dict,
         repository: Repository
-):
+        ):
     table_slug = table['slug']
     table_name = table['name']
     model_name = table['model_name']
@@ -103,24 +104,24 @@ def create_get_single_endpoint_class(
                     query, query_values, soft_delete_extension.add_query_filter(query, query_values)
 
                 record = repository.fetch_by(
-                    table_name,
-                    allowed_columns,
-                    query,
-                    query_values,
-                )
+                        table_name,
+                        allowed_columns,
+                        query,
+                        query_values,
+                        )
 
                 response.response = record.one()._asdict()
             except sqlalchemy.exc.NoResultFound:
-                raise NotFoundException(description=f'{model_name} with id: {id} not found')
+                raise NotFoundException(description = f'{model_name} with id: {id} not found')
 
-            response.audit = AuditLog(f'Read {table_name} record', action='READ',
-                                      current_status=response.response,
-                                      change_parameters={'entity': model_name, 'record_id': id})
+            response.audit = AuditLog(f'Read {table_name} record', action = 'READ',
+                                      current_status = response.response,
+                                      change_parameters = {'entity': model_name, 'record_id': id})
             return response
 
         @swagger.doc(swagger_docs)
         def get(self, id):
-            return self.process_request(id=id)
+            return self.process_request(id = id)
 
     GetSingleEndpoint.__name__ = GetSingleEndpoint.endpoint
     return GetSingleEndpoint
@@ -132,7 +133,7 @@ def create_put_single_endpoint_class(
         allowed_columns_map: dict,
         extensions: dict,
         repository: Repository
-):
+        ):
     table_slug = table['slug']
     table_name = table['name']
     model_name = table['model_name']
@@ -151,7 +152,7 @@ def create_put_single_endpoint_class(
         def validate_request(self, **args):
             form = args['form']
             if not form.validate():
-                raise ValidationError(message=simplejson.dumps(form.errors))
+                raise ValidationError(message = simplejson.dumps(form.errors))
 
         def request(self, **args) -> ResourceResponse:
             form = args['form']
@@ -168,7 +169,7 @@ def create_put_single_endpoint_class(
                     params = extension.set_field_data(params)
 
                 result = repository.insert_record(table_name, columns, params,
-                                                  returning_field=id_field)
+                                                  returning_field = id_field)
                 form_data[id_field] = result
 
                 if extension_enabled:
@@ -176,23 +177,23 @@ def create_put_single_endpoint_class(
 
                 response.response = form_data
 
-                response.audit = AuditLog(f'Create {table_name} record', action='CREATE',
-                                          current_status=response.response,
-                                          change_parameters={**{'entity': model_name}, **params})
+                response.audit = AuditLog(f'Create {table_name} record', action = 'CREATE',
+                                          current_status = response.response,
+                                          change_parameters = {**{'entity': model_name}, **params})
 
             except sqlalchemy.exc.IntegrityError as e:
                 if isinstance(e.orig, psycopg2.errors.UniqueViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
                 if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
 
             return response
 
         @swagger.doc(request_schema)
         def put(self):
             data = request.json
-            form = form_class(data=data)
-            return self.process_request(form=form)
+            form = form_class(data = data)
+            return self.process_request(form = form)
 
     PutSingleEndpoint.__name__ = PutSingleEndpoint.endpoint
 
@@ -205,7 +206,7 @@ def create_post_single_endpoint_class(
         allowed_columns_map: dict,
         extensions: dict,
         repository: Repository
-):
+        ):
     table_slug = table['slug']
     table_name = table['name']
     model_name = table['model_name']
@@ -237,11 +238,11 @@ def create_post_single_endpoint_class(
                     form_data = update_extension.set_field_data(form_data)
 
                 repository.update_record(
-                    table_name,
-                    id_field,
-                    oid,
-                    {**form_data, **{id_field: oid}}
-                )
+                        table_name,
+                        id_field,
+                        oid,
+                        {**form_data, **{id_field: oid}}
+                        )
 
                 if update_extension.enabled:
                     form_data = update_extension.unset_field_data(form_data)
@@ -249,14 +250,14 @@ def create_post_single_endpoint_class(
 
             except sqlalchemy.exc.IntegrityError as e:
                 if isinstance(e.orig, psycopg2.errors.UniqueViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
                 if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
 
-            response.audit = AuditLog(f'Update {table_name} record', action='UPDATE',
-                                      current_status=response.response,
-                                      prev_status=args['validation_output'],
-                                      change_parameters={**{'entity': model_name, f'{id_field}': oid}, **form_data})
+            response.audit = AuditLog(f'Update {table_name} record', action = 'UPDATE',
+                                      current_status = response.response,
+                                      prev_status = args['validation_output'],
+                                      change_parameters = {**{'entity': model_name, f'{id_field}': oid}, **form_data})
 
             return response
 
@@ -265,7 +266,7 @@ def create_post_single_endpoint_class(
             id = args['id']
             try:
                 logger.debug('Check entity exists',
-                             extra=args)
+                             extra = args)
 
                 query = {f'{id_field}': {'op': '=', 'value': id}}
                 query_values = {f'{id_field}': id}
@@ -274,26 +275,26 @@ def create_post_single_endpoint_class(
                     query, query_values = soft_delete_extension.add_query_filter(query, query_values)
 
                 record = repository.fetch_by(
-                    table_name,
-                    ['*'],
-                    query,
-                    query_values
-                )
+                        table_name,
+                        ['*'],
+                        query,
+                        query_values
+                        )
 
                 if not form.validate():
-                    raise ValidationError(message=simplejson.dumps(form.errors))
+                    raise ValidationError(message = simplejson.dumps(form.errors))
 
                 return record.one()._asdict()
             except sqlalchemy.exc.NoResultFound:
-                raise NotFoundException(description=f'{model_name} with id: {id} not found')
+                raise NotFoundException(description = f'{model_name} with id: {id} not found')
             except JsonSchemaValidationError:
                 raise RequestSchemaError()
 
         @swagger.doc(request_schema)
         def post(self, id):
             data = request.json
-            form = form_class(data=data)
-            return self.process_request(form=form, id=id)
+            form = form_class(data = data)
+            return self.process_request(form = form, id = id)
 
     PostSingleEndpoint.__name__ = PostSingleEndpoint.endpoint
 
@@ -306,7 +307,7 @@ def create_delete_single_endpoint_class(
         allowed_columns_map: dict,
         extensions: dict,
         repository: Repository
-):
+        ):
     table_slug = table['slug']
     table_name = table['name']
     model_name = table['model_name']
@@ -326,28 +327,28 @@ def create_delete_single_endpoint_class(
             id = args['id']
             response = ResourceResponse()
             response.response = {
-                'code': 500,
-                'message': 'error',
-                'errors': []
-            }
+                    'code':    500,
+                    'message': 'error',
+                    'errors':  []
+                    }
 
             try:
                 if soft_delete_extension.enabled:
                     response = soft_delete_extension.soft_delete(id_field, id, response)
 
-                    response.audit = AuditLog(f'Delete {table_name} record', action='SOFT DELETE',
-                                              current_status={'deleted': 'deleted'},
-                                              prev_status=args['validation_output'],
-                                              change_parameters={'entity': model_name, 'id': id})
+                    response.audit = AuditLog(f'Delete {table_name} record', action = 'SOFT DELETE',
+                                              current_status = {'deleted': 'deleted'},
+                                              prev_status = args['validation_output'],
+                                              change_parameters = {'entity': model_name, 'id': id})
                 else:
                     repository.delete_record(table_name, id_field, id)
                     response.response['message'] = 'ok'
                     response.response['code'] = 200
 
-                    response.audit = AuditLog(f'Delete {table_name} record', action='DELETE',
-                                              current_status={'deleted': 'deleted'},
-                                              prev_status=args['validation_output'],
-                                              change_parameters={'entity': model_name, 'id': id})
+                    response.audit = AuditLog(f'Delete {table_name} record', action = 'DELETE',
+                                              current_status = {'deleted': 'deleted'},
+                                              prev_status = args['validation_output'],
+                                              change_parameters = {'entity': model_name, 'id': id})
 
             except sqlalchemy.exc.IntegrityError as e:
                 if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
@@ -365,7 +366,7 @@ def create_delete_single_endpoint_class(
             oid = args['id']
             try:
                 logger.debug('Check entity exists',
-                             extra=args)
+                             extra = args)
                 query = {f'{id_field}': {'op': '=', 'value': oid}}
                 query_values = {f'{id_field}': oid}
 
@@ -373,19 +374,19 @@ def create_delete_single_endpoint_class(
                     query, query_values, soft_delete_extension.add_query_filter(query, query_values)
 
                 record = repository.fetch_by(
-                    table_name,
-                    ['*'],
-                    query,
-                    query_values
-                )
+                        table_name,
+                        ['*'],
+                        query,
+                        query_values
+                        )
 
                 return record.one()._asdict()
             except sqlalchemy.exc.NoResultFound:
-                raise NotFoundException(description=f'{model_name} with id: {oid} not found')
+                raise NotFoundException(description = f'{model_name} with id: {oid} not found')
 
         @swagger.doc(request_schema)
         def delete(self, id):
-            return self.process_request(id=id)
+            return self.process_request(id = id)
 
     DeleteSingleEndpoint.__name__ = DeleteSingleEndpoint.endpoint
 
@@ -398,7 +399,7 @@ def create_get_list_endpoint_class(
         allowed_columns_map: dict,
         extensions: dict,
         repository: Repository
-):
+        ):
     table_slug = table['slug']
     table_name = table['name']
     model_name = table['model_name']
@@ -428,24 +429,24 @@ def create_get_list_endpoint_class(
 
             parameter_name = 'order'
             schema = order_schema
-            self.validate_query_parameter(errors, parameter_name, query, schema, default={
-                'field': [id_field],
-                'direction': 'asc'
-            })
+            self.validate_query_parameter(errors, parameter_name, query, schema, default = {
+                    'field':     [id_field],
+                    'direction': 'asc'
+                    })
 
             parameter_name = 'size'
             schema = size_schema
-            self.validate_query_parameter(errors, parameter_name, query, schema, default={
-                'limit': 100,
-                'offset': 0
-            })
+            self.validate_query_parameter(errors, parameter_name, query, schema, default = {
+                    'limit':  100,
+                    'offset': 0
+                    })
 
             if len(errors.keys()) > 0:
                 raise ValidationError(errors)
 
             return query
 
-        def validate_query_parameter(self, errors, parameter_name, query, schema, default=None):
+        def validate_query_parameter(self, errors, parameter_name, query, schema, default = None):
             try:
                 value = request.args.get(parameter_name)
                 if value is not None:
@@ -465,7 +466,7 @@ def create_get_list_endpoint_class(
                 if parameter_name not in errors.keys():
                     errors[parameter_name] = []
                 errors[parameter_name].append(
-                    f"'{parameter_name}' query parameter seem to be a malformed JSON: {e.msg}")
+                        f"'{parameter_name}' query parameter seem to be a malformed JSON: {e.msg}")
             except Exception:
                 if parameter_name not in errors.keys():
                     errors[parameter_name] = []
@@ -474,7 +475,7 @@ def create_get_list_endpoint_class(
         def request(self, **args) -> ResourceResponse:
             query = args['validation_output']
             if soft_delete_extension.enabled:
-                query, = soft_delete_extension.add_query_filter(query, {})
+                query, _qv = soft_delete_extension.add_query_filter(query, {})
             query_no_limit = query.copy()
             del (query_no_limit['size'])
             query_no_limit_params = {k: v['value'] for k, v in query_no_limit.items() if 'op' in v}
@@ -496,17 +497,17 @@ def create_get_list_endpoint_class(
                 query = soft_delete_extension.unset_field_data(query)
 
             response.response = {
-                'data': data,
-                '_meta': {**query, **{'total_records': count}}
-            }
+                    'data':  data,
+                    '_meta': {**query, **{'total_records': count}}
+                    }
 
             if count == 0:
                 response.http_code = 404
 
-            response.audit = AuditLog(f'Read List {table_name} record', action='READ',
-                                      current_status={'deleted': 'deleted'},
-                                      prev_status=args['validation_output'],
-                                      change_parameters={'entity': model_name})
+            response.audit = AuditLog(f'Read List {table_name} record', action = 'READ',
+                                      current_status = {'deleted': 'deleted'},
+                                      prev_status = args['validation_output'],
+                                      change_parameters = {'entity': model_name})
 
             return response
 
@@ -524,7 +525,7 @@ def create_put_list_endpoint_class(
         allowed_columns_map: dict,
         extensions: dict,
         repository: Repository
-):
+        ):
     table_slug = table['slug']
     table_name = table['name']
     model_name = table['model_name']
@@ -547,9 +548,9 @@ def create_put_list_endpoint_class(
 
         def validate_request(self, **args):
             if len(args['data']) > form_schema_model.maxItems:
-                raise ValidationError(message=f'Body too large, max items: {form_schema_model.maxItems}')
+                raise ValidationError(message = f'Body too large, max items: {form_schema_model.maxItems}')
             if len(args['data']) < form_schema_model.minItems:
-                raise ValidationError(message=f'Body too small, min items: {form_schema_model.minItems}')
+                raise ValidationError(message = f'Body too small, min items: {form_schema_model.minItems}')
             forms = args['form']
             errors = {}
             for i, form in enumerate(forms):
@@ -557,7 +558,7 @@ def create_put_list_endpoint_class(
                     errors[i] = form.errors
 
             if len(errors.keys()) > 0:
-                raise ValidationError(message=simplejson.dumps(errors))
+                raise ValidationError(message = simplejson.dumps(errors))
 
         def request(self, **args) -> ResourceResponse:
             forms = args['form']
@@ -570,30 +571,30 @@ def create_put_list_endpoint_class(
             # form_data = [form.data for form in forms]
             response = ResourceResponse()
             response.response = {
-                'message': 'error',
-                'details': []
-            }
+                    'message': 'error',
+                    'details': []
+                    }
 
             try:
 
                 result = repository.insert_batch(table_name, columns, form_data,
-                                                 returning_field=id_field)
+                                                 returning_field = id_field)
                 response.response['message'] = f'Affected rows: {result}'
                 response.response['code'] = 200
                 response.http_code = 200
             except sqlalchemy.exc.IntegrityError as e:
                 if isinstance(e.orig, psycopg2.errors.UniqueViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
                 if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
 
             return response
 
         @swagger.doc(request_schema)
         def put(self):
             data = request.json
-            form = [form_class(data=item) for item in data]
-            return self.process_request(form=form, data=data)
+            form = [form_class(data = item) for item in data]
+            return self.process_request(form = form, data = data)
 
     PutListEndpoint.__name__ = PutListEndpoint.endpoint
 
@@ -606,7 +607,7 @@ def create_post_list_endpoint_class(
         allowed_columns_map: dict,
         extensions: dict,
         repository: Repository
-):
+        ):
     table_slug = table['slug']
     table_name = table['name']
     model_name = table['model_name']
@@ -624,9 +625,9 @@ def create_post_list_endpoint_class(
         def validate_request(self, **args):
             forms = args['form']
             if len(args['data']) > form_schema_model.maxItems:
-                raise ValidationError(message=f'Body too large, max items: {form_schema_model.maxItems}')
+                raise ValidationError(message = f'Body too large, max items: {form_schema_model.maxItems}')
             if len(args['data']) < form_schema_model.minItems:
-                raise ValidationError(message=f'Body too small, min items: {form_schema_model.minItems}')
+                raise ValidationError(message = f'Body too small, min items: {form_schema_model.minItems}')
 
             errors = {}
             ids = []
@@ -637,11 +638,11 @@ def create_post_list_endpoint_class(
                     errors[i] = form.errors
 
             ids_check_sql = _MAGIC_QUERIES[DB_DIALECT_POSTGRES]['get_ids_not_in_table_from_list']({
-                'values': [f':{id}' for id in ids],
-                'id_field': id_field,
-                'table': table_name,
-                'where': f'WHERE {extension.config["default_field"]} IS NULL' if extension.enabled else '',
-            })
+                    'values':   [f':{id}' for id in ids],
+                    'id_field': id_field,
+                    'table':    table_name,
+                    'where':    f'WHERE {extension.config["default_field"]} IS NULL' if extension.enabled else '',
+                    })
 
             ids_check = repository.execute(ids_check_sql, {str(id): id for id in ids})
             not_found = ids_check.fetchall()
@@ -649,7 +650,7 @@ def create_post_list_endpoint_class(
                 errors = {**errors, **{str(x[0]): 'id not found' for x in not_found}}
 
             if len(errors.keys()) > 0:
-                raise ValidationError(message=simplejson.dumps(errors))
+                raise ValidationError(message = simplejson.dumps(errors))
 
         def request(self, **args) -> ResourceResponse:
             forms = args['form']
@@ -662,21 +663,21 @@ def create_post_list_endpoint_class(
                 form_data.append(_form_data)
             response = ResourceResponse()
             try:
-                repository.update_batch(table_name, form_data, where_field=id_field)
+                repository.update_batch(table_name, form_data, where_field = id_field)
                 response.response = form_data
             except sqlalchemy.exc.IntegrityError as e:
                 if isinstance(e.orig, psycopg2.errors.UniqueViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
                 if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
 
             return response
 
         @swagger.doc(request_schema)
         def post(self):
             data = request.json
-            form = [form_class(data=item) for item in data]
-            return self.process_request(form=form, data=data)
+            form = [form_class(data = item) for item in data]
+            return self.process_request(form = form, data = data)
 
     PostListEndpoint.__name__ = PostListEndpoint.endpoint
 
@@ -689,7 +690,7 @@ def create_delete_list_endpoint_class(
         allowed_columns_map: dict,
         extensions: dict,
         repository: Repository
-):
+        ):
     table_slug = table['slug']
     table_name = table['name']
     model_name = table['model_name']
@@ -698,10 +699,10 @@ def create_delete_list_endpoint_class(
     id_field_where_type = python_to_swagger_types(table['columns'][id_field]['type'].python_type.__name__)
 
     request_body_schema = create_swagger_type_from_dict(f'{model_name}DeleteListRequestSchema', {
-        'type': 'array',
-        'description': 'Id list',
-        'items': {'type': id_field_where_type}
-    })
+            'type':        'array',
+            'description': 'Id list',
+            'items':       {'type': id_field_where_type}
+            })
     request_schema = get_delete_list_endpoint_schema(model_name, request_body_schema)
 
     extension = extensions['soft_delete']
@@ -717,21 +718,21 @@ def create_delete_list_endpoint_class(
             try:
                 json_swagger_schema_validator(ids, request_body_schema.definitions())
             except JsonSchemaValidationError as e:
-                raise ValidationError(message=e)
+                raise ValidationError(message = e)
 
             ids_check_sql = _MAGIC_QUERIES[DB_DIALECT_POSTGRES]['get_ids_not_in_table_from_list']({
-                'values': [f':{id}' for id in ids],
-                'id_field': id_field,
-                'table': table_name,
-                'where': f'WHERE {extension.config["default_field"]} IS NULL' if extension.enabled else '',
-            })
+                    'values':   [f':{id}' for id in ids],
+                    'id_field': id_field,
+                    'table':    table_name,
+                    'where':    f'WHERE {extension.config["default_field"]} IS NULL' if extension.enabled else '',
+                    })
 
             ids_check = repository.execute(ids_check_sql, {str(id): id for id in ids})
             not_found = ids_check.fetchall()
             if len(not_found) > 0:
                 errors = {str(x[0]): 'id not found' for x in not_found}
             if len(errors.keys()) > 0:
-                raise ValidationError(message=simplejson.dumps(errors))
+                raise ValidationError(message = simplejson.dumps(errors))
 
         def request(self, **args) -> ResourceResponse:
             data = args['data']
@@ -745,16 +746,16 @@ def create_delete_list_endpoint_class(
                 response.response = 'ok'
             except sqlalchemy.exc.IntegrityError as e:
                 if isinstance(e.orig, psycopg2.errors.UniqueViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
                 if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
-                    raise ValidationError(message=e.orig)
+                    raise ValidationError(message = e.orig)
 
             return response
 
         @swagger.doc(request_schema)
         def delete(self):
             data = request.json
-            return self.process_request(data=data)
+            return self.process_request(data = data)
 
     DeleteListEndpoint.__name__ = DeleteListEndpoint.endpoint
 

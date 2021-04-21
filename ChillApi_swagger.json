@@ -1,0 +1,30 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ChillApi",
+    "description": "",
+    "termsOfService": "",
+    "contact": {},
+    "license": {},
+    "version": "0.1"
+  },
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {}
+  },
+  "paths": {},
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [],
+  "externalDocs": {}
+}

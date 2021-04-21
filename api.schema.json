@@ -95,6 +95,48 @@
         "securitySchemes": {
           "type": "object",
           "title": "Defines a security scheme that can be used by the operations. Maps to the securitySchemes field of components Object (https://swagger.io/specification/#componentsObject)"
+        },
+        "security_handler": {
+          "type": "object",
+          "title": "Audit log handler",
+          "description": "A method: ```def auth(security_schemes, security, request_obj, endpoint, method):\n    print(request_obj, endpoint, method, security_schemes, security)\n    return False```",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

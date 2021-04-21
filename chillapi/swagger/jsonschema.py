@@ -11,99 +11,99 @@ def pretty_name(name):
 
 class WTFormToJSONSchema:
     DEFAULT_CONVERSIONS = {
-        'JSONField': {
-            'type': 'object',
-        },
-        'URLField': {
-            'type': 'string',
-            'format': 'uri',
-        },
-        'URIField': {
-            'type': 'string',
-            'format': 'uri',
-        },
-        'URIFileField': {
-            'type': 'string',
-            'format': 'uri',
-            'ux-widget': 'file-select',  # not part of spec but flags behavior
-        },
-        'FileField': {
-            'type': 'string',
-            'format': 'uri',
-            'ux-widget': 'file-select',  # not part of spec but flags behavior
-        },
-        'DateField': {
-            'type': 'string',
-            'format': 'date',
-        },
-        'DateTimeField': {
-            'type': 'string',
-            'format': 'datetime',
-        },
-        'DecimalField': {
-            'type': 'number',
-        },
-        'IntegerField': {
-            'type': 'integer',
-        },
-        'BooleanField': {
-            'type': 'boolean',
-        },
-        'StringField': {
-            'type': 'string',
-        },
-        'SearchField': {
-            'type': 'string',
-        },
-        'TelField': {
-            'type': 'string',
-            'format': 'phone',
-        },
-        'EmailField': {
-            'type': 'string',
-            'format': 'email',
-        },
-        'DateTimeLocalField': {
-            'type': 'string',
-            'format': 'datetime',
-        },
-        'ColorField': {
-            'type': 'string',
-            'format': 'color',
-        },
-        # TODO min/max
-        'DecimalRangeField': {
-            'type': 'number',
-        },
-        'IntegerRangeField': {
-            'type': 'integer',
-        },
-    }
+            'JSONField':          {
+                    'type': 'object',
+                    },
+            'URLField':           {
+                    'type':   'string',
+                    'format': 'uri',
+                    },
+            'URIField':           {
+                    'type':   'string',
+                    'format': 'uri',
+                    },
+            'URIFileField':       {
+                    'type':      'string',
+                    'format':    'uri',
+                    'ux-widget': 'file-select',  # not part of spec but flags behavior
+                    },
+            'FileField':          {
+                    'type':      'string',
+                    'format':    'uri',
+                    'ux-widget': 'file-select',  # not part of spec but flags behavior
+                    },
+            'DateField':          {
+                    'type':   'string',
+                    'format': 'date',
+                    },
+            'DateTimeField':      {
+                    'type':   'string',
+                    'format': 'datetime',
+                    },
+            'DecimalField':       {
+                    'type': 'number',
+                    },
+            'IntegerField':       {
+                    'type': 'integer',
+                    },
+            'BooleanField':       {
+                    'type': 'boolean',
+                    },
+            'StringField':        {
+                    'type': 'string',
+                    },
+            'SearchField':        {
+                    'type': 'string',
+                    },
+            'TelField':           {
+                    'type':   'string',
+                    'format': 'phone',
+                    },
+            'EmailField':         {
+                    'type':   'string',
+                    'format': 'email',
+                    },
+            'DateTimeLocalField': {
+                    'type':   'string',
+                    'format': 'datetime',
+                    },
+            'ColorField':         {
+                    'type':   'string',
+                    'format': 'color',
+                    },
+            # TODO min/max
+            'DecimalRangeField':  {
+                    'type': 'number',
+                    },
+            'IntegerRangeField':  {
+                    'type': 'integer',
+                    },
+            }
 
     INPUT_TYPE_MAP = {
-        'text': 'StringField',
-        'checkbox': 'BooleanField',
-        'color': 'ColorField',
-        'tel': 'TelField',
-    }
+            'text':     'StringField',
+            'checkbox': 'BooleanField',
+            'color':    'ColorField',
+            'tel':      'TelField',
+            }
 
-    def __init__(self, conversions=None, include_array_item_titles=True,
-                 include_array_title=True):
+    def __init__(self, conversions = None, include_array_item_titles = True,
+                 include_array_title = True):
         self.conversions = conversions or self.DEFAULT_CONVERSIONS
         self.include_array_item_titles = include_array_item_titles
         self.include_array_title = include_array_title
 
-    def convert_form(self, form, json_schema=None, forms_seen=None, path=None):
+    def convert_form(self, form, json_schema = None, forms_seen = None, path = None):
         if forms_seen is None:
             forms_seen = dict()
         if path is None:
             path = []
         if json_schema is None:
             json_schema = {
-                # 'title':dockit_schema._meta
-                'type': 'object',
-                'properties': OrderedDict(),
-            }
+                    # 'title':dockit_schema._meta
+                    'type':       'object',
+                    'properties': OrderedDict(),
+                    }
         key = id(form)
 
         if key in forms_seen.keys():
@@ -131,9 +131,9 @@ class WTFormToJSONSchema:
         widget = field.widget
         path = path + [name]
         target_def = {
-            # 'title': field.label.text,
-            # 'description': field.description,
-        }
+                # 'title': field.label.text,
+                # 'description': field.description,
+                }
         if field.flags.required:
             # target_def['required'] = True
             target_def.setdefault('required', list())
@@ -150,7 +150,7 @@ class WTFormToJSONSchema:
                 return {"$ref": "#" + "/".join(forms_seen[key])}
             forms_seen[key] = path
             target_def.update(
-                self.convert_form(field.form_class(obj=getattr(field, '_obj', None)), None, forms_seen, path))
+                    self.convert_form(field.form_class(obj = getattr(field, '_obj', None)), None, forms_seen, path))
         elif ftype == 'FieldList':
             if not self.include_array_title:
                 target_def.pop('title')
@@ -179,11 +179,11 @@ class WTFormToJSONSchema:
                 values.append(val)
 
         target_def = {
-            'title': field.label.text,
-            'description': field.description,
-            'enum': values,
-            # 'ux-widget-choices': list(field.choices),
-        }
+                'title':       field.label.text,
+                'description': field.description,
+                'enum':        values,
+                # 'ux-widget-choices': list(field.choices),
+                }
         if field.flags.required:
             # target_def['required'] = True
             target_def.setdefault('required', list())
@@ -197,11 +197,11 @@ class WTFormToJSONSchema:
         values.extend([x.id for x in query_values])
         choices.extend([[x.id, x.name] for x in query_values])
         target_def = {
-            'title': field.label.text,
-            'description': field.description,
-            'enum': values,
-            # 'ux-widget-choices': choices,
-        }
+                'title':       field.label.text,
+                'description': field.description,
+                'enum':        values,
+                # 'ux-widget-choices': choices,
+                }
 
         if field.allow_blank == False:
             # target_def['required'] = True
@@ -211,12 +211,12 @@ class WTFormToJSONSchema:
 
     def convert_RadioField(self, name, field, json_schema):
         target_def = {
-            'title': field.label.text,
-            'description': field.description,
-            'enum': [x for x, y in field.choices],
-            'ux-widget': 'radio',
-            'ux-widget-choices': list(field.choices),
-        }
+                'title':             field.label.text,
+                'description':       field.description,
+                'enum':              [x for x, y in field.choices],
+                'ux-widget':         'radio',
+                'ux-widget-choices': list(field.choices),
+                }
         if field.flags.required:
             # target_def['required'] = True
             json_schema.setdefault('required', list())

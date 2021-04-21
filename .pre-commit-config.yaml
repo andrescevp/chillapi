@@ -30,20 +30,20 @@ repos:
         always_run: true
         require_serial: true
         types_or: [ python ]
-      - id: black
-        name: black
-        language: system
-        entry: docker exec -ti chillapi-api venv/bin/black --py38 -q -l 150 chillapi/
-        always_run: true
-        require_serial: true
-        types_or: [ python ]
-      - id: flake8
-        name: flake8
-        language: system
-        entry: make docker_exec_n CMD='venv/bin/flake8 --max-line-length 150 --max-complexity 10 chillapi'
-        always_run: true
-        require_serial: true
-        types_or: [ python ]
+#      - id: black
+#        name: black
+#        language: system
+#        entry: docker exec -ti chillapi-api venv/bin/black --py38 -q -l 150 chillapi/
+#        always_run: true
+#        require_serial: true
+#        types_or: [ python ]
+#      - id: flake8
+#        name: flake8
+#        language: system
+#        entry: make docker_exec_n CMD='venv/bin/flake8 --max-line-length 150 --max-complexity 10 chillapi'
+#        always_run: true
+#        require_serial: true
+#        types_or: [ python ]
       - id: fix_permissions
         name: fix_permissions
         language: system
