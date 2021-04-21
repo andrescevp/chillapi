@@ -60,6 +60,7 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
     CORS(app)
     RequestID(app)
     api = Api(app,
+              security_level = api_config['app']['security_level'] if 'security_level' in api_config['app'] else 'STANDARD',
               version = api_config['app']['version'],
               api_spec_url = api_config['app']['swagger_url'],
               security = api_config['app']['security'] if 'security' in api_config['app'] else None,

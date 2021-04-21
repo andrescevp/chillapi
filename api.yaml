@@ -23,6 +23,7 @@ app:
       bearerFormat: JWT
   security:
     - bearerAuth: []
+  security_level: STANDARD
   security_handler:
     package: my_app.auth
     handler: auth

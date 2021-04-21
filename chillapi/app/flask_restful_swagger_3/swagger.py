@@ -24,7 +24,7 @@ def _auth(*args, **kwargs):
     return auth(*args, **kwargs)
 
 
-def create_swagger_endpoint(swagger_object):
+def create_swagger_endpoint(swagger_object, _security_level: str = 'STANDARD'):
     """Creates a flask_restful api endpoint for the swagger spec"""
 
     class SwaggerEndpoint(Resource):
@@ -39,7 +39,9 @@ def create_swagger_endpoint(swagger_object):
                             views = {}
                             for method, docs in view.items():
                                 # check permissions. If a user has not access to an api, do not show the docs of it
-                                if auth(request, endpoint, method):
+                                if _security_level == 'STRICT' and auth(request, endpoint, method):
+                                    views[method] = docs
+                                if _security_level == 'STANDARD':
                                     views[method] = docs
                             if views:
                                 paths[endpoint] = views

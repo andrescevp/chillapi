@@ -37,6 +37,7 @@ class Resource(flask_Resource):
 
 class Api(restful_Api):
     def __init__(self, *args, **kwargs):
+        self._security_level = kwargs.pop('security_level', 'STANDARD')
         api_spec_base = kwargs.pop('api_spec_base', None)
 
         # See differences between swagger2 and openapi3
@@ -94,7 +95,7 @@ class Api(restful_Api):
                     '{0}.html'.format(api_spec_url),
                     ]
 
-            self.add_resource(create_swagger_endpoint(self.get_swagger_doc()),
+            self.add_resource(create_swagger_endpoint(self.get_swagger_doc(), _security_level = self._security_level),
                               *api_spec_urls, endpoint = 'swagger')
 
     def add_resource(self, resource, *urls, **kwargs):
