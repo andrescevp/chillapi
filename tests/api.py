@@ -21,7 +21,7 @@ class ChillApiTestErrors(unittest.TestCase):
         self.assertRaises(
                 TableNotExist,
                 ApiConfig,
-                **{**api_config, **{'table_extensions': table_extension}}
+                **{**api_config, **{'extensions': table_extension}}
                 )
 
     def testTableColumnNotFoundInExtensionError(self):
@@ -35,5 +35,5 @@ class ChillApiTestErrors(unittest.TestCase):
         self.assertRaises(
                 ColumnNotExist,
                 ApiConfig,
-                **{**api_config, **{'table_extensions': table_extension}}
+                **{**api_config, **{'extensions': table_extension}}
                 )
