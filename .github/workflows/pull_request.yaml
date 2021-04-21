@@ -30,13 +30,9 @@ jobs:
           python -m pip install -U pip
           pip install -U wheel --user
           pip install -r requirements.txt
-#      - name: Lint code (BLACK)
-#        run: |
-#          black -l 150 src/ test/
-#      - name: Lint code (flake8)
-#        run: |
-#          flake8 --max-line-length 150 --max-complexity 10 src test
       - name: Creating SQLite Test db
         run: alembic -c sqlite.alembic.ini upgrade head
-      - name: Testing
-        run: python -m unittest tests.app.config tests.api
+      - name: Testing set app behavour
+        run: python -m unittest tests.settime.api tests.settime.app.config
+      - name: Testing runtime app behavour
+        run: python -m unittest tests.settime.api tests.runtime.api_test

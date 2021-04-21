@@ -12,4 +12,3 @@ class ChillApiModuleLoaderTest(unittest.TestCase):
         loader = ChillApiModuleLoader()
         loader.add_module('my_app.audit')
         self.assertTrue(loader.has_module('my_app.audit'))
-

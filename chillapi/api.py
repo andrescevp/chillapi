@@ -27,7 +27,7 @@ from chillapi.manager import FlaskApiManager
 _CONFIG_FILE = f"{CWD}/api.yaml"
 
 
-def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: str = CWD):
+def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: str = f"{CWD}/var"):
     SCHEMA_CONFIG_FILE = os.path.realpath(f"{pathlib.Path(__file__).parent.absolute()}/../api.schema.json")
     api_config = read_yaml(config_file)
     api_schema = json.load(open(SCHEMA_CONFIG_FILE))

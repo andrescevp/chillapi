@@ -14,7 +14,7 @@ class ChillApiTestErrors(unittest.TestCase):
         ApiConfig.reset()
 
     def testTableNotFoundError(self):
-        api_config = read_yaml(f'{CWD}/fixtures/api_table_no_exists.yaml')
+        api_config = read_yaml(f'{CWD}/../fixtures/api_table_no_exists.yaml')
 
         module_loader = ChillApiModuleLoader()
         table_extension = ChillapiExtensions(module_loader)
@@ -26,7 +26,7 @@ class ChillApiTestErrors(unittest.TestCase):
 
     def testTableColumnNotFoundInExtensionError(self):
         api_config = read_yaml(
-                f'{CWD}/fixtures/api_table_extension_column_no_exists.yaml'
+                f'{CWD}/../fixtures/api_table_extension_column_no_exists.yaml'
                 )
 
         module_loader = ChillApiModuleLoader()

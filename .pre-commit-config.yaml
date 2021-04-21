@@ -44,10 +44,17 @@ repos:
         always_run: true
         require_serial: true
         types_or: [ python ]
-      - id: testing
-        name: testing
+      - id: testing set time
+        name: testing set time
         language: system
-        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/python -m unittest tests.app.config tests.api"
+        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/python -m unittest tests.settime.api tests.settime.app.config"
+        always_run: true
+        require_serial: true
+        types_or: [ python ]
+      - id: testing run time
+        name: testing run time
+        language: system
+        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/python -m unittest tests.runtime.api_test"
         always_run: true
         require_serial: true
         types_or: [ python ]

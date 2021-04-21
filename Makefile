@@ -13,8 +13,10 @@ run:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && gunicorn --bind 0.0.0.0:8000 app:app"
 run_dev:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && python -m app"
-test:
-	${DOCKER} sh -c "${VENV_ACTIVATE} && python -m unittest tests.app.config tests.api"
+test_settime:
+	${DOCKER} sh -c "${VENV_ACTIVATE} && python -m unittest tests.settime.api tests.settime.app.config"
+test_runtime:
+	${DOCKER} sh -c "${VENV_ACTIVATE} && python -m unittest tests.runtime.api_test"
 profile_graph:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && gprof2dot -f pstats $(FILE) | dot -Tpng -o $(FILE).png"
 pip_install:
