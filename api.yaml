@@ -6,23 +6,24 @@ app:
   host: 0.0.0.0
   port: 8000
   debug: True
-#  externalDocs:
-#    description: Find more info here
-#    url: https://example.com
-#  license:
-#    name: Apache 2.0
-#    url: https://www.apache.org/licenses/LICENSE-2.0.html
-#  contact:
-#    name: API Support
-#    url: http://www.example.com/support
-#    email: support@example.com
+  #  externalDocs:
+  #    description: Find more info here
+  #    url: https://example.com
+  #  license:
+  #    name: Apache 2.0
+  #    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  #  contact:
+  #    name: API Support
+  #    url: http://www.example.com/support
+  #    email: support@example.com
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme
       type: http
       scheme: bearer
       bearerFormat: JWT
   security:
-    - bearerAuth: []
+    - bearerAuth: [ ]
+  security_level: STANDARD
   security_handler:
     package: my_app.auth
     handler: auth
@@ -127,6 +128,9 @@ database:
       #      alias: ~
       #      id_field: iso
       extensions:
+        after_response:
+          package: my_app.default_events
+          handler: MyAfterResponseEvent
         soft_delete:
           cascade:
             many_to_many:
@@ -213,9 +217,9 @@ database:
       query_parameters: [ ] # swagger schema for url query parameters in sql
       response_schema:
         type: object
-#        parameters:
-#          test:
-#            type: string
+    #        parameters:
+    #          test:
+    #            type: string
     - name: tests 2
       method: GET
       url: /tests/test_sql2
@@ -226,7 +230,7 @@ database:
       query_parameters: # swagger schema for url query parameters in sql
         - in: query
           name: name
-#          required: true
+          #          required: true
           schema:
             type: string
     - name: test_params
@@ -241,7 +245,7 @@ database:
         properties:
           name:
             type: string
-#            required: true
+  #            required: true
   templates:
     - name: tests
       method: GET
@@ -255,7 +259,7 @@ database:
       query_parameters: # swagger schema for url query parameters in sql
         - in: query
           name: name
-#          required: true
+          #          required: true
           schema:
             type: string
     - name: test_params
@@ -266,8 +270,8 @@ database:
         - in: path
           name: name
           required: true
-#          schema:
-#            type: string
+    #          schema:
+    #            type: string
     - name: test_params
       method: POST
       url: /test_template_params

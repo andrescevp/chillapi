@@ -1,5 +1,6 @@
 import abc
 
+import flask
 from flask import jsonify, make_response
 
 from chillapi.app.flask_restful_swagger_3 import Resource
@@ -30,33 +31,34 @@ class ResourceResponse:
 
     def for_json(self) -> dict:
         return {
-                'response':  self.response,
-                'headers':   self.headers,
-                'http_code': self.http_code,
-                }
+            "response": self.response,
+            "headers": self.headers,
+            "http_code": self.http_code,
+        }
 
 
 class AutomaticResource(Resource):
-    route = '/'
-    endpoint = 'root'
+    route = "/"
+    endpoint = "root"
     _swagger_schema = None
     before_request: BeforeRequestEventType = None
     before_response: BeforeResponseEventType = None
 
     def __init__(
-            self,
-            app = None,
-            before_request: BeforeRequestEventType = None,
-            before_response: BeforeResponseEventType = None,
-            after_response: AfterResponseEventType = None
-            ):
+        self,
+        before_request: BeforeRequestEventType = None,
+        before_response: BeforeResponseEventType = None,
+        after_response: AfterResponseEventType = None,
+    ):
         self.before_response = before_response
         self.before_request = before_request
 
-        if app and after_response:
-            @app.after_request
+        if after_response:
+
+            @flask.after_this_request
             def response_processor(response):
-                after_response.on_event(response)
+                after_response.on_event(**{"resource": self, "response": response})
+                return response
 
     @abc.abstractmethod
     def request(self, **args) -> ResourceResponse:
@@ -67,50 +69,40 @@ class AutomaticResource(Resource):
         pass
 
     def process_request(self, **args):
-        logger.debug('Request start', extra = args)
+        logger.debug("Request start", extra=args)
         before_response_event = None
         before_request_event = None
 
-        request_args = {
-                **args, **{
-                        'before_request_event':  before_request_event,
-                        'before_response_event': before_response_event
-                        }
-                }
+        request_args = {**args, **{"before_request_event": before_request_event, "before_response_event": before_response_event}}
 
         if self.before_request:
-            logger.debug('Before request event trigger',
-                         extra = request_args)
+            logger.debug("Before request event trigger", extra=request_args)
 
-            before_request_event = self.before_request.on_event(
-                    resource = self,
-                    **request_args
-                    )
+            before_request_event = self.before_request.on_event(**{"resource": self}, **request_args)
 
-            request_args['before_request_event'] = before_request_event
+            request_args["before_request_event"] = before_request_event
 
-        logger.debug('Validate request event trigger',
-                     extra = {**request_args})
+        logger.debug("Validate request event trigger", extra={**request_args})
 
         validation_output = self.validate_request(**request_args)
-        request_args['validation_output'] = validation_output
+        request_args["validation_output"] = validation_output
 
         response = self.request(**request_args)
 
         if self.before_response:
-            logger.debug('Before response event trigger',
-                         extra = request_args)
+            logger.debug("Before response event trigger", extra=request_args)
 
             before_response_event = self.before_response.on_event(
-                    resource = self,
-                    response = response,
-                    before_request_event = before_request_event,
-                    **request_args
-                    )
+                **{
+                    "resource": self,
+                    "response": response,
+                },
+                **request_args,
+            )
 
-            request_args['before_response_event'] = before_response_event
+            request_args["before_response_event"] = before_response_event
 
-        request_args['response'] = response
-        logger.debug('Response finish', extra = request_args)
+        request_args["response"] = response
+        logger.debug("Response finish", extra=request_args)
 
         return response.make_response()

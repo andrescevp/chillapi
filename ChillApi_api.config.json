@@ -19,6 +19,7 @@
         "bearerAuth": []
       }
     ],
+    "security_level": "STANDARD",
     "security_handler": {
       "package": "my_app.auth",
       "handler": "auth"
@@ -255,6 +256,21 @@
           "on_create_timestamp": {
             "enable": true,
             "default_field": "created_at"
+          },
+          "before_request": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeRequestEvent",
+            "handler_args": {}
+          },
+          "before_response": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeResponseEvent",
+            "handler_args": {}
+          },
+          "after_response": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullAfterResponseEvent",
+            "handler_args": {}
           }
         },
         "name": "book_category",
@@ -439,6 +455,21 @@
           "on_create_timestamp": {
             "enable": true,
             "default_field": "created_at"
+          },
+          "before_request": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeRequestEvent",
+            "handler_args": {}
+          },
+          "before_response": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeResponseEvent",
+            "handler_args": {}
+          },
+          "after_response": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullAfterResponseEvent",
+            "handler_args": {}
           }
         },
         "name": "book",
@@ -653,6 +684,21 @@
           "on_create_timestamp": {
             "enable": true,
             "default_field": "created_at"
+          },
+          "before_request": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeRequestEvent",
+            "handler_args": {}
+          },
+          "before_response": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeResponseEvent",
+            "handler_args": {}
+          },
+          "after_response": {
+            "package": "my_app.default_events",
+            "handler": "MyAfterResponseEvent",
+            "handler_args": {}
           }
         },
         "name": "author",
@@ -845,6 +891,21 @@
           "on_create_timestamp": {
             "enable": false,
             "default_field": "created_at"
+          },
+          "before_request": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeRequestEvent",
+            "handler_args": {}
+          },
+          "before_response": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeResponseEvent",
+            "handler_args": {}
+          },
+          "after_response": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullAfterResponseEvent",
+            "handler_args": {}
           }
         },
         "name": "dummy",
@@ -981,6 +1042,21 @@
           "on_create_timestamp": {
             "enable": true,
             "default_field": "creation"
+          },
+          "before_request": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeRequestEvent",
+            "handler_args": {}
+          },
+          "before_response": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullBeforeResponseEvent",
+            "handler_args": {}
+          },
+          "after_response": {
+            "package": "chillapi.extensions.events",
+            "handler": "NullAfterResponseEvent",
+            "handler_args": {}
           }
         },
         "name": "dummy_create",

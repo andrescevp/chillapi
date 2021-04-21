@@ -4,17 +4,16 @@ import simplejson
 import sqlalchemy
 from sqlalchemy import text
 from sqlalchemy.engine import CursorResult
-from sqlalchemy.exc import InternalError
 
 from chillapi.abc import Repository
 from chillapi.database.query_builder import create_delete, create_insert, create_select_filtered_query, create_update
 from chillapi.logger.app_loggers import logger
 
-DB_DIALECT_POSTGRES = 'postgres'
+DB_DIALECT_POSTGRES = "postgres"
 
 _MAGIC_QUERIES = {
-        DB_DIALECT_POSTGRES: {
-                'get_ids_not_in_table_from_list': lambda x: f"""
+    DB_DIALECT_POSTGRES: {
+        "get_ids_not_in_table_from_list": lambda x: f"""
             SELECT id
             FROM (VALUES({'),('.join(x['values'])})) V({x['id_field']})
             EXCEPT
@@ -22,8 +21,8 @@ _MAGIC_QUERIES = {
             FROM  {x['table']}
             {x['where']}
         """
-                }
-        }
+    }
+}
 
 
 class DataRepository(Repository):
@@ -35,7 +34,7 @@ class DataRepository(Repository):
                 adapted_params[key] = str(simplejson.dumps(value))
         return adapted_params
 
-    def execute(self, sql, params = None, commit: bool = True) -> CursorResult:
+    def execute(self, sql, params=None, commit: bool = True) -> CursorResult:
         try:
             r = self.db.execute(text(sql), params)
 
@@ -51,7 +50,7 @@ class DataRepository(Repository):
             raise e
         return r
 
-    def execute_insert(self, sql, params = None) -> CursorResult:
+    def execute_insert(self, sql, params=None) -> CursorResult:
         try:
             r = self.db.execute(sql, params)
             self.db.commit()
@@ -65,20 +64,18 @@ class DataRepository(Repository):
             raise e
         return r
 
-    def fetch_by(self, table: str, columns: List[str], filters: dict, params = None):
+    def fetch_by(self, table: str, columns: List[str], filters: dict, params=None):
         sql = create_select_filtered_query(table, columns, filters)
         return self.execute(sql, params)
 
-    def insert(self, table: str, columns: List[str], params: dict,
-               returning: bool = True, returning_field: str = "*") -> CursorResult:
+    def insert(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = "*") -> CursorResult:
         adapted_params = self.adapt_params(params)
         params_keys = adapted_params.keys()
         select_columns = [c for c in columns if c in params_keys]
         sql = create_insert(table, select_columns) + f"{' RETURNING ' + returning_field if returning is True else ''}"
         return self.execute(sql, adapted_params)
 
-    def insert_batch(self, table: str, columns: List[str], params: List,
-                     returning: bool = True, returning_field: str = "*") -> List:
+    def insert_batch(self, table: str, columns: List[str], params: List, returning: bool = True, returning_field: str = "*") -> List:
         adapted_params = [self.adapt_params(param) for param in params]
         params_keys = adapted_params[0].keys()
         select_columns = [c for c in columns if c in params_keys]
@@ -88,36 +85,35 @@ class DataRepository(Repository):
 
         return insert_result.rowcount
 
-    def update_batch(self, table: str, params: List, where_field: str = 'id') -> List:
+    def update_batch(self, table: str, params: List, where_field: str = "id") -> List:
         adapted_params = [self.adapt_params(param) for param in params]
         for i, _params in enumerate(adapted_params):
             where_value = _params[where_field]
             execute_params = _params.copy()
-            del (_params[where_field])
-            sql = create_update(table, _params, {where_field: {'op': '=', 'value': where_value}})
+            del _params[where_field]
+            sql = create_update(table, _params, {where_field: {"op": "=", "value": where_value}})
             self.execute(sql, execute_params)
 
         self.db.commit()
 
         return []
 
-    def delete_batch(self, table: str, ids: List, where_field: str = 'id') -> List:
+    def delete_batch(self, table: str, ids: List, where_field: str = "id") -> List:
         for i, _id in enumerate(ids):
-            sql = create_delete(table, {where_field: {'op': '=', 'value': _id}})
+            sql = create_delete(table, {where_field: {"op": "=", "value": _id}})
             self.execute(sql, {where_field: _id})
 
         self.db.commit()
 
         return []
 
-    def insert_record(self, table: str, columns: List[str], params: dict,
-                      returning: bool = True, returning_field: str = "*") -> int:
+    def insert_record(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = "*") -> int:
         adapted_params = self.adapt_params(params)
         params_keys = adapted_params.keys()
         select_columns = [c for c in columns if c in params_keys]
-        returning_stmt = 'RETURNING ' + returning_field if returning is True else ''
+        returning_stmt = "RETURNING " + returning_field if returning is True else ""
         if self.db_dialect != DB_DIALECT_POSTGRES:
-            returning_stmt = ''
+            returning_stmt = ""
         sql = create_insert(table, select_columns) + returning_stmt
 
         insert_result = self.execute(sql, adapted_params)
@@ -134,10 +130,10 @@ class DataRepository(Repository):
 
     def update_record(self, table: str, where_field: str, where_value: str, params: dict) -> CursorResult:
         adapted_params = self.adapt_params(params)
-        sql = create_update(table, adapted_params, {where_field: {'op': '=', 'value': where_value}})
+        sql = create_update(table, adapted_params, {where_field: {"op": "=", "value": where_value}})
         return self.execute(sql, {**adapted_params, **{where_field: where_value}})
 
     def delete_record(self, table: str, where_field: str, where_field_id) -> CursorResult:
 
-        sql = create_delete(table, {where_field: {'op': '=', 'value': where_field_id}})
+        sql = create_delete(table, {where_field: {"op": "=", "value": where_field_id}})
         return self.execute(sql, {where_field: where_field_id})

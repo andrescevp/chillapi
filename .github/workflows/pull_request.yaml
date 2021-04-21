@@ -18,8 +18,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-#      - name: Setup Graphviz
-#        uses: ts-graphviz/setup-graphviz@v1
+      - name: Setup Graphviz
+        uses: ts-graphviz/setup-graphviz@v1
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -36,7 +36,7 @@ jobs:
 #      - name: Lint code (flake8)
 #        run: |
 #          flake8 --max-line-length 150 --max-complexity 10 src test
-      - name: Testing
+      - name: Creating SQLite Test db
         run: alembic -c sqlite.alembic.ini upgrade head
       - name: Testing
         run: python -m unittest tests.app.config tests.api

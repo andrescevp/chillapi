@@ -26,28 +26,35 @@ repos:
       - id: requirements
         name: requirements
         language: system
-        entry: make pip_freeze_requirements
+        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/pip freeze > requirements.txt && chown -Rf 1000:1000 requirements.txt"
         always_run: true
         require_serial: true
         types_or: [ python ]
-#      - id: black
-#        name: black
-#        language: system
-#        entry: docker exec -ti chillapi-api venv/bin/black --py38 -q -l 150 chillapi/
-#        always_run: true
-#        require_serial: true
-#        types_or: [ python ]
-#      - id: flake8
-#        name: flake8
-#        language: system
-#        entry: make docker_exec_n CMD='venv/bin/flake8 --max-line-length 150 --max-complexity 10 chillapi'
-#        always_run: true
-#        require_serial: true
-#        types_or: [ python ]
+      - id: black
+        name: black
+        language: system
+        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/black -t py38 -q -l 150 chillapi/"
+        always_run: true
+        require_serial: true
+        types_or: [ python ]
+      - id: flake8
+        name: flake8
+        language: system
+        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/flake8 --max-line-length 150 --max-complexity 15 chillapi"
+        always_run: true
+        require_serial: true
+        types_or: [ python ]
+      - id: testing
+        name: testing
+        language: system
+        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/python -m unittest tests.app.config tests.api"
+        always_run: true
+        require_serial: true
+        types_or: [ python ]
       - id: fix_permissions
         name: fix_permissions
         language: system
-        entry: make docker_fix_permissions
+        entry: docker exec chillapi-api chown -Rf 1000:1000 .
         always_run: true
         require_serial: true
         types_or: [ python ]
