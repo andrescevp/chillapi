@@ -69,8 +69,8 @@ def _get_extension_default_field(table_extensions, extension):
     return _enable, default_field
 
 
-def _get_form(class_name: str, columns_map: dict, method: str, as_array=False):
-    form_class = create_form_class(class_name, method, columns_map)
+def _get_form(class_name: str, columns_map: dict, method: str, extensions: dict, as_array=False):
+    form_class = create_form_class(class_name, method, columns_map, extensions)
     form_schema_json = generate_form_swagger_schema_from_form(method, form_class, as_array=as_array)
 
     return form_class, form_schema_json
@@ -145,7 +145,7 @@ def create_put_single_endpoint_class(table: dict, allowed_columns: List, allowed
     response_schema = get_response_swagger_schema(allowed_columns_map, f"{model_name}PutSingleEndpoint")
     extension = extensions["on_create_timestamp"]
     extension_enabled = extension.enabled
-    form_class, form_schema_model = _get_form(table["model_name"], allowed_columns_map, "put")
+    form_class, form_schema_model = _get_form(table["model_name"], allowed_columns_map, "put", extensions)
     request_schema = get_put_single_endpoint_schema(model_name, form_schema_model, response_schema)
 
     class PutSingleEndpoint(AutomaticResource):
@@ -216,7 +216,7 @@ def create_post_single_endpoint_class(table: dict, allowed_columns: List, allowe
     update_extension = extensions["on_update_timestamp"]
     soft_delete_extension = extensions["soft_delete"]
 
-    form_class, form_schema_model = _get_form(table["model_name"], allowed_columns_map, "post")
+    form_class, form_schema_model = _get_form(table["model_name"], allowed_columns_map, "post", extensions)
 
     id_field_where_type = _column_type_to_swagger_type_url(table["columns"][id_field]["type"])
     request_schema = get_post_single_endpoint_schema(model_name, form_schema_model, response_schema, id_field_where_type)
@@ -498,7 +498,7 @@ def create_put_list_endpoint_class(  # noqa C901
 
     create_extension = extensions["on_create_timestamp"]
 
-    form_class, form_schema_model = _get_form(table["model_name"], allowed_columns_map, "putList")
+    form_class, form_schema_model = _get_form(table["model_name"], allowed_columns_map, "putList", extensions)
 
     request_schema = get_put_list_endpoint_schema(model_name, form_schema_model)
 
@@ -569,7 +569,7 @@ def create_post_list_endpoint_class(  # noqa C901
     table_name = table["name"]
     model_name = table["model_name"]
     id_field = table["id_field"]
-    form_class, form_schema_model = _get_form(model_name, allowed_columns_map, "postList")
+    form_class, form_schema_model = _get_form(model_name, allowed_columns_map, "postList", extensions)
 
     request_schema = get_post_list_endpoint_schema(model_name, form_schema_model)
     extension = extensions["on_update_timestamp"]

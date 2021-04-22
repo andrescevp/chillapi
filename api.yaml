@@ -140,6 +140,13 @@ database:
                 join_columns:
                   main: author_id
                   join: book_id
+        validators:
+          asin:
+            - package: wtforms.validators
+              handler: Length
+              handler_args:
+                min: 5
+                max: 100
       fields_excluded:
         #        all: []
         GET:

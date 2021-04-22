@@ -56,8 +56,10 @@ def generate_form_swagger_schema_from_form(method: str, form: Form, as_array=Fal
     return get_form_array_swagger_schema(form.__name__, form_schema_model, "ListRequestModel")
 
 
-def column_to_flask_form_property(column_name: str, column_info) -> Field:
+def column_to_flask_form_property(column_name: str, column_info: dict, extensions: dict) -> Field:
     validators = []
+    if "validators" in extensions and column_name in extensions["validators"]:
+        validators = extensions["validators"][column_name]
 
     if column_info["nullable"] is False:
         validators.append(DataRequired())
@@ -75,7 +77,7 @@ def column_to_flask_form_property(column_name: str, column_info) -> Field:
     return switcher.get(column_info["type"].python_type.__name__, StringField(column_name))
 
 
-def create_form_class(class_name: str, method: str, columns_map: dict):
+def create_form_class(class_name: str, method: str, columns_map: dict, extensions: dict):
     class FormResource(Form):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
@@ -84,7 +86,7 @@ def create_form_class(class_name: str, method: str, columns_map: dict):
             return self.data
 
     for column_name, column_info in columns_map.items():
-        property_type = column_to_flask_form_property(column_name, column_info)
+        property_type = column_to_flask_form_property(column_name, column_info, extensions)
         setattr(FormResource, column_name, property_type)
 
     FormResource.__name__ = f'{class_name}{method.replace("_", " ").title().replace(" ", "")}Form'

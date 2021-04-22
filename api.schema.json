@@ -526,6 +526,180 @@
         },
         "on_create_timestamp": {
           "$ref": "#/$defs/table_extension_default_config"
+        },
+        "audit_logger": {
+          "type": "object",
+          "title": "Audit log handler",
+          "description": "A `chillapi.extensions.audit.AuditLogHandler` based class reference",
+          "default": {},
+          "required": [
+            "package",
+            "handler",
+            "handler_args"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "class name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "before_request": {
+          "type": "object",
+          "title": "BeforeRequestEvent",
+          "description": "Class with `chillapi.extensions.events.BeforeRequestEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "before_response": {
+          "type": "object",
+          "title": "BeforeResponseEvent",
+          "description": "Class with `chillapi.extensions.events.BeforeResponseEvent`",
+          "default": {},
+          "required": [
+            "package",
+            "handler"
+          ],
+          "properties": {
+            "package": {
+              "type": "string",
+              "title": "package python path",
+              "default": null
+            },
+            "handler": {
+              "type": "string",
+              "title": "method name name"
+            },
+            "handler_args": {
+              "type": "object",
+              "title": "Class arguments",
+              "description": "An explanation about the purpose of this instance.",
+              "default": {},
+              "patternProperties": {
+                "^.*$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "validators": {
+          "patternProperties": {
+            ".*": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "title": "Validator",
+                  "description": "Class `wtforms.validators.*`",
+                  "default": {},
+                  "required": [
+                    "package",
+                    "handler"
+                  ],
+                  "properties": {
+                    "package": {
+                      "type": "string",
+                      "title": "package python path",
+                      "default": null
+                    },
+                    "handler": {
+                      "type": "string",
+                      "title": "method name name"
+                    },
+                    "handler_args": {
+                      "type": "object",
+                      "title": "Class arguments",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": {},
+                      "patternProperties": {
+                        "^.*$": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            }
+          }
         }
       },
       "additionalProperties": false

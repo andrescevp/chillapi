@@ -6,6 +6,7 @@ def auth(security_schemes, security, request_obj, endpoint, method):
     #     return True
 
     # return False
-
+    if not request_obj.headers.get('Authorization'):
+        return False
     bearer_token = request_obj.headers.get('Authorization').lstrip('Bearer').strip()
     return bearer_token == 'aaa'

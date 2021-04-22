@@ -5,7 +5,6 @@ import inflect
 
 from chillapi import ApiManager
 from chillapi.app.config import ApiConfig
-from chillapi.app.forms import create_form_class, generate_form_swagger_schema_from_form
 from chillapi.endpoints.sql import create_sql_endpoint_class
 from chillapi.endpoints.tables import (
     create_delete_list_endpoint_class,
@@ -216,12 +215,6 @@ class TableApiManager(ApiManager):
             extensions,
             self.config.repository,
         )
-
-    def get_form(self, class_name: str, columns_map: dict, method: str, as_array=False):
-        form_class = create_form_class(class_name, method, columns_map)
-        form_schema_json = generate_form_swagger_schema_from_form(method, form_class, as_array=as_array)
-
-        return form_class, form_schema_json
 
     def create_api(self, api):
         for table in self.config.database["tables"]:

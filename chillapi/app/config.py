@@ -21,7 +21,7 @@ from chillapi.app import (
 )
 from chillapi.database.connection import create_db
 from chillapi.database.repository import DataRepository
-from chillapi.exceptions.api_manager import ConfigError, TableNotExist
+from chillapi.exceptions.api_manager import ColumnNotExist, ConfigError, TableNotExist
 from chillapi.extensions import LIVECYCLE_EXTENSIONS, REQUEST_EXTENSIONS
 from chillapi.extensions.record_livecycle import INTERNAL_EXTENSION_DEFAULTS
 from chillapi.logger.app_loggers import set_logger_config
@@ -102,6 +102,23 @@ class ChillapiExtensions(dict):
         if table_name not in self.tables.keys():
             self.tables[table_name] = {}
         self.tables[table_name][extension_name] = extension
+
+    def set_validator_column_table_extension(self, column_name: str, extension_config: dict, table_name: str):
+        self.module_loader.add_module(extension_config["package"])
+
+        extension = self.module_loader.get_module_attr(
+            extension_config["package"],
+            extension_config["handler"],
+            extension_config["handler_args"],
+        )
+
+        if table_name not in self.tables.keys():
+            self.tables[table_name] = {}
+        if "validators" not in self.tables[table_name].keys():
+            self.tables[table_name]["validators"] = {}
+        if column_name not in self.tables[table_name]["validators"].keys():
+            self.tables[table_name]["validators"][column_name] = []
+        self.tables[table_name]["validators"][column_name].append(extension)
 
     def is_extension_enabled(self, extension_name: str, type: str = "app") -> bool:
         return hasattr(getattr(self, type), extension_name)
@@ -257,6 +274,15 @@ class ApiConfig:
         if extension_name in REQUEST_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
             _extension_conf = table_config["extensions"][extension_name]
             self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)
+        if extension_name == "validators":
+            _columns_in_table = table_config["columns"].keys()
+            for column_to_validate, validators in table_config["extensions"][extension_name].items():
+                if column_to_validate not in _columns_in_table:
+                    raise ColumnNotExist(f"{column_to_validate} to validate does not exists!")
+                for _v, validator in enumerate(validators):
+                    self.extensions.set_validator_column_table_extension(column_to_validate, validator, table_name)
+            # _extension_conf = table_config["extensions"][extension_name]
+            # self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)
 
     def load_extensions(self):
         if not self.extensions.is_extension_enabled("audit"):
