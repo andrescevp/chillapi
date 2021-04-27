@@ -30,7 +30,7 @@ jobs:
       - name: Create additional database
         run: |
           sudo -u postgres createdb --owner=test chillapi
-          PGPASSWORD=test psql --username=test --host=localhost --list timetable
+          PGPASSWORD=test psql --username=test --host=localhost --list chillapi
 
       - uses: actions/checkout@v2
       - name: Setup Graphviz
@@ -46,8 +46,8 @@ jobs:
           pip install -U wheel --user
           pip install -r requirements.txt
       - name: Creating SQLite Test db
-        run: alembic -c postgres.alembic.ini upgrade head
+        run: alembic -c postgres_github.alembic.ini upgrade head
       - name: Testing set app behavour
         run: python -m unittest tests.settime.api tests.settime.app.config
       - name: Testing runtime app behavour
-        run: python -m unittest tests.runtime.api_test
+        run: python -m unittest tests.runtime_auth_strict.api_test
