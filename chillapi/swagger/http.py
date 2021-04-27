@@ -3,7 +3,7 @@ import abc
 import flask
 from flask import jsonify, make_response
 
-from chillapi.app.flask_restful_swagger_3 import Resource
+from chillapi.app.flask_restful_swagger_3 import Resource, Schema
 from chillapi.extensions.audit import AuditLog
 from chillapi.logger.app_loggers import logger
 from chillapi.swagger import AfterResponseEventType, BeforeRequestEventType, BeforeResponseEventType
@@ -40,7 +40,7 @@ class ResourceResponse:
 class AutomaticResource(Resource):
     route = "/"
     endpoint = "root"
-    _swagger_schema = None
+    _swagger_schema: Schema = None
     before_request: BeforeRequestEventType = None
     before_response: BeforeResponseEventType = None
 
@@ -85,6 +85,7 @@ class AutomaticResource(Resource):
         logger.debug("Validate request event trigger", extra={**request_args})
 
         validation_output = self.validate_request(**request_args)
+
         request_args["validation_output"] = validation_output
 
         response = self.request(**request_args)

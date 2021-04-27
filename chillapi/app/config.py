@@ -30,6 +30,8 @@ CWD = os.getcwd()
 
 
 class ChillApiModuleLoader(dict):
+    """Module loader class"""
+
     _modules: dict = {}
     loaded = False
 
@@ -55,7 +57,9 @@ class ChillApiModuleLoader(dict):
         return module in self._modules.keys()
 
 
-class ChillapiExtensions(dict):
+class ChillApiExtensions(dict):
+    """Module wrapper to load modules as extensions in the different library contexts"""
+
     tables: dict = dict({})
     app: dict = dict({})
 
@@ -144,7 +148,7 @@ class ApiConfig:
     db: ScopedSession
     db_inspector: Inspector
 
-    def __init__(self, extensions: ChillapiExtensions, app: dict, environment: dict = None, logger: dict = None, database: dict = None):
+    def __init__(self, extensions: ChillApiExtensions, app: dict, environment: dict = None, logger: dict = None, database: dict = None):
         self.extensions = extensions
         app = {} if app is None else app
         environment = {} if environment is None else environment

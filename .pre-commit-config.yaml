@@ -54,7 +54,7 @@ repos:
       - id: testing run time
         name: testing run time
         language: system
-        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/python -m unittest tests.runtime.api_test"
+        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/python -m unittest tests.runtime_auth_strict.api_test"
         always_run: true
         require_serial: true
         types_or: [ python ]

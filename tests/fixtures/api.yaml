@@ -1,13 +1,35 @@
 app:
-  name: MixedTest
+  name: ChillApi
   version: '0.1'
   swagger_url: '/swagger'
   swagger_ui_url: '/doc'
   host: 0.0.0.0
   port: 8000
-  debug: True
+  debug: False
+  #  externalDocs:
+  #    description: Find more info here
+  #    url: https://example.com
+  #  license:
+  #    name: Apache 2.0
+  #    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  #  contact:
+  #    name: API Support
+  #    url: http://www.example.com/support
+  #    email: support@example.com
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  security:
+    - bearerAuth: [ ]
+  security_level: STANDARD
+  security_handler:
+    package: my_app.auth
+    handler: auth
 environment:
-  APP_DB_URL: 'sqlite:///var/db.sqlite'
+  APP_DB_URL: '$DB_URL'
+#  APP_DB_URL: 'sqlite:///var/db.sqlite'
   APP_SECRET_KEY: 'super-secret-key'
 logger:
   app:
@@ -15,13 +37,13 @@ logger:
     level: 40
   audit_logger:
     output: stdout
-    level: 10
+    level: 40
   error_handler:
     output: stdout
-    level: 10
+    level: 40
   sqlalchemy:
     output: stdout
-    level: 10
+    level: 40
 database:
   schema: public
   defaults:
@@ -69,8 +91,8 @@ database:
           default_field: created_at
   tables:
     - name: book_category
-#      alias: ~
-#      id_field: ~ # id by default
+      #      alias: ~
+      #      id_field: ~ # id by default
       extensions:
         soft_delete:
           cascade:
@@ -79,8 +101,8 @@ database:
                 column_id: id
                 column_fk: book_category_id
     - name: book
-#      alias: ~
-#      id_field: ~ # id by default
+      #      alias: ~
+      #      id_field: ~ # id by default
       #      extensions:
       #        soft_delete:
       #          enable: False
@@ -104,9 +126,12 @@ database:
     #      api_endpoints:   #overwrite defaults
     #        GET: [ SINGLE ]
     - name: author
-#      alias: ~
+      #      alias: ~
       #      id_field: iso
       extensions:
+        after_response:
+          package: my_app.default_events
+          handler: MyAfterResponseEvent
         soft_delete:
           cascade:
             many_to_many:
@@ -116,6 +141,13 @@ database:
                 join_columns:
                   main: author_id
                   join: book_id
+        validators:
+          asin:
+            - package: wtforms.validators
+              handler: Length
+              handler_args:
+                min: 5
+                max: 100
       fields_excluded:
         #        all: []
         GET:
@@ -133,8 +165,8 @@ database:
       #          LIST: [ ]
       api_endpoints: { }
     - name: dummy
-#      alias: ~
-#      id_field: ~
+      #      alias: ~
+      #      id_field: ~
       extensions:
         soft_delete:
           enable: False
@@ -158,8 +190,8 @@ database:
       #          LIST: [ ]
       api_endpoints: { }
     - name: dummy_create
-#      alias: ~
-#      id_field: ~
+      #      alias: ~
+      #      id_field: ~
       extensions:
         soft_delete:
           enable: False
@@ -193,10 +225,10 @@ database:
       query_parameters: [ ] # swagger schema for url query parameters in sql
       response_schema:
         type: object
-        parameters:
-          test:
-            type: string
-    - name: tests
+    #        parameters:
+    #          test:
+    #            type: string
+    - name: tests 2
       method: GET
       url: /tests/test_sql2
       sql: |
@@ -206,7 +238,7 @@ database:
       query_parameters: # swagger schema for url query parameters in sql
         - in: query
           name: name
-          required: true
+          #          required: true
           schema:
             type: string
     - name: test_params
@@ -221,7 +253,7 @@ database:
         properties:
           name:
             type: string
-            required: true
+  #            required: true
   templates:
     - name: tests
       method: GET
@@ -235,7 +267,7 @@ database:
       query_parameters: # swagger schema for url query parameters in sql
         - in: query
           name: name
-          required: true
+          #          required: true
           schema:
             type: string
     - name: test_params
@@ -246,8 +278,8 @@ database:
         - in: path
           name: name
           required: true
-          schema:
-            type: string
+    #          schema:
+    #            type: string
     - name: test_params
       method: POST
       url: /test_template_params

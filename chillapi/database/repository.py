@@ -6,6 +6,7 @@ from sqlalchemy import text
 from sqlalchemy.engine import CursorResult
 
 from chillapi.abc import Repository
+from chillapi.database import DB_DIALECT_SQLITE
 from chillapi.database.query_builder import create_delete, create_insert, create_select_filtered_query, create_update
 from chillapi.logger.app_loggers import logger
 
@@ -34,19 +35,14 @@ class DataRepository(Repository):
                 adapted_params[key] = str(simplejson.dumps(value))
         return adapted_params
 
-    def execute(self, sql, params=None, commit: bool = True) -> CursorResult:
+    def execute(self, sql, params=None) -> CursorResult:
         try:
             r = self.db.execute(text(sql), params)
-
-            if commit:
-                self.db.commit()
         except sqlalchemy.exc.DatabaseError as e:
             logger.critical(e)
-            self.db.rollback()
             raise e
         except Exception as e:
             logger.critical(e)
-            self.db.rollback()
             raise e
         return r
 
@@ -94,8 +90,6 @@ class DataRepository(Repository):
             sql = create_update(table, _params, {where_field: {"op": "=", "value": where_value}})
             self.execute(sql, execute_params)
 
-        self.db.commit()
-
         return []
 
     def delete_batch(self, table: str, ids: List, where_field: str = "id") -> List:
@@ -103,23 +97,21 @@ class DataRepository(Repository):
             sql = create_delete(table, {where_field: {"op": "=", "value": _id}})
             self.execute(sql, {where_field: _id})
 
-        self.db.commit()
-
         return []
 
     def insert_record(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = "*") -> int:
         adapted_params = self.adapt_params(params)
         params_keys = adapted_params.keys()
         select_columns = [c for c in columns if c in params_keys]
-        returning_stmt = "RETURNING " + returning_field if returning is True else ""
+        returning_stmt = f"RETURNING {returning_field}"
         if self.db_dialect != DB_DIALECT_POSTGRES:
             returning_stmt = ""
         sql = create_insert(table, select_columns) + returning_stmt
 
         insert_result = self.execute(sql, adapted_params)
 
-        # if self.db_dialect == DB_DIALECT_SQLITE:
-        #     return insert_result.lastrowid
+        if self.db_dialect == DB_DIALECT_SQLITE:
+            return insert_result.lastrowid
         # if self.db_dialect == DB_DIALECT_MS_SQL_SERVER:
         #     return insert_result.fetchone()[0]
         # if self.db_dialect == DB_DIALECT_MARIADB_MYSQL:

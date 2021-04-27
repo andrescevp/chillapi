@@ -40,10 +40,14 @@ def auth_required(f):
 
 
 class Resource(flask_Resource):
+    """Base API Resource"""
+
     decorators = [auth_required]
 
 
 class Api(restful_Api):
+    """Api Swagger 3.4 wrapper"""
+
     def __init__(self, *args, **kwargs):
         self._security_level = kwargs.pop("security_level", "STANDARD")
         api_spec_base = kwargs.pop("api_spec_base", None)

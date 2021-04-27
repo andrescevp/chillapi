@@ -17,6 +17,21 @@ jobs:
         python-version: [3.8]
 
     steps:
+      # Use preinstalled PostgreSQL
+      - name: Start PostgreSQL on Ubuntu
+        run: |
+          sudo systemctl start postgresql.service
+          pg_isready
+      # Change user name and password to meet your requirements
+      - name: Create additional user
+        run: |
+          sudo -u postgres psql --command="CREATE USER test PASSWORD 'test'" --command="\du"
+      # Change database name to meet your requirements
+      - name: Create additional database
+        run: |
+          sudo -u postgres createdb --owner=test chillapi
+          PGPASSWORD=test psql --username=test --host=localhost --list timetable
+
       - uses: actions/checkout@v2
       - name: Setup Graphviz
         uses: ts-graphviz/setup-graphviz@v1
@@ -31,7 +46,7 @@ jobs:
           pip install -U wheel --user
           pip install -r requirements.txt
       - name: Creating SQLite Test db
-        run: alembic -c sqlite.alembic.ini upgrade head
+        run: alembic -c postgres.alembic.ini upgrade head
       - name: Testing set app behavour
         run: python -m unittest tests.settime.api tests.settime.app.config
       - name: Testing runtime app behavour

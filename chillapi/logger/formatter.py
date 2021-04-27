@@ -19,7 +19,7 @@ import simplejson
 from sqlalchemy.sql.type_api import TypeEngine
 
 from chillapi.database.query_builder import sql_operators
-from chillapi.http.utils import get_request_id, get_traced_request_uuid
+from chillapi.http.utils import get_request_id
 
 
 class CustomEncoder(simplejson.JSONEncoder):
@@ -152,7 +152,6 @@ class GelfFormatter(logging.Formatter):
         """
         # Base GELF message structure
         request_uuid = get_request_id()
-        traced_request_uuid = get_traced_request_uuid()
         log_record = dict(
             version=GELF_VERSION,
             short_message=record.getMessage(),
@@ -160,7 +159,6 @@ class GelfFormatter(logging.Formatter):
             level=GELF_LEVELS[record.levelno],
             host=self._hostname,
             _request_uuid=request_uuid,
-            _traced_request_uuid=traced_request_uuid,
         )
 
         # Capture exception info, if any

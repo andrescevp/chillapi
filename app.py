@@ -1,7 +1,8 @@
 from chillapi.api import ChillApi
 
-app, api, api_manager, api_config, db, data_repository = ChillApi()
-
+_resources = ChillApi()
+app = _resources.app
+api_config = _resources.api_config
 if __name__ == '__main__':
     app.run(
         debug=api_config['app']['debug'],

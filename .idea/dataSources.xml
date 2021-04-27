@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="codebook@localhost" uuid="702b3661-d924-4ae8-acde-519ca36f0699">
+    <data-source source="LOCAL" name="chillapi@localhost" uuid="702b3661-d924-4ae8-acde-519ca36f0699">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/codebook</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/chillapi</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="SQLite" uuid="dabde1a4-c76a-406d-83cf-b9c4d3bbb14d">

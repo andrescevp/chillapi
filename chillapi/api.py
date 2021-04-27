@@ -13,7 +13,8 @@ from openapi_spec_validator.schemas import read_yaml_file
 from six.moves.urllib import parse, request
 from swagger_ui import api as api_doc
 
-from chillapi.app.config import ApiConfig, ChillapiExtensions, ChillApiModuleLoader, CWD
+from chillapi.abc import AttributeDict
+from chillapi.app.config import ApiConfig, ChillApiExtensions, ChillApiModuleLoader, CWD
 from chillapi.app.error_handlers import register_error_handlers
 from chillapi.app.file_utils import read_yaml
 from chillapi.app.flask_restful_swagger_3 import Api, swagger
@@ -28,6 +29,12 @@ _CONFIG_FILE = f"{CWD}/api.yaml"
 
 
 def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: str = f"{CWD}/var"):
+    """
+    ChillApi Loader.
+    :param app:
+    :param config_file:
+    :param export_path:
+    """
     SCHEMA_CONFIG_FILE = os.path.realpath(f"{pathlib.Path(__file__).parent.absolute()}/../api.schema.json")
     api_config = read_yaml(config_file)
     api_schema = json.load(open(SCHEMA_CONFIG_FILE))
@@ -38,9 +45,11 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
         raise ConfigError(e)
 
     _app_name = api_config["app"]["name"]
-
     module_loader = ChillApiModuleLoader()
-    extensions = ChillapiExtensions(module_loader)
+
+    set_api_security(api_config, module_loader)
+
+    extensions = ChillApiExtensions(module_loader)
     config = ApiConfig(**{**api_config, **{"extensions": extensions}})
     db = config.db
     data_repository = config.repository
@@ -50,12 +59,15 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
     if app is None:
         app = Flask(_app_name)
 
+    register_error_handlers(app)
+    app.config["BASE_DIR"] = CWD
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("APP_DB_URL")
     app.config["SECRET_KEY"] = os.environ.get("APP_SECRET_KEY")
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+    app.config["TRAP_HTTP_EXCEPTIONS"] = True
+    app.config["TRAP_BAD_REQUEST_ERRORS"] = True
     app.config["REQUEST_ID_UNIQUE_VALUE_PREFIX"] = None
-    register_error_handlers(app)
     CORS(app)
     RequestID(app)
     api = Api(
@@ -71,8 +83,6 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
     )
 
     api_doc.RestfulApi(app, title=_app_name, doc=api_config["app"]["swagger_ui_url"], config={"app_name": _app_name})  # Swagger UI config overrides
-
-    set_api_security(api_config, module_loader)
 
     api_spec_file = f"{CWD}/var/api_spec.json"
 
@@ -117,6 +127,7 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
         from werkzeug.middleware.profiler import ProfilerMiddleware
 
         app.config["PROFILE"] = True
+        app.config["DEBUG"] = True
 
         def filename_format(env):
             return "{uuid}.prof".format(uuid=env["HTTP_X_REQUEST_ID"])
@@ -125,13 +136,25 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
 
         register_routes_sitemap(app)
 
-    return app, api, api_manager, api_config, db, data_repository
+    return AttributeDict(
+        {
+            "app": app,
+            "api": api,
+            "api_manager": api_manager,
+            "api_config": api_config,
+            "db": db,
+            "data_repository": data_repository,
+            "module_loader": module_loader,
+            "table_extensions": extensions,
+        }
+    )
 
 
 def set_api_security(api_config, module_loader):
     if "securitySchemes" in api_config["app"] and len(api_config["app"]["securitySchemes"].keys()) > 0:
         if "security_handler" not in api_config["app"]:
             raise ConfigError("security_handler not defined")
+
         module_loader.add_module(api_config["app"]["security_handler"]["package"])
 
         def auth(request_obj, endpoint, method):

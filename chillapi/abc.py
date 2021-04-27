@@ -17,7 +17,7 @@ class Repository(ABC):
         self.db_dialect = _ALLOWED_DRIVERS[driver]
 
     @abstractmethod
-    def execute(self, sql, params=None, commit: bool = True) -> CursorResult:
+    def execute(self, sql, params=None) -> CursorResult:
         pass
 
     @abstractmethod
@@ -110,3 +110,9 @@ class AuditLogHandler(Extension):
 
     def execute(self, *args):
         self.log(getattr(args, "log"))
+
+
+class AttributeDict(dict):
+    __slots__ = ()
+    __getattr__ = dict.__getitem__
+    __setattr__ = dict.__setitem__

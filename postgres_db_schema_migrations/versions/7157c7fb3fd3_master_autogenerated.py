@@ -111,7 +111,7 @@ def upgrade():
             """
             CREATE TABLE IF NOT EXISTS dummy_create (
                id serial,
-               name varchar,
+               name varchar not null,
                creation timestamp,
                PRIMARY KEY (id)
             );
@@ -124,7 +124,7 @@ def upgrade():
             """
             CREATE TABLE IF NOT EXISTS dummy (
                id serial,
-               name varchar
+               name varchar not null
             );
             """
         )

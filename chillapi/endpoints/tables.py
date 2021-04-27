@@ -20,7 +20,7 @@ from chillapi.database.query_builder import (
 )
 from chillapi.database.repository import _MAGIC_QUERIES
 from chillapi.exceptions.api_manager import ConfigError
-from chillapi.exceptions.http import NotFoundException, RequestSchemaError
+from chillapi.exceptions.http import NotFoundException, RequestInvalidFieldSchemaError, RequestSchemaError
 from chillapi.extensions.audit import AuditLog
 from chillapi.logger.app_loggers import logger
 from chillapi.swagger.http import AutomaticResource, ResourceResponse
@@ -156,7 +156,7 @@ def create_put_single_endpoint_class(table: dict, allowed_columns: List, allowed
         def validate_request(self, **args):
             form = args["form"]
             if not form.validate():
-                raise ValidationError(message=simplejson.dumps(form.errors))
+                raise RequestInvalidFieldSchemaError(simplejson.dumps(form.errors))
 
         def request(self, **args) -> ResourceResponse:
             form = args["form"]
@@ -198,8 +198,11 @@ def create_put_single_endpoint_class(table: dict, allowed_columns: List, allowed
         @swagger.doc(request_schema)
         def put(self):
             data = request.json
-            form = form_class(data=data)
-            return self.process_request(form=form)
+            try:
+                form = form_class(data=data)
+            except ValueError:
+                raise RequestSchemaError()
+            return self.process_request(form=form, data=data)
 
     PutSingleEndpoint.__name__ = PutSingleEndpoint.endpoint
 
@@ -236,17 +239,18 @@ def create_post_single_endpoint_class(table: dict, allowed_columns: List, allowe
                 if update_extension.enabled:
                     form_data = update_extension.set_field_data(form_data)
 
-                repository.update_record(table_name, id_field, oid, {**form_data, **{id_field: oid}})
+                _data = {**form_data, **{id_field: oid}}
+                repository.update_record(table_name, id_field, oid, _data)
 
                 if update_extension.enabled:
-                    form_data = update_extension.unset_field_data(form_data)
-                response.response = form_data
+                    form_data = update_extension.unset_field_data(_data)
+                response.response = _data
 
             except sqlalchemy.exc.IntegrityError as e:
                 if isinstance(e.orig, psycopg2.errors.UniqueViolation):
-                    raise ValidationError(message=e.orig)
+                    raise RequestInvalidFieldSchemaError(message=e.orig)
                 if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
-                    raise ValidationError(message=e.orig)
+                    raise RequestInvalidFieldSchemaError(message=e.orig)
 
             response.audit = AuditLog(
                 f"Update {table_name} record",
@@ -273,7 +277,7 @@ def create_post_single_endpoint_class(table: dict, allowed_columns: List, allowe
                 record = repository.fetch_by(table_name, ["*"], query, query_values)
 
                 if not form.validate():
-                    raise ValidationError(message=simplejson.dumps(form.errors))
+                    raise RequestInvalidFieldSchemaError(simplejson.dumps(form.errors))
 
                 return record.one()._asdict()
             except sqlalchemy.exc.NoResultFound:
@@ -285,7 +289,7 @@ def create_post_single_endpoint_class(table: dict, allowed_columns: List, allowe
         def post(self, id):
             data = request.json
             form = form_class(data=data)
-            return self.process_request(form=form, id=id)
+            return self.process_request(form=form, data=data, id=id)
 
     PostSingleEndpoint.__name__ = PostSingleEndpoint.endpoint
 
@@ -450,8 +454,8 @@ def create_get_list_endpoint_class(  # noqa C901
             query_no_limit_params = {k: v["value"] for k, v in query_no_limit.items() if "op" in v}
             count_sql = create_select_filtered_paginated_query_count(table_name, query_no_limit, id_field)
 
-            count_record = repository.execute(count_sql, query_no_limit_params)
-            count = count_record.one()._asdict().get("count")
+            count_record = repository.execute(count_sql, query_no_limit_params).one()._asdict()
+            count = count_record.get("count")
 
             response = ResourceResponse()
             data = {}
@@ -512,9 +516,9 @@ def create_put_list_endpoint_class(  # noqa C901
         representations = request_schema
 
         def validate_request(self, **args):
-            if len(args["data"]) > form_schema_model.maxItems:
+            if hasattr(form_schema_model, "maxItems") and len(args["data"]) > form_schema_model.maxItems:
                 raise ValidationError(message=f"Body too large, max items: {form_schema_model.maxItems}")
-            if len(args["data"]) < form_schema_model.minItems:
+            if hasattr(form_schema_model, "minItems") and len(args["data"]) < form_schema_model.minItems:
                 raise ValidationError(message=f"Body too small, min items: {form_schema_model.minItems}")
             forms = args["form"]
             errors = {}
@@ -581,9 +585,9 @@ def create_post_list_endpoint_class(  # noqa C901
 
         def validate_request(self, **args):
             forms = args["form"]
-            if len(args["data"]) > form_schema_model.maxItems:
+            if hasattr(args["data"], "maxItems") and len(args["data"]) > form_schema_model.maxItems:
                 raise ValidationError(message=f"Body too large, max items: {form_schema_model.maxItems}")
-            if len(args["data"]) < form_schema_model.minItems:
+            if hasattr(args["data"], "minItems") and len(args["data"]) < form_schema_model.minItems:
                 raise ValidationError(message=f"Body too small, min items: {form_schema_model.minItems}")
 
             errors = {}

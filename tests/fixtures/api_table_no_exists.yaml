@@ -1,5 +1,5 @@
 app:
-  name: MixedTest
+  name: api_table_no_exists
   version: '0.1'
   swagger_url: '/swagger'
   swagger_ui_url: '/doc'

@@ -15,3 +15,15 @@ class TableNotExist(ConfigError):
 
 class ColumnNotExist(ConfigError):
     pass
+
+
+class RuntimeException(ConfigError):
+    pass
+
+
+class LogicException(ConfigError):
+    pass
+
+
+class ResourceArgumentsLogicException(ConfigError):
+    pass

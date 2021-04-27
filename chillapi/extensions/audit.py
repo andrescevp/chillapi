@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from chillapi.abc import AuditLog as AuditLogBase, AuditLogHandler
-from chillapi.http.utils import get_request_id, get_traced_request_uuid
+from chillapi.http.utils import get_request_id
 from chillapi.logger.app_loggers import audit_logger
 
 
@@ -40,7 +40,6 @@ def register_audit_handler(app, audit_logger_handler):
         if response and "audit" in response.__dict__ and isinstance(response.audit, AuditLog):
             log = response.audit
             log.request_id = get_request_id()
-            log.prev_request_id = get_traced_request_uuid()
             log.date = datetime.now()
 
         @response.call_on_close

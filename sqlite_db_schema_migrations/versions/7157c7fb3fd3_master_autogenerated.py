@@ -22,7 +22,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS book_category (
-               id INTEGER PRIMARY KEY,
+               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
                name TEXT NOT NULL,
                created_at datetime,
                created_by TEXT,
@@ -39,7 +39,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS book (
-               id INTEGER PRIMARY KEY,
+               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
                book_category_id int NOT NULL,
                name TEXT NOT NULL,
                asin TEXT NOT NULL,
@@ -60,7 +60,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS author (
-               id INTEGER PRIMARY KEY,
+               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
                name TEXT NOT NULL,
                asin TEXT NOT NULL,
                created_at datetime,
@@ -93,7 +93,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS dummy_create (
-               id INTEGER PRIMARY KEY,
+               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
                name TEXT,
                creation datetime
             );
@@ -105,7 +105,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS dummy (
-               id INTEGER PRIMARY KEY,
+               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
                name TEXT
             );
             """
@@ -115,8 +115,8 @@ def upgrade():
     conn.execute(
         text(
             """
-            INSERT INTO book_category (id, name, created_at) VALUES
-            (1, '{"en-US":"Suspense"}', CURRENT_TIMESTAMP)
+            INSERT INTO book_category (name, created_at) VALUES
+            ('{"en-US":"Suspense"}', CURRENT_TIMESTAMP)
             """
         )
     )
@@ -124,16 +124,16 @@ def upgrade():
     conn.execute(
         text(
             """
-            INSERT INTO book (id, book_category_id, name, asin, created_at) VALUES
-            (1, 1, 'The Dark Tower', '1444723502', CURRENT_TIMESTAMP)
+            INSERT INTO book (book_category_id, name, asin, created_at) VALUES
+            (1, 'The Dark Tower', '1444723502', CURRENT_TIMESTAMP)
             """
         )
     )
     conn.execute(
         text(
             """
-            INSERT INTO author (id, name, asin, created_at) VALUES
-            (1, '{"en-US": "Stephen King"}', 'X23XX', CURRENT_TIMESTAMP)
+            INSERT INTO author (name, asin, created_at) VALUES
+            ('{"en-US": "Stephen King"}', 'X23XX', CURRENT_TIMESTAMP)
             """
         )
     )
@@ -141,7 +141,7 @@ def upgrade():
     conn.execute(
         text(
             """
-            INSERT INTO book_has_author (author_id, book_id) VALUES (1, 1)
+            INSERT INTO book_has_author (author_id, book_id) VALUES (1)
             """
         )
     )

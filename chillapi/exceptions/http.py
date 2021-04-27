@@ -9,3 +9,11 @@ class NotFoundException(HTTPException):
 class RequestSchemaError(HTTPException):
     code = 400
     description = "Request body invalid"
+
+
+class RequestInvalidFieldSchemaError(HTTPException):
+    def __init__(self, message):
+        super().__init__()
+        self.description = message
+
+    code = 400

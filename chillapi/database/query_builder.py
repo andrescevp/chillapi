@@ -51,7 +51,7 @@ def create_select_filtered_paginated_ordered_query(table, columns: List[str], fi
 
 def create_select_filtered_paginated_query_count(table, filters: dict, id_field_where: str):
     table = Table(table)
-    query = Query.from_(table).select(fn.Count(id_field_where))
+    query = Query.from_(table).select(fn.Count(id_field_where, alias="count"))
 
     query = set_query_filters(filters, query, table)
 
