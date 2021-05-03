@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [ 3.8 ]
 
     steps:
       # Use preinstalled PostgreSQL
@@ -29,8 +29,8 @@ jobs:
           PGPASSWORD=root psql --username=root --host=localhost --list chillapi
 
       - uses: actions/checkout@v2
-#      - name: Setup Graphviz
-#        uses: ts-graphviz/setup-graphviz@v1
+      #      - name: Setup Graphviz
+      #        uses: ts-graphviz/setup-graphviz@v1
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -38,6 +38,6 @@ jobs:
       - name: set environment variables
         uses: allenevans/set-env@v2.0.0
         with:
-          APP_DB_URL: 'postgresql://root:root@localhost/chillapi'
+          __CHILLAPI_SETUP_TESTING_DB_DSN__: 'postgresql://root:root@localhost/chillapi'
       - name: Running library tests
         run: python setup.py test
