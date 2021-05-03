@@ -22,7 +22,17 @@ _MAGIC_QUERIES = {
             FROM  {x['table']}
             {x['where']}
         """
-    }
+    },
+    DB_DIALECT_SQLITE: {
+        "get_ids_not_in_table_from_list": lambda x: f"""
+            select t.id
+from (
+  values ({'),('.join(x['values'])})
+) as t(id)
+  left join {x['table']} i on i.{x['id_field']} = t.id
+where i.{x['id_field']} is null;
+        """
+    },
 }
 
 
@@ -75,7 +85,12 @@ class DataRepository(Repository):
         adapted_params = [self.adapt_params(param) for param in params]
         params_keys = adapted_params[0].keys()
         select_columns = [c for c in columns if c in params_keys]
-        sql = create_insert(table, select_columns) + f"{' RETURNING ' + returning_field if returning is True else ''}"
+
+        returning_stmt = f"RETURNING {returning_field}"
+
+        if self.db_dialect != DB_DIALECT_POSTGRES:
+            returning_stmt = ""
+        sql = create_insert(table, select_columns) + returning_stmt
 
         insert_result = self.execute(sql, adapted_params)
 
@@ -107,7 +122,6 @@ class DataRepository(Repository):
         if self.db_dialect != DB_DIALECT_POSTGRES:
             returning_stmt = ""
         sql = create_insert(table, select_columns) + returning_stmt
-
         insert_result = self.execute(sql, adapted_params)
 
         if self.db_dialect == DB_DIALECT_SQLITE:

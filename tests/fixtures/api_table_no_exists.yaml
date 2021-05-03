@@ -7,7 +7,8 @@ app:
   port: 8000
   debug: True
 environment:
-  APP_DB_URL: '$DB_URL'
+  APP_DB_URL: '$__CHILLAPI_SETUP_TESTING_DB_DSN__'
+  #  APP_DB_URL: 'sqlite:///var/sqlite.db'
   APP_SECRET_KEY: 'super-secret-key'
 logger:
   app:
@@ -15,13 +16,13 @@ logger:
     level: 40
   audit_logger:
     output: stdout
-    level: 10
+    level: 40
   error_handler:
     output: stdout
-    level: 10
+    level: 40
   sqlalchemy:
     output: stdout
-    level: 10
+    level: 40
 database:
   defaults:
     tables:
@@ -68,8 +69,8 @@ database:
           default_field: created_at
   tables:
     - name: book_category
-#      alias: ~
-#      id_field: ~ # id by default
+      #      alias: ~
+      #      id_field: ~ # id by default
       extensions:
         soft_delete:
           cascade:
@@ -78,8 +79,8 @@ database:
                 column_id: id
                 column_fk: book_category_id
     - name: not_exist
-#      alias: ~
-#      id_field: ~ # id by default
+      #      alias: ~
+      #      id_field: ~ # id by default
       #      extensions:
       #        soft_delete:
       #          enable: False
@@ -103,7 +104,7 @@ database:
     #      api_endpoints:   #overwrite defaults
     #        GET: [ SINGLE ]
     - name: author
-#      alias: ~
+      #      alias: ~
       #      id_field: iso
       extensions:
         soft_delete:
@@ -132,8 +133,8 @@ database:
       #          LIST: [ ]
       api_endpoints: { }
     - name: dummy
-#      alias: ~
-#      id_field: ~
+      #      alias: ~
+      #      id_field: ~
       extensions:
         soft_delete:
           enable: False
@@ -157,8 +158,8 @@ database:
       #          LIST: [ ]
       api_endpoints: { }
     - name: dummy_create
-#      alias: ~
-#      id_field: ~
+      #      alias: ~
+      #      id_field: ~
       extensions:
         soft_delete:
           enable: False

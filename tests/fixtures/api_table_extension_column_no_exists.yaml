@@ -7,7 +7,8 @@ app:
   port: 8000
   debug: True
 environment:
-  APP_DB_URL: '$DB_URL'
+  APP_DB_URL: '$__CHILLAPI_SETUP_TESTING_DB_DSN__'
+#  APP_DB_URL: 'sqlite:///var/sqlite.db'
   APP_SECRET_KEY: 'super-secret-key'
 logger:
   app:
@@ -15,13 +16,13 @@ logger:
     level: 40
   audit_logger:
     output: stdout
-    level: 10
+    level: 40
   error_handler:
     output: stdout
-    level: 10
+    level: 40
   sqlalchemy:
     output: stdout
-    level: 10
+    level: 40
 database:
   defaults:
     tables:

@@ -22,7 +22,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS book_category (
-               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+               id INTEGER PRIMARY KEY NOT NULL ,
                name TEXT NOT NULL,
                created_at datetime,
                created_by TEXT,
@@ -39,7 +39,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS book (
-               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+               id INTEGER PRIMARY KEY NOT NULL ,
                book_category_id int NOT NULL,
                name TEXT NOT NULL,
                asin TEXT NOT NULL,
@@ -60,7 +60,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS author (
-               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+               id INTEGER PRIMARY KEY NOT NULL ,
                name TEXT NOT NULL,
                asin TEXT NOT NULL,
                created_at datetime,
@@ -93,7 +93,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS dummy_create (
-               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+               id INTEGER PRIMARY KEY NOT NULL ,
                name TEXT,
                creation datetime
             );
@@ -105,7 +105,7 @@ def upgrade():
         text(
             """
             CREATE TABLE IF NOT EXISTS dummy (
-               id INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+               id INTEGER PRIMARY KEY NOT NULL ,
                name TEXT
             );
             """

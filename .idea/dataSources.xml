@@ -8,12 +8,17 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/chillapi</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="SQLite" uuid="dabde1a4-c76a-406d-83cf-b9c4d3bbb14d">
+    <data-source source="LOCAL" name="sqlite" uuid="4febf8e5-4f70-43e7-a178-1cd316860edc">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/var/db.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:\\wsl$\Ubuntu-20.04\home\acevallos\workspace\codebook-api\var\sqlite.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.34.0/sqlite-jdbc-3.34.0.jar</url>
+        </library>
+      </libraries>
     </data-source>
   </component>
 </project>

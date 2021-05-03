@@ -184,7 +184,7 @@ class ApiConfig:
         if "templates" in self.database and len(self.database["templates"]) > 0:
             self.database["templates"] = [dict(dict_deepmerge({}, _sql_template_default_config, t)) for t in self.database["templates"]]
 
-        self.db, self.db_inspector = create_db(self.environment["APP_DB_URL"], self.database["schema"])
+        self.db, self.db_inspector = create_db(self.environment, self.database["schema"])
         self.repository = DataRepository(self.db)
 
         _db_tables = self.db_inspector.get_table_names()

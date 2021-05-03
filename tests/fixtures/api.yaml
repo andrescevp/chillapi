@@ -28,8 +28,8 @@ app:
     package: my_app.auth
     handler: auth
 environment:
-  APP_DB_URL: '$DB_URL'
-#  APP_DB_URL: 'sqlite:///var/db.sqlite'
+  APP_DB_URL: '$__CHILLAPI_SETUP_TESTING_DB_DSN__'
+#  APP_DB_URL: 'sqlite:///var/sqlite.db'
   APP_SECRET_KEY: 'super-secret-key'
 logger:
   app:

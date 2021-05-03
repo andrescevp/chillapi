@@ -2,6 +2,7 @@ FROM python:3.8-slim
 
 RUN apt-get update
 RUN apt-get install -y libpq-dev build-essential libgraphviz-dev graphviz
+RUN apt-get install -y sqlite3 libsqlite3-dev
 #RUN apt-get install -y default-libmysqlclient-dev  default-mysql-client
 
 #WORKDIR /tmp
@@ -19,7 +20,8 @@ WORKDIR /app
 
 RUN mkdir var
 RUN touch var/app.log
-
+RUN python -m pip install -U pip
+RUN pip install pipreqs
 RUN set -ex && \
     pip install -r requirements.txt
 

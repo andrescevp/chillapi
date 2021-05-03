@@ -1,5 +1,8 @@
+import os
 import pathlib
 import unittest
+
+from unittest import mock
 
 from chillapi.abc import TableExtension
 from chillapi.api import ChillApi
@@ -19,6 +22,7 @@ class ChillApiTestErrors(unittest.TestCase):
     def tearDown(self) -> None:
         ApiConfig.reset()
 
+
     def testTableNotFoundError(self):
         api_config = read_yaml(f'{CWD}/../fixtures/api_table_no_exists.yaml')
 
@@ -29,6 +33,7 @@ class ChillApiTestErrors(unittest.TestCase):
                 ApiConfig,
                 **{**api_config, **{'extensions': table_extension}}
                 )
+
 
     def testTableColumnNotFoundInExtensionError(self):
         api_config = read_yaml(
@@ -44,6 +49,7 @@ class ChillApiTestErrors(unittest.TestCase):
                 **{**api_config, **{'extensions': table_extension}}
                 )
 
+
     def testModules(self):
         # api_config = read_yaml(
         #         f'{CWD}/../fixtures/api.yaml'
@@ -51,6 +57,7 @@ class ChillApiTestErrors(unittest.TestCase):
         #
         # module_loader = ChillApiModuleLoader()
         # table_extension = ChillApiExtensions(module_loader)
+
         _resources = ChillApi(config_file = f'{CWD}/../fixtures/api.yaml')
 
         self.assertTrue(_resources.module_loader.has_module('my_app.audit'))
@@ -68,4 +75,3 @@ class ChillApiTestErrors(unittest.TestCase):
         self.assertTrue(_resources.table_extensions.tables['DummyCreate']['on_create_timestamp'].config['default_field'] == 'creation')
 
         self.assertTrue(isinstance(_resources.table_extensions.tables['Author']['after_response'], MyAfterResponseEvent))
-        print(_resources.api_config['database']['tables'])

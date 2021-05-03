@@ -16,9 +16,11 @@ run_dev:
 clean_dbs:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && rm -rf var/db.sqlite && alembic -c sqlite.alembic.ini upgrade head && chown -Rf 1000:1000 var/db.sqlite"
 test_settime:
-	${DOCKER} sh -c "${VENV_ACTIVATE} && python -m unittest tests.settime.api tests.settime.app.config"
+	${DOCKER} sh -c "${VENV_ACTIVATE} && python discover_tests.py settime"
 test_runtime:
-	${DOCKER} sh -c "${VENV_ACTIVATE} && python -m unittest tests.runtime_auth_strict.api_test"
+	${DOCKER} sh -c "${VENV_ACTIVATE} && python discover_tests.py runtime_auth_strict"
+test:
+	${DOCKER} sh -c "${VENV_ACTIVATE} && python discover_tests.py runtime_auth_strict && python discover_tests.py settime"
 profile_graph:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && gprof2dot -f pstats $(FILE) | dot -Tpng -o $(FILE).png"
 pip_install:
@@ -28,7 +30,7 @@ pip_uninstall:
 pip_install_requirements:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && pip install -r requirements.txt"
 pip_freeze_requirements:
-	${DOCKER} sh -c "${VENV_ACTIVATE} && pip freeze > requirements.txt && chown -Rf 1000:1000 requirements.txt"
+	${DOCKER} sh -c "${VENV_ACTIVATE} && pip freeze > requirements.txt && pipreqs chillapi/ && chown -Rf 1000:1000 requirements.txt && chown -Rf 1000:1000 chillapi/requirements.txt"
 docker_exec_n:
 	${NTDOCKER} ${CMD}
 docker_pyexec:

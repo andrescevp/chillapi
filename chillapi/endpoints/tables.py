@@ -598,7 +598,7 @@ def create_post_list_endpoint_class(  # noqa C901
                 if not form.validate():
                     errors[i] = form.errors
 
-            ids_check_sql = _MAGIC_QUERIES[DB_DIALECT_POSTGRES]["get_ids_not_in_table_from_list"](
+            ids_check_sql = _MAGIC_QUERIES[repository.db_dialect]["get_ids_not_in_table_from_list"](
                 {
                     "values": [f":{id}" for id in ids],
                     "id_field": id_field,

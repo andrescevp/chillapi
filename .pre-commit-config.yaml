@@ -14,7 +14,7 @@ repos:
       - id: detect-aws-credentials
       - id: mixed-line-ending
       - id: no-commit-to-branch
-      - id: requirements-txt-fixer
+#      - id: requirements-txt-fixer
       - id: detect-private-key
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.9.0
@@ -23,13 +23,13 @@ repos:
         args: [ --py38-plus ]
   - repo: local
     hooks:
-      - id: requirements
-        name: requirements
-        language: system
-        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/pip freeze > requirements.txt && chown -Rf 1000:1000 requirements.txt"
-        always_run: true
-        require_serial: true
-        types_or: [ python ]
+#      - id: requirements
+#        name: requirements
+#        language: system
+#        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/pip freeze > requirements.txt && pipreqs --force chillapi/ && chown -Rf 1000:1000 requirements.txt && chown -Rf 1000:1000 chillapi/requirements.txt || true"
+#        always_run: true
+#        require_serial: true
+#        types_or: [ python ]
       - id: black
         name: black
         language: system
@@ -44,20 +44,41 @@ repos:
         always_run: true
         require_serial: true
         types_or: [ python ]
-      - id: testing set time
-        name: testing set time
+      - id: test on docker
+        name: test on docker
         language: system
-        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/python -m unittest tests.settime.api tests.settime.app.config"
+        entry: docker exec chillapi-api bash -c "__CHILLAPI_SETUP_TESTING_DB_DSN__='postgresql://root:root@postgres/chillapi' python setup.py test"
         always_run: true
         require_serial: true
         types_or: [ python ]
-      - id: testing run time
-        name: testing run time
+      - id: fix_permissions
+        name: fix_permissions
         language: system
-        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/python -m unittest tests.runtime_auth_strict.api_test"
+        entry: docker exec chillapi-api chown -Rf 1000:1000 .
         always_run: true
         require_serial: true
         types_or: [ python ]
+      - id: clean test build
+        name: clean test build
+        language: system
+        entry: rm -Rf .eggs/ build/ chillapi.egg-info/ dist/
+        always_run: true
+        require_serial: true
+        types_or: [ bash ]
+      - id: test on local
+        name: test on local
+        language: system
+        entry: python setup.py test
+        always_run: true
+        require_serial: true
+        types_or: [ bash ]
+      - id: clean test build 2
+        name: clean test build 2
+        language: system
+        entry: rm -rf .eggs/ build/ chillapi.egg-info/ dist/
+        always_run: true
+        require_serial: true
+        types_or: [ bash ]
       - id: fix_permissions
         name: fix_permissions
         language: system

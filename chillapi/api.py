@@ -45,6 +45,11 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
         raise ConfigError(e)
 
     _app_name = api_config["app"]["name"]
+
+    if app is None:
+        app = Flask(_app_name)
+        ApiConfig.reset()
+
     module_loader = ChillApiModuleLoader()
 
     set_api_security(api_config, module_loader)
@@ -55,9 +60,6 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
     data_repository = config.repository
 
     api_manager = FlaskApiManager(config)
-
-    if app is None:
-        app = Flask(_app_name)
 
     register_error_handlers(app)
     app.config["BASE_DIR"] = CWD

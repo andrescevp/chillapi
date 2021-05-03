@@ -1,7 +1,9 @@
 import json
+import os
 
 from faker import Faker
 from flask import Response
+from unittest import mock
 
 from tests.runtime_auth_strict import appurl, DBCase, header
 
@@ -11,11 +13,13 @@ fake.seed_locale('en_US', 0)
 
 
 class ApiTest(DBCase):
+
     def test_path_in_swagger_schema(self):
         rv: Response = self.app.get(appurl % "swagger.json", headers = header)
         response = json.loads(rv.data)
         self.assertTrue(rv.status_code == 200)
         self.assertTrue('/create/author' in response['paths'].keys())
+
 
     def test_validations(self):
         rv: Response = self.app.put("/create/dummy", headers = header, json = {
@@ -59,6 +63,7 @@ class ApiTest(DBCase):
         self.assertTrue('{"name": ["This field is required."]}'
                         == response['message'])
 
+
     def test_put_get_post_delete_single_dummy(self):
         name = fake.unique.name()
         rv: Response = self.app.put("/create/dummy", headers = header, json = {
@@ -74,7 +79,6 @@ class ApiTest(DBCase):
                 )
 
         response = json.loads(rv.data)
-
         self.assertTrue(response['name'] == name)
 
         self.assertTrue(rv.status_code == 200)
@@ -83,7 +87,6 @@ class ApiTest(DBCase):
                 })
 
         response = json.loads(rv.data)
-
         self.assertTrue(response['name'] == f'POST_{name}')
 
         self.assertTrue(rv.status_code == 200)
@@ -95,6 +98,7 @@ class ApiTest(DBCase):
         self.assertTrue(response['message'] == 'ok')
 
         self.assertTrue(rv.status_code == 200)
+
 
     def test_put_get_post_delete_list_dummy(self):
         name = fake.unique.name()
@@ -127,7 +131,7 @@ class ApiTest(DBCase):
         self.assertTrue('data' in response)
         self.assertTrue(len(response['data']) > 1)
         # self.assertTrue(response['_meta']['total_records'] == 6)
-
+        print(response)
         self.assertTrue(rv.status_code == 200)
         _found = False
         for _i, item in enumerate(response['data']):
