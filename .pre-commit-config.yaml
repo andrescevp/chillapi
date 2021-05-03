@@ -33,14 +33,14 @@ repos:
       - id: black
         name: black
         language: system
-        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/black -t py38 -q -l 150 chillapi/"
+        entry: docker exec chillapi-api bash -c "black -t py38 -q -l 150 chillapi/"
         always_run: true
         require_serial: true
         types_or: [ python ]
       - id: flake8
         name: flake8
         language: system
-        entry: docker exec chillapi-api bash -c ". venv/bin/activate && venv/bin/flake8 --max-line-length 150 --max-complexity 15 chillapi"
+        entry: docker exec chillapi-api bash -c "flake8 --max-line-length 150 --max-complexity 15 chillapi"
         always_run: true
         require_serial: true
         types_or: [ python ]

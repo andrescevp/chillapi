@@ -1,19 +1,19 @@
 version: "3.7"
 services:
-#  redis:
-#    container_name: redis
-#    image: redis
-#    entrypoint: redis-server --protected-mode no --timeout 20 --appendonly yes --loglevel warning
+  #  redis:
+  #    container_name: redis
+  #    image: redis
+  #    entrypoint: redis-server --protected-mode no --timeout 20 --appendonly yes --loglevel warning
 
-#  mysql:
-#    image: mysql:5.7
-#    container_name: chillapi_mysql
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=root
-#    ports:
-#      - 3306:3306
-#    volumes:
-#      - ./docker/mysql:/docker-entrypoint-initdb.d/:ro
+  #  mysql:
+  #    image: mysql:5.7
+  #    container_name: chillapi_mysql
+  #    environment:
+  #      - MYSQL_ROOT_PASSWORD=root
+  #    ports:
+  #      - 3306:3306
+  #    volumes:
+  #      - ./docker/mysql:/docker-entrypoint-initdb.d/:ro
 
   postgres:
     image: 'postgres:13.1-alpine'
@@ -46,7 +46,24 @@ services:
         [ ! -d "./var" ] && mkdir ./var
         pip install virtualenv
         [ ! -d "./venv" ] && virtualenv venv
-        pip install -r requirements.txt
+        pip install -r chillapi/requirements.txt
+        pip install -r server-requirements.txt
         chown -Rf 1000:1000 .
         tail -f /dev/null
       "
+
+  locust-chillapi-api:
+    image: locustio/locust
+    container_name: locust-chillapi-api
+    depends_on:
+      - postgres
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./performance:/mnt/locust
+    working_dir: /mnt/locust
+    entrypoint: >
+      sh -c "
+        tail -f /dev/null
+      "
+#    command: -f /mnt/locust/locustfile.py --master -H http://chillapi-api:8080

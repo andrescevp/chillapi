@@ -34,7 +34,7 @@ environment:
 logger:
   app:
     output: stdout
-    level: 40
+    level: 10
   audit_logger:
     output: stdout
     level: 40

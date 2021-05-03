@@ -23,6 +23,7 @@ RUN touch var/app.log
 RUN python -m pip install -U pip
 RUN pip install pipreqs
 RUN set -ex && \
-    pip install -r requirements.txt
+    pip install -r chillapi/requirements.txt && \
+    pip install -r server-requirements.txt
 
 #CMD gunicorn --log-level=debug --bind=0.0.0.0:8000 app:server

@@ -17,6 +17,7 @@ chardet==4.0.0
 click==7.1.2
 colorama==0.4.4
 colorhash==1.0.3
+ConfigArgParse==1.4
 configparser==5.0.2
 cryptography==3.4.7
 datalake==0.33
@@ -34,6 +35,7 @@ Faker==8.1.0
 filelock==3.0.12
 flake8==3.9.1
 Flask==1.1.2
+Flask-BasicAuth==0.2.0
 Flask-Cors==3.0.9
 Flask-HTTPAuth==4.2.0
 Flask-JWT==0.3.2
@@ -43,6 +45,8 @@ flask-restplus==0.13.0
 Flask-SQLAlchemy==2.4.3
 Flask-WTF==0.14.3
 gelf-formatter==0.2.0
+gevent==21.1.2
+geventhttpclient==1.4.4
 gprof2dot==2021.2.21
 graphviz==0.16
 greenlet==1.0.0
@@ -65,6 +69,7 @@ jsonref==0.2
 jsonschema==3.2.0
 keyring==23.0.1
 linecache2==1.0.0
+locust==1.4.4
 magicalimport==0.9.1
 Mako==1.1.4
 MarkupSafe==1.1.1
@@ -105,6 +110,7 @@ python-editor==1.0.4
 python-mimeparse==1.6.0
 pytz==2021.1
 PyYAML==5.4.1
+pyzmq==22.0.3
 readme-renderer==29.0
 regex==2021.3.17
 requests==2.25.1
@@ -146,10 +152,12 @@ validators==0.18.2
 virtualenv==20.4.3
 webcolors==1.11.1
 webencodings==0.5.1
-Werkzeug==0.16.1
+Werkzeug==1.0.1
 WTForms==2.3.3
 WTForms-Alchemy==0.17.0
 WTForms-Components==0.10.5
 WTForms-JSON==0.3.3
 xeger==0.3.5
 zipp==3.4.1
+zope.event==4.5.0
+zope.interface==5.4.0
