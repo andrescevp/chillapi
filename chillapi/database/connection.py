@@ -7,7 +7,7 @@ from sqlalchemy.orm.scoping import ScopedSession
 
 
 def create_db(environment: dict, schemas: str = None) -> Tuple[ScopedSession, Inspector]:
-    db_url = environment["APP_DB_URL"]
+    db_url = environment["__CHILLAPI_DB_DSN__"]
     connect_args = {}
 
     if db_url.__contains__("postgresql"):

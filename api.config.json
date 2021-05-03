@@ -27,8 +27,8 @@
     }
   },
   "environment": {
-    "APP_DB_URL": "postgresql://root:root@postgres/chillapi",
-    "APP_SECRET_KEY": "super-secret-key"
+    "__CHILLAPI_DB_DSN__": "postgresql://root:root@postgres/chillapi",
+    "__CHILLAPI_APP_SECRET_KEY__": "super-secret-key"
   },
   "database": {
     "name": null,

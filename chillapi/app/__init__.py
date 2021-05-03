@@ -9,8 +9,8 @@ _app_defaults = {
 }
 
 _environment_defaults = {
-    "APP_DB_URL": None,
-    "APP_SECRET_KEY": "this-is-not-so-secret",
+    "__CHILLAPI_DB_DSN__": None,
+    "__CHILLAPI_APP_SECRET_KEY__": "this-is-not-so-secret",
 }
 
 _logger_defaults = {

@@ -27,8 +27,8 @@
     }
   },
   "environment": {
-    "APP_DB_URL": "sqlite:///var/db.sqlite",
-    "APP_SECRET_KEY": "super-secret-key"
+    "__CHILLAPI_DB_DSN__": "sqlite:///var/db.sqlite",
+    "__CHILLAPI_APP_SECRET_KEY__": "super-secret-key"
   },
   "database": {
     "name": null,

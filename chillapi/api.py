@@ -63,8 +63,8 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
 
     register_error_handlers(app)
     app.config["BASE_DIR"] = CWD
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("APP_DB_URL")
-    app.config["SECRET_KEY"] = os.environ.get("APP_SECRET_KEY")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("__CHILLAPI_DB_DSN__")
+    app.config["SECRET_KEY"] = os.environ.get("__CHILLAPI_APP_SECRET_KEY__")
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
     app.config["TRAP_HTTP_EXCEPTIONS"] = True

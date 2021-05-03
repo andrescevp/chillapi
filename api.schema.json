@@ -155,19 +155,19 @@
       "title": "The environment schema",
       "description": "raw string or an os env prefixed by $. Example: $APP_SECRET",
       "required": [
-        "APP_DB_URL",
-        "APP_SECRET_KEY"
+        "__CHILLAPI_DB_DSN__",
+        "__CHILLAPI_APP_SECRET_KEY__"
       ],
       "properties": {
-        "APP_DB_URL": {
+        "__CHILLAPI_DB_DSN__": {
           "type": "string",
-          "title": "The APP_DB_URL schema",
+          "title": "The __CHILLAPI_DB_DSN__ schema",
           "description": "An explanation about the purpose of this instance.",
           "default": "postgresql://root:root@postgres/chillapi"
         },
-        "APP_SECRET_KEY": {
+        "__CHILLAPI_APP_SECRET_KEY__": {
           "type": "string",
-          "title": "The APP_SECRET_KEY schema",
+          "title": "The __CHILLAPI_APP_SECRET_KEY__ schema",
           "description": "An explanation about the purpose of this instance.",
           "default": "super-secret-key"
         }

@@ -163,8 +163,8 @@ class ApiConfig:
 
         self.environment = dict(dict_deepmerge({}, _environment_defaults, environment))
 
-        if "APP_DB_URL" in self.environment and self.environment["APP_DB_URL"].startswith("$"):
-            self.environment["APP_DB_URL"] = os.getenv(self.environment["APP_DB_URL"].replace("$", "", 1))
+        if "__CHILLAPI_DB_DSN__" in self.environment and self.environment["__CHILLAPI_DB_DSN__"].startswith("$"):
+            self.environment["__CHILLAPI_DB_DSN__"] = os.getenv(self.environment["__CHILLAPI_DB_DSN__"].replace("$", "", 1))
 
         for _env_key in self.environment.keys():
             os.environ.setdefault(_env_key, self.environment.get(_env_key))
