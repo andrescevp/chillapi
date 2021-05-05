@@ -1,8 +1,21 @@
 # ChillApi
 
+## Install
+
+```shell
+pip install chillapi
+```
+
 ## DEMO
 
 https://github.com/andrescevp/chillapi-demo
+
+```shell
+git clone git@github.com:andrescevp/chillapi-demo.git
+docker-compose up
+make init 
+make run
+```
 
 ## Motivation
 
