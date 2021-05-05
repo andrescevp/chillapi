@@ -35,6 +35,8 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
     :param config_file:
     :param export_path:
     """
+    if not os.path.exists(export_path):
+        os.makedirs(export_path)
     SCHEMA_CONFIG_FILE = os.path.realpath(f"{pathlib.Path(__file__).parent.absolute()}/api.schema.json")
     api_config = read_yaml(config_file)
     api_schema = json.load(open(SCHEMA_CONFIG_FILE))
@@ -86,7 +88,7 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
 
     api_doc.RestfulApi(app, title=_app_name, doc=api_config["app"]["swagger_ui_url"], config={"app_name": _app_name})  # Swagger UI config overrides
 
-    api_spec_file = f"{CWD}/var/api_spec.json"
+    api_spec_file = f"{export_path}/api_spec.json"
 
     if not os.path.exists(api_spec_file):
         import requests
@@ -134,7 +136,7 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
         def filename_format(env):
             return "{uuid}.prof".format(uuid=env["HTTP_X_REQUEST_ID"])
 
-        app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30], profile_dir="./profile", filename_format=filename_format)
+        app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30], profile_dir=f"{export_path}/profile", filename_format=filename_format)
 
         register_routes_sitemap(app)
 

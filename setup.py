@@ -19,7 +19,7 @@ with open(path.join(this_directory, 'README.md'), encoding = 'utf-8') as f:
 setup(
         name = 'chillapi',
         packages = find_packages(include = ['chillapi', 'chillapi.*']),
-        version = '1.0.9',
+        version = '0.0.1',
         description = 'A library to create APIs focused on data projects',
         long_description = long_description,
         long_description_content_type = 'text/markdown',
