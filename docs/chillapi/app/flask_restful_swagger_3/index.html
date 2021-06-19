@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>chillapi.app.flask_restful_swagger_3 API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>chillapi.app.flask_restful_swagger_3</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import copy
+import inspect
+
+from flask import Blueprint, request
+from flask_restful import abort as flask_abort, Api as restful_Api, Resource as flask_Resource
+
+from chillapi.app.flask_restful_swagger_3.swagger import (
+    _auth as auth,
+    add_parameters,
+    create_swagger_endpoint,
+    extract_swagger_path,
+    parse_method_doc,
+    parse_schema_doc,
+    validate_components_object,
+    # validate_operation_object,
+    validate_path_item_object,
+    ValidationError,
+)
+
+
+def abort(http_status_code, schema=None, **kwargs):
+    &#34;&#34;&#34;
+    Proxy method to throw a non authorized request
+
+    :param http_status_code:
+    :param schema:  (Default value = None)
+    :param **kwargs:
+
+    &#34;&#34;&#34;
+    if schema:
+        kwargs.update(schema)
+    flask_abort(http_status_code, **kwargs)
+
+
+class ModelError(Exception):
+    &#34;&#34;&#34; Model Error Base Class&#34;&#34;&#34;
+
+    pass
+
+
+def auth_required(f):
+    &#34;&#34;&#34;Decorator which checks if the request is permitted to call the view
+
+    :param f:
+
+    &#34;&#34;&#34;
+
+    def decorator(*args, **kwargs):
+        &#34;&#34;&#34;
+
+        :param *args:
+        :param **kwargs:
+
+        &#34;&#34;&#34;
+        if not auth(request, extract_swagger_path(request.url_rule.rule), request.method):
+            abort(401)
+        return f(*args, **kwargs)
+
+    return decorator
+
+
+class Resource(flask_Resource):
+    &#34;&#34;&#34;Base API Resource&#34;&#34;&#34;
+
+    decorators = [auth_required]
+
+
+class Api(restful_Api):
+    &#34;&#34;&#34;Api Swagger 3.4 wrapper&#34;&#34;&#34;
+
+    def __init__(self, *args, **kwargs):
+        self._security_level = kwargs.pop(&#34;security_level&#34;, &#34;STANDARD&#34;)
+        api_spec_base = kwargs.pop(&#34;api_spec_base&#34;, None)
+
+        # See differences between swagger2 and openapi3
+        # https://blog.readme.io/an-example-filled-guide-to-swagger-3-2/
+        self._swagger_object = {
+            &#34;openapi&#34;: &#34;3.0.0&#34;,
+            &#34;info&#34;: {&#34;title&#34;: &#34;&#34;, &#34;description&#34;: &#34;&#34;, &#34;termsOfService&#34;: &#34;&#34;, &#34;contact&#34;: {}, &#34;license&#34;: {}, &#34;version&#34;: &#34;0.0&#34;},
+            &#34;servers&#34;: [],  # servers replace host, basePath and schemes
+            # The following elements are now in components
+            # &#39;consumes&#39;: [], # =&gt;  components.requestBody.content
+            # &#39;produces&#39;: [],
+            # &#39;definitions&#39;: {}, # =&gt; components.schemas
+            # &#39;parameters&#39;: {}, # =&gt; components.parameters
+            # &#39;responses&#39;: {}, # =&gt; components.responses
+            # &#39;securityDefinitions&#39;: {}, # =&gt; components.securitySchemes
+            &#34;components&#34;: {},
+            &#34;paths&#34;: {},
+            &#34;security&#34;: [],
+            &#34;tags&#34;: [],
+            &#34;externalDocs&#34;: {},
+        }
+
+        if api_spec_base is not None:
+            self._swagger_object = copy.deepcopy(api_spec_base)
+
+        add_parameters(self._swagger_object, kwargs)
+
+        api_spec_url = kwargs.pop(&#34;api_spec_url&#34;, &#34;/api/swagger&#34;)
+        add_api_spec_resource = kwargs.pop(&#34;add_api_spec_resource&#34;, True)
+        api_version = kwargs.pop(&#34;version&#34;, None)
+        servers = kwargs.pop(&#34;servers&#34;, None)
+
+        super().__init__(*args, **kwargs)
+
+        if self.app and not self._swagger_object[&#34;info&#34;][&#34;title&#34;]:
+            self._swagger_object[&#34;info&#34;][&#34;title&#34;] = self.app.name
+
+        if api_version:
+            self._swagger_object[&#34;info&#34;][&#34;version&#34;] = api_version
+
+        if servers:
+            self._swagger_object[&#34;servers&#34;] = servers
+
+        # Unless told otherwise, create and register the swagger endpoint
+        if add_api_spec_resource:
+            api_spec_urls = [
+                f&#34;{api_spec_url}.json&#34;,
+                f&#34;{api_spec_url}.html&#34;,
+            ]
+
+            self.add_resource(
+                create_swagger_endpoint(self.get_swagger_doc(), _security_level=self._security_level), *api_spec_urls, endpoint=&#34;swagger&#34;
+            )
+
+    def add_resource(self, resource: Resource, *urls, **kwargs):
+        &#34;&#34;&#34;
+        Adds a Flask Resource to the API
+
+        :param resource:
+        :param *urls:
+        :param **kwargs:
+
+        &#34;&#34;&#34;
+        path_item = {}
+        # definitions = {}
+        schemas = {}
+
+        for method in [m.lower() for m in resource.methods]:
+            f = resource.__dict__.get(method, None)
+            if f:
+                operation = f.__dict__.get(&#34;__swagger_operation_object&#34;, None)
+                if operation:
+                    operation, schemas_ = Extractor.extract(operation)
+                    path_item[method] = operation
+                    schemas.update(schemas_)
+                    summary = parse_method_doc(f, operation)
+                    if summary:
+                        operation[&#34;summary&#34;] = summary
+
+        validate_components_object(schemas)
+
+        if &#34;schemas&#34; in self._swagger_object[&#34;components&#34;]:
+            self._swagger_object[&#34;components&#34;][&#34;schemas&#34;].update(schemas)
+        else:
+            self._swagger_object[&#34;components&#34;][&#34;schemas&#34;] = schemas
+
+        if path_item:
+            validate_path_item_object(path_item)
+            for url in urls:
+                if not url.startswith(&#34;/&#34;):
+                    raise ValidationError(&#34;paths must start with a /&#34;)
+                if self.blueprint and self.blueprint.url_prefix:
+                    if not self.blueprint.url_prefix.startswith(&#34;/&#34;):
+                        raise ValidationError(&#34;url_prefix must start with a /&#34;)
+                    if self.blueprint.url_prefix.endswith(&#34;/&#34;):
+                        raise ValidationError(&#34;url_prefix must not end with a /&#34;)
+                    url = self.blueprint.url_prefix + url
+                self._swagger_object[&#34;paths&#34;][extract_swagger_path(url)] = path_item
+
+        super().add_resource(resource, *urls, **kwargs)
+
+    def get_swagger_doc(self):
+        &#34;&#34;&#34;Returns the swagger document object.&#34;&#34;&#34;
+        return self._swagger_object
+
+
+class Extractor:
+    &#34;&#34;&#34;Extracts swagger.doc object to proper swagger representation by extractor implementation&#34;&#34;&#34;
+
+    @classmethod
+    def _choose_impl(cls, operation):
+        &#34;&#34;&#34;Chooses implementation of extractor
+
+        :param operation:
+
+        &#34;&#34;&#34;
+        if &#34;reqparser&#34; in operation:
+            impl = _RequestParserExtractorImpl
+        else:
+            impl = _BaseExtractorImpl
+        return impl(operation)
+
+    @classmethod
+    def extract(cls, operation):
+        &#34;&#34;&#34;
+
+        :param operation:
+
+        &#34;&#34;&#34;
+        return cls._choose_impl(operation)._extract()
+
+    def _extract(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        raise NotImplementedError()
+
+
+class _BaseExtractorImpl(Extractor):
+    &#34;&#34;&#34;Base implementation of extractor
+    Uses for common extraction of swagger.doc
+
+
+    &#34;&#34;&#34;
+
+    def __init__(self, operation):
+        self._operation = operation
+
+    def _extract(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return self._extract_schemas(self._operation)
+
+    def _extract_schemas(self, obj):
+        &#34;&#34;&#34;Converts all schemes in a given object to its proper swagger representation.
+
+        :param obj:
+
+        &#34;&#34;&#34;
+        definitions = {}
+        if isinstance(obj, list):
+            for i, o in enumerate(obj):
+                obj[i], definitions_ = self._extract_schemas(o)
+                definitions.update(definitions_)
+
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                obj[k], definitions_ = self._extract_schemas(v)
+                definitions.update(definitions_)
+
+        if inspect.isclass(obj):
+            obj, definitions = self._extract_model(obj, definitions)
+        return obj, definitions
+
+    def _extract_model(self, obj, definitions):
+        &#34;&#34;&#34;
+
+        :param obj:
+        :param definitions:
+
+        &#34;&#34;&#34;
+        # Object is a model. Convert it to valid json and get a definition object
+        if not issubclass(obj, Schema):
+            raise ValueError(f&#39;&#34;{obj}&#34; is not a subclass of the schema model&#39;)
+        definition = obj.definitions()
+        description = parse_schema_doc(obj, definition)
+        if description:
+            definition[&#34;description&#34;] = description
+        # The definition itself might contain models, so extract them again
+        definition, additional_definitions = self._extract_schemas(definition)
+        definitions[obj.__name__] = definition
+        definitions.update(additional_definitions)
+        obj = obj.reference()
+        return obj, definitions
+
+
+class _RequestParserExtractorImpl(_BaseExtractorImpl):
+    &#34;&#34;&#34;Uses for extraction of swagger.doc objects, which contains &#39;reqparser&#39; parameter&#34;&#34;&#34;
+
+    def _extract(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return self._extract_with_reqparser(self._operation)
+
+    def _extract_with_reqparser(self, operation):
+        &#34;&#34;&#34;
+
+        :param operation:
+
+        &#34;&#34;&#34;
+        if &#34;parameters&#34; in operation:
+            raise ValidationError(&#34;parameters and reqparser can&#39;t be in same spec&#34;)
+        # we need to pass copy because &#39;reqparser&#39; will be deleted
+        operation = self._get_reqparse_args(operation.copy())
+        return self._extract_schemas(operation)
+
+    def _get_reqparse_args(self, operation):
+        &#34;&#34;&#34;Get arguments from specified RequestParser and converts it to swagger representation
+
+        :param operation:
+
+        &#34;&#34;&#34;
+        model_data = {&#34;model_name&#34;: operation[&#34;reqparser&#34;][&#34;name&#34;], &#34;properties&#34;: {}, &#34;required&#34;: []}
+        make_model = False
+        params = []
+        for arg in operation[&#34;reqparser&#34;][&#34;parser&#34;].args:
+            if &#34;json&#34; in arg.location:
+                make_model = True
+                if arg.required:
+                    model_data[&#34;required&#34;].append(arg.name)
+                model_data[&#34;properties&#34;][arg.name] = self._reqparser_arg_to_swagger_param(arg)
+            else:
+                param = self._reqparser_arg_to_swagger_param(arg)
+                # note: &#34;cookies&#34; location not supported by swagger
+                if arg.location == &#34;args&#34;:
+                    param[&#34;in&#34;] = &#34;query&#34;
+                elif arg.location == &#34;headers&#34;:
+                    param[&#34;in&#34;] = &#34;header&#34;
+                elif arg.location == &#34;view_args&#34;:
+                    param[&#34;in&#34;] = &#34;path&#34;
+                else:
+                    param[&#34;in&#34;] = arg.location
+                params.append(param)
+        del operation[&#34;reqparser&#34;]
+
+        if make_model:
+            model = self.__make_model(**model_data)
+            params.append({&#34;name&#34;: &#34;body&#34;, &#34;description&#34;: &#34;Request body&#34;, &#34;in&#34;: &#34;query&#34;, &#34;schema&#34;: model, &#34;required&#34;: model.is_required()})
+        operation[&#34;parameters&#34;] = params
+        return operation
+
+    @staticmethod
+    def _get_swagger_arg_type(type_):
+        &#34;&#34;&#34;Converts python-type to swagger type
+        If type don&#39;t supports, tries to get `swagger_type` property from `type_`
+
+        :param type_: return:
+
+        &#34;&#34;&#34;
+        if hasattr(type_, &#34;swagger_type&#34;):
+            return type_.swagger_type
+        elif callable(type_) and type_.__name__ == &#34;boolean&#34;:  # flask-restful boolean
+            return &#34;boolean&#34;
+        elif issubclass(type_, str):
+            return &#34;string&#34;
+        elif type_ == float:
+            return &#34;number&#34;
+        elif type_ == int:
+            return &#34;integer&#34;
+        elif type_ == bool:
+            return &#34;boolean&#34;
+        elif type_ == bin:
+            return &#34;binary&#34;
+        elif type_ == list:
+            return &#34;array&#34;
+        elif type_ == dict:
+            return &#34;object&#34;
+        # try:
+        #     if type_ == long:
+        #         return &#39;long&#39;
+        # except NameError:
+        #     pass
+        raise TypeError(f&#34;unexpected type: {type_}&#34;)
+
+    @classmethod
+    def _reqparser_arg_to_swagger_param(cls, arg):
+        &#34;&#34;&#34;Converts particular RequestParser argument to swagger repr
+
+        :param arg: return:
+
+        &#34;&#34;&#34;
+        param = {&#34;name&#34;: arg.name, &#34;description&#34;: arg.help, &#34;required&#34;: arg.required}
+        if arg.choices:
+            param[&#34;enum&#34;] = arg.choices
+        if arg.default:
+            param[&#34;default&#34;] = arg.default
+            if callable(param[&#34;default&#34;]):
+                param[&#34;default&#34;] = getattr(param[&#34;default&#34;], &#34;swagger_default&#34;, None)
+        if arg.action == &#34;append&#34;:
+            cls.__update_reqparser_arg_as_array(arg, param)
+        else:
+            param[&#34;type&#34;] = cls._get_swagger_arg_type(arg.type)
+        return param
+
+    @staticmethod
+    def __make_model(**kwargs):
+        &#34;&#34;&#34;
+        Creates new `Schema` type, which allows if location of some argument == &#39;json&#39;
+        &#34;&#34;&#34;
+
+        class _NewModel(Schema):
+            &#34;&#34;&#34; &#34;&#34;&#34;
+
+            pass
+
+        _NewModel.__name__ = kwargs[&#34;model_name&#34;]
+        _NewModel.type = &#34;object&#34;
+        _NewModel.properties = kwargs[&#34;properties&#34;]
+        return _NewModel
+
+    @classmethod
+    def __update_reqparser_arg_as_array(cls, arg, param):
+        param[&#34;items&#34;] = {&#34;type&#34;: cls._get_swagger_arg_type(arg.type)}
+        param[&#34;type&#34;] = &#34;array&#34;
+
+
+class Schema(dict):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    properties = None
+
+    def __init__(self, **kwargs):
+        if self.properties:
+            for k, v in kwargs.items():
+                if k not in self.properties:
+                    raise ValueError(f&#39;The model &#34;{self.__class__.__name__}&#34; does not have an attribute &#34;{k}&#34;&#39;)
+                if &#34;type&#34; in self.properties[k]:
+                    type_ = self.properties[k][&#34;type&#34;]
+                    if type_ == &#34;integer&#34; and not isinstance(v, int):
+                        raise ValueError(&#39;The attribute &#34;{}&#34; must be an int, but was &#34;{}&#34;&#39;.format(k, type(v)))
+                    if type_ == &#34;number&#34; and not isinstance(v, int) and not isinstance(v, float):
+                        raise ValueError(&#39;The attribute &#34;{}&#34; must be an int or float, but was &#34;{}&#34;&#39;.format(k, type(v)))
+                    if type_ == &#34;string&#34; and not isinstance(v, str):
+                        raise ValueError(&#39;The attribute &#34;{}&#34; must be a string, but was &#34;{}&#34;&#39;.format(k, type(v)))
+                    if type_ == &#34;boolean&#34; and not isinstance(v, bool):
+                        raise ValueError(&#39;The attribute &#34;{}&#34; must be an int, but was &#34;{}&#34;&#39;.format(k, type(v)))
+                self[k] = v
+
+        if hasattr(self, &#34;required&#34;):
+            for key in self.required:
+                if key not in kwargs:
+                    raise ValueError(f&#39;The attribute &#34;{key}&#34; is required&#39;)
+
+    @classmethod
+    def reference(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return {&#34;$ref&#34;: f&#34;#/components/schemas/{cls.__name__}&#34;}
+
+    @classmethod
+    def definitions(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return {k: v for k, v in cls.__dict__.items() if not k.startswith(&#34;_&#34;)}
+
+    @classmethod
+    def array(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return {&#34;type&#34;: &#34;array&#34;, &#34;items&#34;: cls}
+
+    @classmethod
+    def is_required(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return bool(filter(lambda x: bool(x), map(lambda x: x[&#34;required&#34;], cls.properties.values())))
+
+
+def get_swagger_blueprint(docs, api_spec_url=&#34;/api/swagger&#34;, **kwargs):
+    &#34;&#34;&#34;Returns a Flask blueprint to serve the given list of swagger document objects.
+
+    :param docs: A list of of swagger document objects
+    :param api_spec_url: The URL path that serves the swagger specification document (Default value = &#34;/api/swagger&#34;)
+    :param **kwargs:
+    :returns: A Flask blueprint
+
+    &#34;&#34;&#34;
+    swagger_object = {}
+    paths = {}
+    definitions = {}
+
+    for doc in docs:
+        # Paths and definitions are appended, but overwrite other fields
+        if &#34;paths&#34; in doc:
+            paths.update(doc[&#34;paths&#34;])
+
+        if &#34;components&#34; in doc:
+            definitions.update(doc[&#34;components&#34;])
+
+        swagger_object.update(doc)
+
+    swagger_object[&#34;paths&#34;] = paths
+    swagger_object[&#34;components&#34;] = definitions
+
+    if kwargs:
+        add_parameters(swagger_object, kwargs)
+
+    blueprint = Blueprint(&#34;swagger&#34;, __name__)
+
+    api = restful_Api(blueprint)
+
+    api_spec_urls = [
+        f&#34;{api_spec_url}.json&#34;,
+        f&#34;{api_spec_url}.html&#34;,
+    ]
+
+    api.add_resource(create_swagger_endpoint(swagger_object), *api_spec_urls, endpoint=&#34;swagger&#34;)
+
+    return blueprint
+
+
+def swagger_type(type_):
+    &#34;&#34;&#34;Decorator to add __swagger_type property to flask-restful custom input
+    type functions
+
+    :param type_:
+
+    &#34;&#34;&#34;
+
+    def inner(f):
+        &#34;&#34;&#34;
+
+        :param f:
+
+        &#34;&#34;&#34;
+        f.__swagger_type = type_
+        return f
+
+    return inner</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="chillapi.app.flask_restful_swagger_3.swagger" href="swagger.html">chillapi.app.flask_restful_swagger_3.swagger</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="chillapi.app.flask_restful_swagger_3.abort"><code class="name flex">
+<span>def <span class="ident">abort</span></span>(<span>http_status_code, schema=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Proxy method to throw a non authorized request</p>
+<p>:param http_status_code:
+:param schema:
+(Default value = None)
+:param **kwargs:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def abort(http_status_code, schema=None, **kwargs):
+    &#34;&#34;&#34;
+    Proxy method to throw a non authorized request
+
+    :param http_status_code:
+    :param schema:  (Default value = None)
+    :param **kwargs:
+
+    &#34;&#34;&#34;
+    if schema:
+        kwargs.update(schema)
+    flask_abort(http_status_code, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.auth_required"><code class="name flex">
+<span>def <span class="ident">auth_required</span></span>(<span>f)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Decorator which checks if the request is permitted to call the view</p>
+<p>:param f:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def auth_required(f):
+    &#34;&#34;&#34;Decorator which checks if the request is permitted to call the view
+
+    :param f:
+
+    &#34;&#34;&#34;
+
+    def decorator(*args, **kwargs):
+        &#34;&#34;&#34;
+
+        :param *args:
+        :param **kwargs:
+
+        &#34;&#34;&#34;
+        if not auth(request, extract_swagger_path(request.url_rule.rule), request.method):
+            abort(401)
+        return f(*args, **kwargs)
+
+    return decorator</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.get_swagger_blueprint"><code class="name flex">
+<span>def <span class="ident">get_swagger_blueprint</span></span>(<span>docs, api_spec_url='/api/swagger', **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a Flask blueprint to serve the given list of swagger document objects.</p>
+<p>:param docs: A list of of swagger document objects
+:param api_spec_url: The URL path that serves the swagger specification document (Default value = "/api/swagger")
+:param **kwargs:
+:returns: A Flask blueprint</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_swagger_blueprint(docs, api_spec_url=&#34;/api/swagger&#34;, **kwargs):
+    &#34;&#34;&#34;Returns a Flask blueprint to serve the given list of swagger document objects.
+
+    :param docs: A list of of swagger document objects
+    :param api_spec_url: The URL path that serves the swagger specification document (Default value = &#34;/api/swagger&#34;)
+    :param **kwargs:
+    :returns: A Flask blueprint
+
+    &#34;&#34;&#34;
+    swagger_object = {}
+    paths = {}
+    definitions = {}
+
+    for doc in docs:
+        # Paths and definitions are appended, but overwrite other fields
+        if &#34;paths&#34; in doc:
+            paths.update(doc[&#34;paths&#34;])
+
+        if &#34;components&#34; in doc:
+            definitions.update(doc[&#34;components&#34;])
+
+        swagger_object.update(doc)
+
+    swagger_object[&#34;paths&#34;] = paths
+    swagger_object[&#34;components&#34;] = definitions
+
+    if kwargs:
+        add_parameters(swagger_object, kwargs)
+
+    blueprint = Blueprint(&#34;swagger&#34;, __name__)
+
+    api = restful_Api(blueprint)
+
+    api_spec_urls = [
+        f&#34;{api_spec_url}.json&#34;,
+        f&#34;{api_spec_url}.html&#34;,
+    ]
+
+    api.add_resource(create_swagger_endpoint(swagger_object), *api_spec_urls, endpoint=&#34;swagger&#34;)
+
+    return blueprint</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger_type"><code class="name flex">
+<span>def <span class="ident">swagger_type</span></span>(<span>type_)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Decorator to add __swagger_type property to flask-restful custom input
+type functions</p>
+<p>:param type_:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def swagger_type(type_):
+    &#34;&#34;&#34;Decorator to add __swagger_type property to flask-restful custom input
+    type functions
+
+    :param type_:
+
+    &#34;&#34;&#34;
+
+    def inner(f):
+        &#34;&#34;&#34;
+
+        :param f:
+
+        &#34;&#34;&#34;
+        f.__swagger_type = type_
+        return f
+
+    return inner</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="chillapi.app.flask_restful_swagger_3.Api"><code class="flex name class">
+<span>class <span class="ident">Api</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Api Swagger 3.4 wrapper</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Api(restful_Api):
+    &#34;&#34;&#34;Api Swagger 3.4 wrapper&#34;&#34;&#34;
+
+    def __init__(self, *args, **kwargs):
+        self._security_level = kwargs.pop(&#34;security_level&#34;, &#34;STANDARD&#34;)
+        api_spec_base = kwargs.pop(&#34;api_spec_base&#34;, None)
+
+        # See differences between swagger2 and openapi3
+        # https://blog.readme.io/an-example-filled-guide-to-swagger-3-2/
+        self._swagger_object = {
+            &#34;openapi&#34;: &#34;3.0.0&#34;,
+            &#34;info&#34;: {&#34;title&#34;: &#34;&#34;, &#34;description&#34;: &#34;&#34;, &#34;termsOfService&#34;: &#34;&#34;, &#34;contact&#34;: {}, &#34;license&#34;: {}, &#34;version&#34;: &#34;0.0&#34;},
+            &#34;servers&#34;: [],  # servers replace host, basePath and schemes
+            # The following elements are now in components
+            # &#39;consumes&#39;: [], # =&gt;  components.requestBody.content
+            # &#39;produces&#39;: [],
+            # &#39;definitions&#39;: {}, # =&gt; components.schemas
+            # &#39;parameters&#39;: {}, # =&gt; components.parameters
+            # &#39;responses&#39;: {}, # =&gt; components.responses
+            # &#39;securityDefinitions&#39;: {}, # =&gt; components.securitySchemes
+            &#34;components&#34;: {},
+            &#34;paths&#34;: {},
+            &#34;security&#34;: [],
+            &#34;tags&#34;: [],
+            &#34;externalDocs&#34;: {},
+        }
+
+        if api_spec_base is not None:
+            self._swagger_object = copy.deepcopy(api_spec_base)
+
+        add_parameters(self._swagger_object, kwargs)
+
+        api_spec_url = kwargs.pop(&#34;api_spec_url&#34;, &#34;/api/swagger&#34;)
+        add_api_spec_resource = kwargs.pop(&#34;add_api_spec_resource&#34;, True)
+        api_version = kwargs.pop(&#34;version&#34;, None)
+        servers = kwargs.pop(&#34;servers&#34;, None)
+
+        super().__init__(*args, **kwargs)
+
+        if self.app and not self._swagger_object[&#34;info&#34;][&#34;title&#34;]:
+            self._swagger_object[&#34;info&#34;][&#34;title&#34;] = self.app.name
+
+        if api_version:
+            self._swagger_object[&#34;info&#34;][&#34;version&#34;] = api_version
+
+        if servers:
+            self._swagger_object[&#34;servers&#34;] = servers
+
+        # Unless told otherwise, create and register the swagger endpoint
+        if add_api_spec_resource:
+            api_spec_urls = [
+                f&#34;{api_spec_url}.json&#34;,
+                f&#34;{api_spec_url}.html&#34;,
+            ]
+
+            self.add_resource(
+                create_swagger_endpoint(self.get_swagger_doc(), _security_level=self._security_level), *api_spec_urls, endpoint=&#34;swagger&#34;
+            )
+
+    def add_resource(self, resource: Resource, *urls, **kwargs):
+        &#34;&#34;&#34;
+        Adds a Flask Resource to the API
+
+        :param resource:
+        :param *urls:
+        :param **kwargs:
+
+        &#34;&#34;&#34;
+        path_item = {}
+        # definitions = {}
+        schemas = {}
+
+        for method in [m.lower() for m in resource.methods]:
+            f = resource.__dict__.get(method, None)
+            if f:
+                operation = f.__dict__.get(&#34;__swagger_operation_object&#34;, None)
+                if operation:
+                    operation, schemas_ = Extractor.extract(operation)
+                    path_item[method] = operation
+                    schemas.update(schemas_)
+                    summary = parse_method_doc(f, operation)
+                    if summary:
+                        operation[&#34;summary&#34;] = summary
+
+        validate_components_object(schemas)
+
+        if &#34;schemas&#34; in self._swagger_object[&#34;components&#34;]:
+            self._swagger_object[&#34;components&#34;][&#34;schemas&#34;].update(schemas)
+        else:
+            self._swagger_object[&#34;components&#34;][&#34;schemas&#34;] = schemas
+
+        if path_item:
+            validate_path_item_object(path_item)
+            for url in urls:
+                if not url.startswith(&#34;/&#34;):
+                    raise ValidationError(&#34;paths must start with a /&#34;)
+                if self.blueprint and self.blueprint.url_prefix:
+                    if not self.blueprint.url_prefix.startswith(&#34;/&#34;):
+                        raise ValidationError(&#34;url_prefix must start with a /&#34;)
+                    if self.blueprint.url_prefix.endswith(&#34;/&#34;):
+                        raise ValidationError(&#34;url_prefix must not end with a /&#34;)
+                    url = self.blueprint.url_prefix + url
+                self._swagger_object[&#34;paths&#34;][extract_swagger_path(url)] = path_item
+
+        super().add_resource(resource, *urls, **kwargs)
+
+    def get_swagger_doc(self):
+        &#34;&#34;&#34;Returns the swagger document object.&#34;&#34;&#34;
+        return self._swagger_object</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>flask_restful.Api</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.app.flask_restful_swagger_3.Api.add_resource"><code class="name flex">
+<span>def <span class="ident">add_resource</span></span>(<span>self, resource: <a title="chillapi.app.flask_restful_swagger_3.Resource" href="#chillapi.app.flask_restful_swagger_3.Resource">Resource</a>, *urls, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds a Flask Resource to the API</p>
+<p>:param resource:
+:param <em>urls:
+:param </em>*kwargs:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_resource(self, resource: Resource, *urls, **kwargs):
+    &#34;&#34;&#34;
+    Adds a Flask Resource to the API
+
+    :param resource:
+    :param *urls:
+    :param **kwargs:
+
+    &#34;&#34;&#34;
+    path_item = {}
+    # definitions = {}
+    schemas = {}
+
+    for method in [m.lower() for m in resource.methods]:
+        f = resource.__dict__.get(method, None)
+        if f:
+            operation = f.__dict__.get(&#34;__swagger_operation_object&#34;, None)
+            if operation:
+                operation, schemas_ = Extractor.extract(operation)
+                path_item[method] = operation
+                schemas.update(schemas_)
+                summary = parse_method_doc(f, operation)
+                if summary:
+                    operation[&#34;summary&#34;] = summary
+
+    validate_components_object(schemas)
+
+    if &#34;schemas&#34; in self._swagger_object[&#34;components&#34;]:
+        self._swagger_object[&#34;components&#34;][&#34;schemas&#34;].update(schemas)
+    else:
+        self._swagger_object[&#34;components&#34;][&#34;schemas&#34;] = schemas
+
+    if path_item:
+        validate_path_item_object(path_item)
+        for url in urls:
+            if not url.startswith(&#34;/&#34;):
+                raise ValidationError(&#34;paths must start with a /&#34;)
+            if self.blueprint and self.blueprint.url_prefix:
+                if not self.blueprint.url_prefix.startswith(&#34;/&#34;):
+                    raise ValidationError(&#34;url_prefix must start with a /&#34;)
+                if self.blueprint.url_prefix.endswith(&#34;/&#34;):
+                    raise ValidationError(&#34;url_prefix must not end with a /&#34;)
+                url = self.blueprint.url_prefix + url
+            self._swagger_object[&#34;paths&#34;][extract_swagger_path(url)] = path_item
+
+    super().add_resource(resource, *urls, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.Api.get_swagger_doc"><code class="name flex">
+<span>def <span class="ident">get_swagger_doc</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the swagger document object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_swagger_doc(self):
+    &#34;&#34;&#34;Returns the swagger document object.&#34;&#34;&#34;
+    return self._swagger_object</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.Extractor"><code class="flex name class">
+<span>class <span class="ident">Extractor</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extracts swagger.doc object to proper swagger representation by extractor implementation</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Extractor:
+    &#34;&#34;&#34;Extracts swagger.doc object to proper swagger representation by extractor implementation&#34;&#34;&#34;
+
+    @classmethod
+    def _choose_impl(cls, operation):
+        &#34;&#34;&#34;Chooses implementation of extractor
+
+        :param operation:
+
+        &#34;&#34;&#34;
+        if &#34;reqparser&#34; in operation:
+            impl = _RequestParserExtractorImpl
+        else:
+            impl = _BaseExtractorImpl
+        return impl(operation)
+
+    @classmethod
+    def extract(cls, operation):
+        &#34;&#34;&#34;
+
+        :param operation:
+
+        &#34;&#34;&#34;
+        return cls._choose_impl(operation)._extract()
+
+    def _extract(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        raise NotImplementedError()</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>chillapi.app.flask_restful_swagger_3._BaseExtractorImpl</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="chillapi.app.flask_restful_swagger_3.Extractor.extract"><code class="name flex">
+<span>def <span class="ident">extract</span></span>(<span>operation)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param operation:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def extract(cls, operation):
+    &#34;&#34;&#34;
+
+    :param operation:
+
+    &#34;&#34;&#34;
+    return cls._choose_impl(operation)._extract()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.ModelError"><code class="flex name class">
+<span>class <span class="ident">ModelError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Model Error Base Class</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModelError(Exception):
+    &#34;&#34;&#34; Model Error Base Class&#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.Resource"><code class="flex name class">
+<span>class <span class="ident">Resource</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base API Resource</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Resource(flask_Resource):
+    &#34;&#34;&#34;Base API Resource&#34;&#34;&#34;
+
+    decorators = [auth_required]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>flask_restful.Resource</li>
+<li>flask.views.MethodView</li>
+<li>flask.views.View</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="chillapi.swagger.http.AutomaticResource" href="../../swagger/http.html#chillapi.swagger.http.AutomaticResource">AutomaticResource</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chillapi.app.flask_restful_swagger_3.Resource.decorators"><code class="name">var <span class="ident">decorators</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.Schema"><code class="flex name class">
+<span>class <span class="ident">Schema</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Schema(dict):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    properties = None
+
+    def __init__(self, **kwargs):
+        if self.properties:
+            for k, v in kwargs.items():
+                if k not in self.properties:
+                    raise ValueError(f&#39;The model &#34;{self.__class__.__name__}&#34; does not have an attribute &#34;{k}&#34;&#39;)
+                if &#34;type&#34; in self.properties[k]:
+                    type_ = self.properties[k][&#34;type&#34;]
+                    if type_ == &#34;integer&#34; and not isinstance(v, int):
+                        raise ValueError(&#39;The attribute &#34;{}&#34; must be an int, but was &#34;{}&#34;&#39;.format(k, type(v)))
+                    if type_ == &#34;number&#34; and not isinstance(v, int) and not isinstance(v, float):
+                        raise ValueError(&#39;The attribute &#34;{}&#34; must be an int or float, but was &#34;{}&#34;&#39;.format(k, type(v)))
+                    if type_ == &#34;string&#34; and not isinstance(v, str):
+                        raise ValueError(&#39;The attribute &#34;{}&#34; must be a string, but was &#34;{}&#34;&#39;.format(k, type(v)))
+                    if type_ == &#34;boolean&#34; and not isinstance(v, bool):
+                        raise ValueError(&#39;The attribute &#34;{}&#34; must be an int, but was &#34;{}&#34;&#39;.format(k, type(v)))
+                self[k] = v
+
+        if hasattr(self, &#34;required&#34;):
+            for key in self.required:
+                if key not in kwargs:
+                    raise ValueError(f&#39;The attribute &#34;{key}&#34; is required&#39;)
+
+    @classmethod
+    def reference(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return {&#34;$ref&#34;: f&#34;#/components/schemas/{cls.__name__}&#34;}
+
+    @classmethod
+    def definitions(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return {k: v for k, v in cls.__dict__.items() if not k.startswith(&#34;_&#34;)}
+
+    @classmethod
+    def array(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return {&#34;type&#34;: &#34;array&#34;, &#34;items&#34;: cls}
+
+    @classmethod
+    def is_required(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return bool(filter(lambda x: bool(x), map(lambda x: x[&#34;required&#34;], cls.properties.values())))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>chillapi.swagger.utils.get_error_swagger_schema.<locals>.ErrorResponseModel</li>
+<li>chillapi.swagger.utils.get_error_swagger_schema.<locals>.ErrorResponseModel</li>
+<li>chillapi.swagger.utils.get_error_swagger_schema.<locals>.ErrorResponseModel</li>
+<li>chillapi.swagger.utils.get_not_found_swagger_schema.<locals>.NotFoundResponseModel</li>
+<li>chillapi.swagger.utils.get_not_found_swagger_schema.<locals>.NotFoundResponseModel</li>
+<li>chillapi.swagger.utils.get_not_found_swagger_schema.<locals>.NotFoundResponseModel</li>
+<li>chillapi.swagger.utils.get_revisable_response_swagger_schema.<locals>.RevisableOperationResponseModel</li>
+<li>chillapi.swagger.utils.get_revisable_response_swagger_schema.<locals>.RevisableOperationResponseModel</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chillapi.app.flask_restful_swagger_3.Schema.properties"><code class="name">var <span class="ident">properties</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="chillapi.app.flask_restful_swagger_3.Schema.array"><code class="name flex">
+<span>def <span class="ident">array</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def array(cls):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    return {&#34;type&#34;: &#34;array&#34;, &#34;items&#34;: cls}</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.Schema.definitions"><code class="name flex">
+<span>def <span class="ident">definitions</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def definitions(cls):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    return {k: v for k, v in cls.__dict__.items() if not k.startswith(&#34;_&#34;)}</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.Schema.is_required"><code class="name flex">
+<span>def <span class="ident">is_required</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def is_required(cls):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    return bool(filter(lambda x: bool(x), map(lambda x: x[&#34;required&#34;], cls.properties.values())))</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.Schema.reference"><code class="name flex">
+<span>def <span class="ident">reference</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def reference(cls):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    return {&#34;$ref&#34;: f&#34;#/components/schemas/{cls.__name__}&#34;}</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="chillapi.app" href="../index.html">chillapi.app</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger" href="swagger.html">chillapi.app.flask_restful_swagger_3.swagger</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="chillapi.app.flask_restful_swagger_3.abort" href="#chillapi.app.flask_restful_swagger_3.abort">abort</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.auth_required" href="#chillapi.app.flask_restful_swagger_3.auth_required">auth_required</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.get_swagger_blueprint" href="#chillapi.app.flask_restful_swagger_3.get_swagger_blueprint">get_swagger_blueprint</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger_type" href="#chillapi.app.flask_restful_swagger_3.swagger_type">swagger_type</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="chillapi.app.flask_restful_swagger_3.Api" href="#chillapi.app.flask_restful_swagger_3.Api">Api</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.app.flask_restful_swagger_3.Api.add_resource" href="#chillapi.app.flask_restful_swagger_3.Api.add_resource">add_resource</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.Api.get_swagger_doc" href="#chillapi.app.flask_restful_swagger_3.Api.get_swagger_doc">get_swagger_doc</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.app.flask_restful_swagger_3.Extractor" href="#chillapi.app.flask_restful_swagger_3.Extractor">Extractor</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.app.flask_restful_swagger_3.Extractor.extract" href="#chillapi.app.flask_restful_swagger_3.Extractor.extract">extract</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.app.flask_restful_swagger_3.ModelError" href="#chillapi.app.flask_restful_swagger_3.ModelError">ModelError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="chillapi.app.flask_restful_swagger_3.Resource" href="#chillapi.app.flask_restful_swagger_3.Resource">Resource</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.app.flask_restful_swagger_3.Resource.decorators" href="#chillapi.app.flask_restful_swagger_3.Resource.decorators">decorators</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.app.flask_restful_swagger_3.Schema" href="#chillapi.app.flask_restful_swagger_3.Schema">Schema</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.app.flask_restful_swagger_3.Schema.array" href="#chillapi.app.flask_restful_swagger_3.Schema.array">array</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.Schema.definitions" href="#chillapi.app.flask_restful_swagger_3.Schema.definitions">definitions</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.Schema.is_required" href="#chillapi.app.flask_restful_swagger_3.Schema.is_required">is_required</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.Schema.properties" href="#chillapi.app.flask_restful_swagger_3.Schema.properties">properties</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.Schema.reference" href="#chillapi.app.flask_restful_swagger_3.Schema.reference">reference</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

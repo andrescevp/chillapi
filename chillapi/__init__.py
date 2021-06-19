@@ -1,3 +1,9 @@
+"""
+ChillAPI
+
+.. include:: ../README.md
+"""
+
 import os
 
 os.environ.setdefault("__CHILLAPI_SETUP_TESTING__", "false")

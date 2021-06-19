@@ -55,3 +55,5 @@ db_schema_docs:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && eralchemy -i ${DB_URL} -o db_schema_migrations/schema.jpg  && chown -Rf 1000:1000 ."
 api_definition_validate:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && pykwalify -d api.yaml -s api.schema.yaml  && chown -Rf 1000:1000 ."
+docs:
+	${DOCKER} sh -c "${VENV_ACTIVATE} && pdoc --html --output-dir docs chillapi"

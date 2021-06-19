@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>chillapi.logger.formatter API documentation</title>
+<meta name="description" content="Logging formatter for Graylog Extended Log Format (GELF) …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>chillapi.logger.formatter</code></h1>
+</header>
+<section id="section-intro">
+<p>Logging formatter for Graylog Extended Log Format (GELF).</p>
+<p>This module implements a custom formatter for the Python standard library <code>logging</code><em>
+module that conforms to the <code>GELF Payload Specification Version 1.1</code></em>.</p>
+<p>.. _logging:
+<a href="https://docs.python.org/3/library/logging.html">https://docs.python.org/3/library/logging.html</a></p>
+<p>.. _GELF Payload Specification Version 1.1:
+<a href="http://docs.graylog.org/en/3.0/pages/gelf.html#gelf-payload-specification">http://docs.graylog.org/en/3.0/pages/gelf.html#gelf-payload-specification</a></p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Logging formatter for Graylog Extended Log Format (GELF).
+
+This module implements a custom formatter for the Python standard library `logging`_
+module that conforms to the `GELF Payload Specification Version 1.1`_.
+
+.. _logging:
+   https://docs.python.org/3/library/logging.html
+
+.. _GELF Payload Specification Version 1.1:
+   http://docs.graylog.org/en/3.0/pages/gelf.html#gelf-payload-specification
+&#34;&#34;&#34;
+
+import logging
+import socket
+import types
+from datetime import datetime
+
+import simplejson
+from sqlalchemy.sql.type_api import TypeEngine
+
+from chillapi.database.query_builder import sql_operators
+from chillapi.http.utils import get_request_id
+
+
+class CustomEncoder(simplejson.JSONEncoder):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    def default(self, o):
+        &#34;&#34;&#34;
+
+        :param o:
+
+        &#34;&#34;&#34;
+        if isinstance(o, types.BuiltinFunctionType):
+            if o in sql_operators.values():
+                return sql_operators.keys()[sql_operators.values().index(o)]
+            return o.__str__
+        if isinstance(o, datetime):
+            return o.isoformat()
+        if isinstance(o, TypeEngine):
+            return o.python_type.__name__
+        return super().default(o)
+
+
+GELF_VERSION = &#34;1.1&#34;
+&#34;&#34;&#34;str: GELF specification version.&#34;&#34;&#34;
+
+GELF_LEVELS = {
+    logging.DEBUG: 7,
+    logging.INFO: 6,
+    logging.WARNING: 4,
+    logging.ERROR: 3,
+    logging.CRITICAL: 2,
+}
+&#34;&#34;&#34;dict: Map of logging levels vs syslog levels.&#34;&#34;&#34;
+
+GELF_IGNORED_ATTRS = [&#34;id&#34;]
+&#34;&#34;&#34;List[str]: Attributes prohibited by the GELF specification.&#34;&#34;&#34;
+
+RESERVED_ATTRS = (
+    &#34;args&#34;,
+    &#34;asctime&#34;,
+    &#34;created&#34;,
+    &#34;exc_info&#34;,
+    &#34;exc_text&#34;,
+    &#34;filename&#34;,
+    &#34;funcName&#34;,
+    &#34;levelname&#34;,
+    &#34;levelno&#34;,
+    &#34;lineno&#34;,
+    &#34;module&#34;,
+    &#34;msecs&#34;,
+    &#34;message&#34;,
+    &#34;msg&#34;,
+    &#34;name&#34;,
+    &#34;pathname&#34;,
+    &#34;process&#34;,
+    &#34;processName&#34;,
+    &#34;relativeCreated&#34;,
+    &#34;stack_info&#34;,
+    &#34;thread&#34;,
+    &#34;threadName&#34;,
+)
+&#34;&#34;&#34;List[str]: The `logging.LogRecord`_ attributes that should be ignored by default.
+
+.. _logging.LogRecord:
+   https://docs.python.org/3/library/logging.html#logrecord-attributes
+&#34;&#34;&#34;
+
+
+def _prefix(str):
+    &#34;&#34;&#34;Prefixes a string with an underscore.
+
+    :param str: The string to prefix.
+    :type str: str
+    :returns: The prefixed string.
+    :rtype: str
+
+    &#34;&#34;&#34;
+    return str if str.startswith(&#34;_&#34;) else &#34;_%s&#34; % str
+
+
+def _prefix_reserved(str):
+    &#34;&#34;&#34;Prefixes a string with an underscore.
+
+    :param str: The string to prefix.
+    :type str: str
+    :returns: The prefixed string.
+    :rtype: str
+
+    &#34;&#34;&#34;
+    if str == &#34;name&#34;:
+        str = &#34;logger&#34;
+    return str if str.startswith(&#34;_&#34;) else &#34;_%s&#34; % str
+
+
+class GelfFormatter(logging.Formatter):
+    &#34;&#34;&#34;A custom logging formatter for GELF.
+
+    This formatter extends the Python standard library `logging.Formatter`_ and conforms
+    to the GELF specification.
+
+
+    &#34;&#34;&#34;
+
+    def __init__(self, allowed_reserved_attrs=[], ignored_attrs=[]):
+        &#34;&#34;&#34;Initializes a GelfFormatter.&#34;&#34;&#34;
+        super().__init__()
+        self.allowed_reserved_attrs = allowed_reserved_attrs
+        self.ignored_attrs = ignored_attrs
+        self._hostname = socket.gethostname()
+
+    def format(self, record):
+        &#34;&#34;&#34;Formats a log record according to the GELF specification.
+
+        Overrides `logging.Formatter.format`_.
+
+        :param record: The original log record that should be formatted
+                as a GELF log message.
+        :type record: logging.LogRecord
+        :returns: The serialized JSON GELF log message.
+        .. _logging.Formatter.format:
+           https://docs.python.org/3/library/logging.html#logging.Formatter.format
+        :rtype: str
+
+        &#34;&#34;&#34;
+        # Base GELF message structure
+        request_uuid = get_request_id()
+        log_record = dict(
+            version=GELF_VERSION,
+            short_message=record.getMessage(),
+            timestamp=record.created,
+            level=GELF_LEVELS[record.levelno],
+            host=self._hostname,
+            _request_uuid=request_uuid,
+        )
+
+        # Capture exception info, if any
+        if record.exc_info is not None:
+            log_record[&#34;full_message&#34;] = self.formatException(record.exc_info)
+
+        # Set asctime field if required
+        if &#34;asctime&#34; in self.allowed_reserved_attrs:
+            record.asctime = self.formatTime(record)
+
+        # Compute excluded attributes
+        excluded_attrs = [x for x in RESERVED_ATTRS if x not in self.allowed_reserved_attrs]
+        excluded_attrs += self.ignored_attrs
+
+        # Everything else is considered an additional attribute
+        for key, value in record.__dict__.items():
+            # if key in self.allowed_reserved_attrs:
+            #     log_record[_prefix_reserved(key)] = value
+            if key not in GELF_IGNORED_ATTRS and key not in excluded_attrs:
+                if type(value) is datetime:
+                    value = value.isoformat()
+                log_record[_prefix(key)] = value
+
+        # Serialize as JSON
+        return simplejson.dumps(log_record, cls=CustomEncoder, for_json=True)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="chillapi.logger.formatter.GELF_IGNORED_ATTRS"><code class="name">var <span class="ident">GELF_IGNORED_ATTRS</span></code></dt>
+<dd>
+<div class="desc"><p>List[str]: Attributes prohibited by the GELF specification.</p></div>
+</dd>
+<dt id="chillapi.logger.formatter.GELF_LEVELS"><code class="name">var <span class="ident">GELF_LEVELS</span></code></dt>
+<dd>
+<div class="desc"><p>dict: Map of logging levels vs syslog levels.</p></div>
+</dd>
+<dt id="chillapi.logger.formatter.GELF_VERSION"><code class="name">var <span class="ident">GELF_VERSION</span></code></dt>
+<dd>
+<div class="desc"><p>str: GELF specification version.</p></div>
+</dd>
+<dt id="chillapi.logger.formatter.RESERVED_ATTRS"><code class="name">var <span class="ident">RESERVED_ATTRS</span></code></dt>
+<dd>
+<div class="desc"><p>List[str]: The <code>logging.LogRecord</code>_ attributes that should be ignored by default.</p>
+<p>.. _logging.LogRecord:
+<a href="https://docs.python.org/3/library/logging.html#logrecord-attributes">https://docs.python.org/3/library/logging.html#logrecord-attributes</a></p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="chillapi.logger.formatter.CustomEncoder"><code class="flex name class">
+<span>class <span class="ident">CustomEncoder</span></span>
+<span>(</span><span>skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, encoding='utf-8', default=None, use_decimal=True, namedtuple_as_object=True, tuple_as_array=True, bigint_as_string=False, item_sort_key=None, for_json=False, ignore_nan=False, int_as_string_bitcount=None, iterable_as_array=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Constructor for JSONEncoder, with sensible defaults.</p>
+<p>If skipkeys is false, then it is a TypeError to attempt
+encoding of keys that are not str, int, long, float or None.
+If
+skipkeys is True, such items are simply skipped.</p>
+<p>If ensure_ascii is true, the output is guaranteed to be str
+objects with all incoming unicode characters escaped.
+If
+ensure_ascii is false, the output will be unicode object.</p>
+<p>If check_circular is true, then lists, dicts, and custom encoded
+objects will be checked for circular references during encoding to
+prevent an infinite recursion (which would cause an OverflowError).
+Otherwise, no such check takes place.</p>
+<p>If allow_nan is true, then NaN, Infinity, and -Infinity will be
+encoded as such.
+This behavior is not JSON specification compliant,
+but is consistent with most JavaScript based encoders and decoders.
+Otherwise, it will be a ValueError to encode such floats.</p>
+<p>If sort_keys is true, then the output of dictionaries will be
+sorted by key; this is useful for regression tests to ensure
+that JSON serializations can be compared on a day-to-day basis.</p>
+<p>If indent is a string, then JSON array elements and object members
+will be pretty-printed with a newline followed by that string repeated
+for each level of nesting. <code>None</code> (the default) selects the most compact
+representation without any newlines. For backwards compatibility with
+versions of simplejson earlier than 2.1.0, an integer is also accepted
+and is converted to a string with that many spaces.</p>
+<p>If specified, separators should be an (item_separator, key_separator)
+tuple.
+The default is (', ', ': ') if <em>indent</em> is <code>None</code> and
+(',', ': ') otherwise.
+To get the most compact JSON representation,
+you should specify (',', ':') to eliminate whitespace.</p>
+<p>If specified, default is a function that gets called for objects
+that can't otherwise be serialized.
+It should return a JSON encodable
+version of the object or raise a <code>TypeError</code>.</p>
+<p>If encoding is not None, then all input strings will be
+transformed into unicode using that encoding prior to JSON-encoding.
+The default is UTF-8.</p>
+<p>If use_decimal is true (default: <code>True</code>), <code>decimal.Decimal</code> will
+be supported directly by the encoder. For the inverse, decode JSON
+with <code>parse_float=decimal.Decimal</code>.</p>
+<p>If namedtuple_as_object is true (the default), objects with
+<code>_asdict()</code> methods will be encoded as JSON objects.</p>
+<p>If tuple_as_array is true (the default), tuple (and subclasses) will
+be encoded as JSON arrays.</p>
+<p>If <em>iterable_as_array</em> is true (default: <code>False</code>),
+any object not in the above table that implements <code>__iter__()</code>
+will be encoded as a JSON array.</p>
+<p>If bigint_as_string is true (not the default), ints 2<strong>53 and higher
+or lower than -2</strong>53 will be encoded as strings. This is to avoid the
+rounding that happens in Javascript otherwise.</p>
+<p>If int_as_string_bitcount is a positive number (n), then int of size
+greater than or equal to 2<strong>n or lower than or equal to -2</strong>n will be
+encoded as strings.</p>
+<p>If specified, item_sort_key is a callable used to sort the items in
+each dictionary. This is useful if you want to sort items other than
+in alphabetical order by key.</p>
+<p>If for_json is true (not the default), objects with a <code>for_json()</code>
+method will use the return value of that method for encoding as JSON
+instead of the object.</p>
+<p>If <em>ignore_nan</em> is true (default: <code>False</code>), then out of range
+:class:<code>float</code> values (<code>nan</code>, <code>inf</code>, <code>-inf</code>) will be serialized
+as <code>null</code> in compliance with the ECMA-262 specification. If true,
+this will override <em>allow_nan</em>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CustomEncoder(simplejson.JSONEncoder):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    def default(self, o):
+        &#34;&#34;&#34;
+
+        :param o:
+
+        &#34;&#34;&#34;
+        if isinstance(o, types.BuiltinFunctionType):
+            if o in sql_operators.values():
+                return sql_operators.keys()[sql_operators.values().index(o)]
+            return o.__str__
+        if isinstance(o, datetime):
+            return o.isoformat()
+        if isinstance(o, TypeEngine):
+            return o.python_type.__name__
+        return super().default(o)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>simplejson.encoder.JSONEncoder</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.logger.formatter.CustomEncoder.default"><code class="name flex">
+<span>def <span class="ident">default</span></span>(<span>self, o)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param o:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def default(self, o):
+    &#34;&#34;&#34;
+
+    :param o:
+
+    &#34;&#34;&#34;
+    if isinstance(o, types.BuiltinFunctionType):
+        if o in sql_operators.values():
+            return sql_operators.keys()[sql_operators.values().index(o)]
+        return o.__str__
+    if isinstance(o, datetime):
+        return o.isoformat()
+    if isinstance(o, TypeEngine):
+        return o.python_type.__name__
+    return super().default(o)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="chillapi.logger.formatter.GelfFormatter"><code class="flex name class">
+<span>class <span class="ident">GelfFormatter</span></span>
+<span>(</span><span>allowed_reserved_attrs=[], ignored_attrs=[])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A custom logging formatter for GELF.</p>
+<p>This formatter extends the Python standard library <code>logging.Formatter</code>_ and conforms
+to the GELF specification.</p>
+<p>Initializes a GelfFormatter.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GelfFormatter(logging.Formatter):
+    &#34;&#34;&#34;A custom logging formatter for GELF.
+
+    This formatter extends the Python standard library `logging.Formatter`_ and conforms
+    to the GELF specification.
+
+
+    &#34;&#34;&#34;
+
+    def __init__(self, allowed_reserved_attrs=[], ignored_attrs=[]):
+        &#34;&#34;&#34;Initializes a GelfFormatter.&#34;&#34;&#34;
+        super().__init__()
+        self.allowed_reserved_attrs = allowed_reserved_attrs
+        self.ignored_attrs = ignored_attrs
+        self._hostname = socket.gethostname()
+
+    def format(self, record):
+        &#34;&#34;&#34;Formats a log record according to the GELF specification.
+
+        Overrides `logging.Formatter.format`_.
+
+        :param record: The original log record that should be formatted
+                as a GELF log message.
+        :type record: logging.LogRecord
+        :returns: The serialized JSON GELF log message.
+        .. _logging.Formatter.format:
+           https://docs.python.org/3/library/logging.html#logging.Formatter.format
+        :rtype: str
+
+        &#34;&#34;&#34;
+        # Base GELF message structure
+        request_uuid = get_request_id()
+        log_record = dict(
+            version=GELF_VERSION,
+            short_message=record.getMessage(),
+            timestamp=record.created,
+            level=GELF_LEVELS[record.levelno],
+            host=self._hostname,
+            _request_uuid=request_uuid,
+        )
+
+        # Capture exception info, if any
+        if record.exc_info is not None:
+            log_record[&#34;full_message&#34;] = self.formatException(record.exc_info)
+
+        # Set asctime field if required
+        if &#34;asctime&#34; in self.allowed_reserved_attrs:
+            record.asctime = self.formatTime(record)
+
+        # Compute excluded attributes
+        excluded_attrs = [x for x in RESERVED_ATTRS if x not in self.allowed_reserved_attrs]
+        excluded_attrs += self.ignored_attrs
+
+        # Everything else is considered an additional attribute
+        for key, value in record.__dict__.items():
+            # if key in self.allowed_reserved_attrs:
+            #     log_record[_prefix_reserved(key)] = value
+            if key not in GELF_IGNORED_ATTRS and key not in excluded_attrs:
+                if type(value) is datetime:
+                    value = value.isoformat()
+                log_record[_prefix(key)] = value
+
+        # Serialize as JSON
+        return simplejson.dumps(log_record, cls=CustomEncoder, for_json=True)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>logging.Formatter</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.logger.formatter.GelfFormatter.format"><code class="name flex">
+<span>def <span class="ident">format</span></span>(<span>self, record)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Formats a log record according to the GELF specification.</p>
+<p>Overrides <code>logging.Formatter.format</code>_.</p>
+<p>:param record: The original log record that should be formatted
+as a GELF log message.
+:type record: logging.LogRecord
+:returns: The serialized JSON GELF log message.
+.. _logging.Formatter.format:
+<a href="https://docs.python.org/3/library/logging.html#logging.Formatter.format">https://docs.python.org/3/library/logging.html#logging.Formatter.format</a>
+:rtype: str</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def format(self, record):
+    &#34;&#34;&#34;Formats a log record according to the GELF specification.
+
+    Overrides `logging.Formatter.format`_.
+
+    :param record: The original log record that should be formatted
+            as a GELF log message.
+    :type record: logging.LogRecord
+    :returns: The serialized JSON GELF log message.
+    .. _logging.Formatter.format:
+       https://docs.python.org/3/library/logging.html#logging.Formatter.format
+    :rtype: str
+
+    &#34;&#34;&#34;
+    # Base GELF message structure
+    request_uuid = get_request_id()
+    log_record = dict(
+        version=GELF_VERSION,
+        short_message=record.getMessage(),
+        timestamp=record.created,
+        level=GELF_LEVELS[record.levelno],
+        host=self._hostname,
+        _request_uuid=request_uuid,
+    )
+
+    # Capture exception info, if any
+    if record.exc_info is not None:
+        log_record[&#34;full_message&#34;] = self.formatException(record.exc_info)
+
+    # Set asctime field if required
+    if &#34;asctime&#34; in self.allowed_reserved_attrs:
+        record.asctime = self.formatTime(record)
+
+    # Compute excluded attributes
+    excluded_attrs = [x for x in RESERVED_ATTRS if x not in self.allowed_reserved_attrs]
+    excluded_attrs += self.ignored_attrs
+
+    # Everything else is considered an additional attribute
+    for key, value in record.__dict__.items():
+        # if key in self.allowed_reserved_attrs:
+        #     log_record[_prefix_reserved(key)] = value
+        if key not in GELF_IGNORED_ATTRS and key not in excluded_attrs:
+            if type(value) is datetime:
+                value = value.isoformat()
+            log_record[_prefix(key)] = value
+
+    # Serialize as JSON
+    return simplejson.dumps(log_record, cls=CustomEncoder, for_json=True)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="chillapi.logger" href="index.html">chillapi.logger</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="chillapi.logger.formatter.GELF_IGNORED_ATTRS" href="#chillapi.logger.formatter.GELF_IGNORED_ATTRS">GELF_IGNORED_ATTRS</a></code></li>
+<li><code><a title="chillapi.logger.formatter.GELF_LEVELS" href="#chillapi.logger.formatter.GELF_LEVELS">GELF_LEVELS</a></code></li>
+<li><code><a title="chillapi.logger.formatter.GELF_VERSION" href="#chillapi.logger.formatter.GELF_VERSION">GELF_VERSION</a></code></li>
+<li><code><a title="chillapi.logger.formatter.RESERVED_ATTRS" href="#chillapi.logger.formatter.RESERVED_ATTRS">RESERVED_ATTRS</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="chillapi.logger.formatter.CustomEncoder" href="#chillapi.logger.formatter.CustomEncoder">CustomEncoder</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.logger.formatter.CustomEncoder.default" href="#chillapi.logger.formatter.CustomEncoder.default">default</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.logger.formatter.GelfFormatter" href="#chillapi.logger.formatter.GelfFormatter">GelfFormatter</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.logger.formatter.GelfFormatter.format" href="#chillapi.logger.formatter.GelfFormatter.format">format</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

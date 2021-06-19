@@ -1,0 +1,1203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>chillapi.abc API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>chillapi.abc</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from abc import ABC, abstractmethod
+from typing import List
+
+from sqlalchemy.engine import CursorResult, Inspector
+from sqlalchemy.orm.scoping import ScopedSession
+
+from chillapi.database import _ALLOWED_DRIVERS
+from chillapi.exceptions.api_manager import ColumnNotExist, ConfigError
+
+
+class Repository(ABC):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    def __init__(self, db: ScopedSession):
+        self.db = db
+        driver = self.db.bind.dialect.dbapi.__name__
+        if driver not in _ALLOWED_DRIVERS.keys():
+            raise ConfigError(f&#34;{driver} driver not allowed&#34;)
+        self.db_dialect = _ALLOWED_DRIVERS[driver]
+
+    @abstractmethod
+    def execute(self, sql, params=None) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param sql: param params:  (Default value = None)
+        :param params:  (Default value = None)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def execute_insert(self, sql, params=None) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param sql: param params:  (Default value = None)
+        :param params:  (Default value = None)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def fetch_by(self, table: str, columns: List[str], filters: dict, params=None):
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param columns: List[str]:
+        :param filters: dict:
+        :param params: Default value = None)
+        :param table: str:
+        :param columns: List[str]:
+        :param filters: dict:
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def insert(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = &#34;*&#34;) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def insert_batch(self, table: str, columns: List[str], params: List, returning: bool = True, returning_field: str = &#34;*&#34;) -&gt; List:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: List:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+        :param table: str:
+        :param columns: List[str]:
+        :param params: List:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def update_batch(self, table: str, params: List, where_field: str = &#34;id&#34;) -&gt; List:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param params: List:
+        :param where_field: str:  (Default value = &#34;id&#34;)
+        :param table: str:
+        :param params: List:
+        :param where_field: str:  (Default value = &#34;id&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def delete_batch(self, table: str, ids: List, where_field: str = &#34;id&#34;) -&gt; List:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param ids: List:
+        :param where_field: str:  (Default value = &#34;id&#34;)
+        :param table: str:
+        :param ids: List:
+        :param where_field: str:  (Default value = &#34;id&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def insert_record(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = &#34;*&#34;) -&gt; int:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def update_record(self, table: str, where_field: str, where_value: str, params: dict) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param where_field: str:
+        :param where_value: str:
+        :param params: dict:
+        :param table: str:
+        :param where_field: str:
+        :param where_value: str:
+        :param params: dict:
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def delete_record(self, table: str, where_field: str, where_field_id) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param where_field: str:
+        :param where_field_id:
+        :param table: str:
+        :param where_field: str:
+
+        &#34;&#34;&#34;
+        pass
+
+
+class Extension(ABC, dict):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    def execute(self, *args):
+        &#34;&#34;&#34;
+
+        :param *args:
+
+        &#34;&#34;&#34;
+        method_name = getattr(args, &#34;method&#34;)
+        if method_name == &#34;execute&#34;:
+            raise Exception(&#34;You can not call myself&#34;)
+        method = getattr(self, getattr(args, &#34;method&#34;))
+        return method(getattr(args, &#34;args&#34;))
+
+
+class TableExtension(Extension):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    enabled: bool = False
+    table: str = None
+    config: dict = None
+    repository: Repository = None
+    inspector: Inspector
+
+    def __init__(self, config: dict, columns: dict = None, repository: Repository = None, table: str = None, inspector: Inspector = None):
+        self.inspector = inspector
+        self.columns = columns
+        self.repository = repository
+        self.config = config
+        self.table = table
+        self.enabled = self.config[&#34;enable&#34;]
+
+    def validate(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        if not self.enabled:
+            return True
+        _default_field = self.config[&#34;default_field&#34;]
+
+        if _default_field not in self.columns.keys():
+            raise ColumnNotExist(f&#39;{self.__class__.__name__}: &#34;{_default_field}&#34; not found on table &#34;{self.table}&#34; &#39;)
+
+        return True
+
+
+class AuditLog(ABC, dict):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    request_id: str = None
+    prev_request_id: str = None
+    date: str = None
+    message: str = None
+
+    @abstractmethod
+    def for_json(self) -&gt; dict:
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        pass
+
+
+class AuditLogHandler(Extension):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    @abstractmethod
+    def log(self, log: AuditLog):
+        &#34;&#34;&#34;
+
+        :param log: AuditLog:
+        :param log: AuditLog:
+
+        &#34;&#34;&#34;
+        pass
+
+    def execute(self, *args):
+        &#34;&#34;&#34;
+
+        :param *args:
+
+        &#34;&#34;&#34;
+        self.log(getattr(args, &#34;log&#34;))
+
+
+class AttributeDict(dict):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    __slots__ = ()
+    __getattr__ = dict.__getitem__
+    __setattr__ = dict.__setitem__</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="chillapi.abc.AttributeDict"><code class="flex name class">
+<span>class <span class="ident">AttributeDict</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AttributeDict(dict):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    __slots__ = ()
+    __getattr__ = dict.__getitem__
+    __setattr__ = dict.__setitem__</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+</dd>
+<dt id="chillapi.abc.AuditLog"><code class="flex name class">
+<span>class <span class="ident">AuditLog</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AuditLog(ABC, dict):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    request_id: str = None
+    prev_request_id: str = None
+    date: str = None
+    message: str = None
+
+    @abstractmethod
+    def for_json(self) -&gt; dict:
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="chillapi.extensions.audit.AuditLog" href="extensions/audit.html#chillapi.extensions.audit.AuditLog">AuditLog</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chillapi.abc.AuditLog.date"><code class="name">var <span class="ident">date</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.abc.AuditLog.message"><code class="name">var <span class="ident">message</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.abc.AuditLog.prev_request_id"><code class="name">var <span class="ident">prev_request_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.abc.AuditLog.request_id"><code class="name">var <span class="ident">request_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.abc.AuditLog.for_json"><code class="name flex">
+<span>def <span class="ident">for_json</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def for_json(self) -&gt; dict:
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="chillapi.abc.AuditLogHandler"><code class="flex name class">
+<span>class <span class="ident">AuditLogHandler</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AuditLogHandler(Extension):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    @abstractmethod
+    def log(self, log: AuditLog):
+        &#34;&#34;&#34;
+
+        :param log: AuditLog:
+        :param log: AuditLog:
+
+        &#34;&#34;&#34;
+        pass
+
+    def execute(self, *args):
+        &#34;&#34;&#34;
+
+        :param *args:
+
+        &#34;&#34;&#34;
+        self.log(getattr(args, &#34;log&#34;))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="chillapi.abc.Extension" href="#chillapi.abc.Extension">Extension</a></li>
+<li>abc.ABC</li>
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="chillapi.extensions.audit.NullAuditHandler" href="extensions/audit.html#chillapi.extensions.audit.NullAuditHandler">NullAuditHandler</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.abc.AuditLogHandler.log"><code class="name flex">
+<span>def <span class="ident">log</span></span>(<span>self, log: <a title="chillapi.abc.AuditLog" href="#chillapi.abc.AuditLog">AuditLog</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param log: AuditLog:
+:param log: AuditLog:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def log(self, log: AuditLog):
+    &#34;&#34;&#34;
+
+    :param log: AuditLog:
+    :param log: AuditLog:
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="chillapi.abc.Extension" href="#chillapi.abc.Extension">Extension</a></b></code>:
+<ul class="hlist">
+<li><code><a title="chillapi.abc.Extension.execute" href="#chillapi.abc.Extension.execute">execute</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="chillapi.abc.Extension"><code class="flex name class">
+<span>class <span class="ident">Extension</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Extension(ABC, dict):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    def execute(self, *args):
+        &#34;&#34;&#34;
+
+        :param *args:
+
+        &#34;&#34;&#34;
+        method_name = getattr(args, &#34;method&#34;)
+        if method_name == &#34;execute&#34;:
+            raise Exception(&#34;You can not call myself&#34;)
+        method = getattr(self, getattr(args, &#34;method&#34;))
+        return method(getattr(args, &#34;args&#34;))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="chillapi.abc.AuditLogHandler" href="#chillapi.abc.AuditLogHandler">AuditLogHandler</a></li>
+<li><a title="chillapi.abc.TableExtension" href="#chillapi.abc.TableExtension">TableExtension</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.abc.Extension.execute"><code class="name flex">
+<span>def <span class="ident">execute</span></span>(<span>self, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param *args:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute(self, *args):
+    &#34;&#34;&#34;
+
+    :param *args:
+
+    &#34;&#34;&#34;
+    method_name = getattr(args, &#34;method&#34;)
+    if method_name == &#34;execute&#34;:
+        raise Exception(&#34;You can not call myself&#34;)
+    method = getattr(self, getattr(args, &#34;method&#34;))
+    return method(getattr(args, &#34;args&#34;))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="chillapi.abc.Repository"><code class="flex name class">
+<span>class <span class="ident">Repository</span></span>
+<span>(</span><span>db: sqlalchemy.orm.scoping.scoped_session)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Repository(ABC):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    def __init__(self, db: ScopedSession):
+        self.db = db
+        driver = self.db.bind.dialect.dbapi.__name__
+        if driver not in _ALLOWED_DRIVERS.keys():
+            raise ConfigError(f&#34;{driver} driver not allowed&#34;)
+        self.db_dialect = _ALLOWED_DRIVERS[driver]
+
+    @abstractmethod
+    def execute(self, sql, params=None) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param sql: param params:  (Default value = None)
+        :param params:  (Default value = None)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def execute_insert(self, sql, params=None) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param sql: param params:  (Default value = None)
+        :param params:  (Default value = None)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def fetch_by(self, table: str, columns: List[str], filters: dict, params=None):
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param columns: List[str]:
+        :param filters: dict:
+        :param params: Default value = None)
+        :param table: str:
+        :param columns: List[str]:
+        :param filters: dict:
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def insert(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = &#34;*&#34;) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def insert_batch(self, table: str, columns: List[str], params: List, returning: bool = True, returning_field: str = &#34;*&#34;) -&gt; List:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: List:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+        :param table: str:
+        :param columns: List[str]:
+        :param params: List:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def update_batch(self, table: str, params: List, where_field: str = &#34;id&#34;) -&gt; List:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param params: List:
+        :param where_field: str:  (Default value = &#34;id&#34;)
+        :param table: str:
+        :param params: List:
+        :param where_field: str:  (Default value = &#34;id&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def delete_batch(self, table: str, ids: List, where_field: str = &#34;id&#34;) -&gt; List:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param ids: List:
+        :param where_field: str:  (Default value = &#34;id&#34;)
+        :param table: str:
+        :param ids: List:
+        :param where_field: str:  (Default value = &#34;id&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def insert_record(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = &#34;*&#34;) -&gt; int:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = &#34;*&#34;)
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def update_record(self, table: str, where_field: str, where_value: str, params: dict) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param where_field: str:
+        :param where_value: str:
+        :param params: dict:
+        :param table: str:
+        :param where_field: str:
+        :param where_value: str:
+        :param params: dict:
+
+        &#34;&#34;&#34;
+        pass
+
+    @abstractmethod
+    def delete_record(self, table: str, where_field: str, where_field_id) -&gt; CursorResult:
+        &#34;&#34;&#34;
+
+        :param table: str:
+        :param where_field: str:
+        :param where_field_id:
+        :param table: str:
+        :param where_field: str:
+
+        &#34;&#34;&#34;
+        pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="chillapi.database.repository.DataRepository" href="database/repository.html#chillapi.database.repository.DataRepository">DataRepository</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.abc.Repository.delete_batch"><code class="name flex">
+<span>def <span class="ident">delete_batch</span></span>(<span>self, table: str, ids: List, where_field: str = 'id') ‑> List</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table: str:
+:param ids: List:
+:param where_field: str:
+(Default value = "id")
+:param table: str:
+:param ids: List:
+:param where_field: str:
+(Default value = "id")</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def delete_batch(self, table: str, ids: List, where_field: str = &#34;id&#34;) -&gt; List:
+    &#34;&#34;&#34;
+
+    :param table: str:
+    :param ids: List:
+    :param where_field: str:  (Default value = &#34;id&#34;)
+    :param table: str:
+    :param ids: List:
+    :param where_field: str:  (Default value = &#34;id&#34;)
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.abc.Repository.delete_record"><code class="name flex">
+<span>def <span class="ident">delete_record</span></span>(<span>self, table: str, where_field: str, where_field_id) ‑> sqlalchemy.engine.cursor.CursorResult</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table: str:
+:param where_field: str:
+:param where_field_id:
+:param table: str:
+:param where_field: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def delete_record(self, table: str, where_field: str, where_field_id) -&gt; CursorResult:
+    &#34;&#34;&#34;
+
+    :param table: str:
+    :param where_field: str:
+    :param where_field_id:
+    :param table: str:
+    :param where_field: str:
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.abc.Repository.execute"><code class="name flex">
+<span>def <span class="ident">execute</span></span>(<span>self, sql, params=None) ‑> sqlalchemy.engine.cursor.CursorResult</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param sql: param params:
+(Default value = None)
+:param params:
+(Default value = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def execute(self, sql, params=None) -&gt; CursorResult:
+    &#34;&#34;&#34;
+
+    :param sql: param params:  (Default value = None)
+    :param params:  (Default value = None)
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.abc.Repository.execute_insert"><code class="name flex">
+<span>def <span class="ident">execute_insert</span></span>(<span>self, sql, params=None) ‑> sqlalchemy.engine.cursor.CursorResult</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param sql: param params:
+(Default value = None)
+:param params:
+(Default value = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def execute_insert(self, sql, params=None) -&gt; CursorResult:
+    &#34;&#34;&#34;
+
+    :param sql: param params:  (Default value = None)
+    :param params:  (Default value = None)
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.abc.Repository.fetch_by"><code class="name flex">
+<span>def <span class="ident">fetch_by</span></span>(<span>self, table: str, columns: List[str], filters: dict, params=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table: str:
+:param columns: List[str]:
+:param filters: dict:
+:param params: Default value = None)
+:param table: str:
+:param columns: List[str]:
+:param filters: dict:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def fetch_by(self, table: str, columns: List[str], filters: dict, params=None):
+    &#34;&#34;&#34;
+
+    :param table: str:
+    :param columns: List[str]:
+    :param filters: dict:
+    :param params: Default value = None)
+    :param table: str:
+    :param columns: List[str]:
+    :param filters: dict:
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.abc.Repository.insert"><code class="name flex">
+<span>def <span class="ident">insert</span></span>(<span>self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = '*') ‑> sqlalchemy.engine.cursor.CursorResult</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table: str:
+:param columns: List[str]:
+:param params: dict:
+:param returning: bool:
+(Default value = True)
+:param returning_field: str:
+(Default value = "<em>")
+:param table: str:
+:param columns: List[str]:
+:param params: dict:
+:param returning: bool:
+(Default value = True)
+:param returning_field: str:
+(Default value = "</em>")</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def insert(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = &#34;*&#34;) -&gt; CursorResult:
+    &#34;&#34;&#34;
+
+    :param table: str:
+    :param columns: List[str]:
+    :param params: dict:
+    :param returning: bool:  (Default value = True)
+    :param returning_field: str:  (Default value = &#34;*&#34;)
+    :param table: str:
+    :param columns: List[str]:
+    :param params: dict:
+    :param returning: bool:  (Default value = True)
+    :param returning_field: str:  (Default value = &#34;*&#34;)
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.abc.Repository.insert_batch"><code class="name flex">
+<span>def <span class="ident">insert_batch</span></span>(<span>self, table: str, columns: List[str], params: List, returning: bool = True, returning_field: str = '*') ‑> List</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table: str:
+:param columns: List[str]:
+:param params: List:
+:param returning: bool:
+(Default value = True)
+:param returning_field: str:
+(Default value = "<em>")
+:param table: str:
+:param columns: List[str]:
+:param params: List:
+:param returning: bool:
+(Default value = True)
+:param returning_field: str:
+(Default value = "</em>")</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def insert_batch(self, table: str, columns: List[str], params: List, returning: bool = True, returning_field: str = &#34;*&#34;) -&gt; List:
+    &#34;&#34;&#34;
+
+    :param table: str:
+    :param columns: List[str]:
+    :param params: List:
+    :param returning: bool:  (Default value = True)
+    :param returning_field: str:  (Default value = &#34;*&#34;)
+    :param table: str:
+    :param columns: List[str]:
+    :param params: List:
+    :param returning: bool:  (Default value = True)
+    :param returning_field: str:  (Default value = &#34;*&#34;)
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.abc.Repository.insert_record"><code class="name flex">
+<span>def <span class="ident">insert_record</span></span>(<span>self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = '*') ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table: str:
+:param columns: List[str]:
+:param params: dict:
+:param returning: bool:
+(Default value = True)
+:param returning_field: str:
+(Default value = "<em>")
+:param table: str:
+:param columns: List[str]:
+:param params: dict:
+:param returning: bool:
+(Default value = True)
+:param returning_field: str:
+(Default value = "</em>")</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def insert_record(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = &#34;*&#34;) -&gt; int:
+    &#34;&#34;&#34;
+
+    :param table: str:
+    :param columns: List[str]:
+    :param params: dict:
+    :param returning: bool:  (Default value = True)
+    :param returning_field: str:  (Default value = &#34;*&#34;)
+    :param table: str:
+    :param columns: List[str]:
+    :param params: dict:
+    :param returning: bool:  (Default value = True)
+    :param returning_field: str:  (Default value = &#34;*&#34;)
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.abc.Repository.update_batch"><code class="name flex">
+<span>def <span class="ident">update_batch</span></span>(<span>self, table: str, params: List, where_field: str = 'id') ‑> List</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table: str:
+:param params: List:
+:param where_field: str:
+(Default value = "id")
+:param table: str:
+:param params: List:
+:param where_field: str:
+(Default value = "id")</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def update_batch(self, table: str, params: List, where_field: str = &#34;id&#34;) -&gt; List:
+    &#34;&#34;&#34;
+
+    :param table: str:
+    :param params: List:
+    :param where_field: str:  (Default value = &#34;id&#34;)
+    :param table: str:
+    :param params: List:
+    :param where_field: str:  (Default value = &#34;id&#34;)
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.abc.Repository.update_record"><code class="name flex">
+<span>def <span class="ident">update_record</span></span>(<span>self, table: str, where_field: str, where_value: str, params: dict) ‑> sqlalchemy.engine.cursor.CursorResult</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table: str:
+:param where_field: str:
+:param where_value: str:
+:param params: dict:
+:param table: str:
+:param where_field: str:
+:param where_value: str:
+:param params: dict:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def update_record(self, table: str, where_field: str, where_value: str, params: dict) -&gt; CursorResult:
+    &#34;&#34;&#34;
+
+    :param table: str:
+    :param where_field: str:
+    :param where_value: str:
+    :param params: dict:
+    :param table: str:
+    :param where_field: str:
+    :param where_value: str:
+    :param params: dict:
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="chillapi.abc.TableExtension"><code class="flex name class">
+<span>class <span class="ident">TableExtension</span></span>
+<span>(</span><span>config: dict, columns: dict = None, repository: <a title="chillapi.abc.Repository" href="#chillapi.abc.Repository">Repository</a> = None, table: str = None, inspector: sqlalchemy.engine.reflection.Inspector = None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TableExtension(Extension):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    enabled: bool = False
+    table: str = None
+    config: dict = None
+    repository: Repository = None
+    inspector: Inspector
+
+    def __init__(self, config: dict, columns: dict = None, repository: Repository = None, table: str = None, inspector: Inspector = None):
+        self.inspector = inspector
+        self.columns = columns
+        self.repository = repository
+        self.config = config
+        self.table = table
+        self.enabled = self.config[&#34;enable&#34;]
+
+    def validate(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        if not self.enabled:
+            return True
+        _default_field = self.config[&#34;default_field&#34;]
+
+        if _default_field not in self.columns.keys():
+            raise ColumnNotExist(f&#39;{self.__class__.__name__}: &#34;{_default_field}&#34; not found on table &#34;{self.table}&#34; &#39;)
+
+        return True</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="chillapi.abc.Extension" href="#chillapi.abc.Extension">Extension</a></li>
+<li>abc.ABC</li>
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="chillapi.extensions.record_livecycle.OnCreateTimestampExtension" href="extensions/record_livecycle.html#chillapi.extensions.record_livecycle.OnCreateTimestampExtension">OnCreateTimestampExtension</a></li>
+<li><a title="chillapi.extensions.record_livecycle.OnUpdateTimestampExtension" href="extensions/record_livecycle.html#chillapi.extensions.record_livecycle.OnUpdateTimestampExtension">OnUpdateTimestampExtension</a></li>
+<li><a title="chillapi.extensions.record_livecycle.SoftDeleteExtension" href="extensions/record_livecycle.html#chillapi.extensions.record_livecycle.SoftDeleteExtension">SoftDeleteExtension</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chillapi.abc.TableExtension.config"><code class="name">var <span class="ident">config</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.abc.TableExtension.enabled"><code class="name">var <span class="ident">enabled</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.abc.TableExtension.inspector"><code class="name">var <span class="ident">inspector</span> : sqlalchemy.engine.reflection.Inspector</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.abc.TableExtension.repository"><code class="name">var <span class="ident">repository</span> : <a title="chillapi.abc.Repository" href="#chillapi.abc.Repository">Repository</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.abc.TableExtension.table"><code class="name">var <span class="ident">table</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.abc.TableExtension.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    if not self.enabled:
+        return True
+    _default_field = self.config[&#34;default_field&#34;]
+
+    if _default_field not in self.columns.keys():
+        raise ColumnNotExist(f&#39;{self.__class__.__name__}: &#34;{_default_field}&#34; not found on table &#34;{self.table}&#34; &#39;)
+
+    return True</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="chillapi.abc.Extension" href="#chillapi.abc.Extension">Extension</a></b></code>:
+<ul class="hlist">
+<li><code><a title="chillapi.abc.Extension.execute" href="#chillapi.abc.Extension.execute">execute</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="chillapi" href="index.html">chillapi</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="chillapi.abc.AttributeDict" href="#chillapi.abc.AttributeDict">AttributeDict</a></code></h4>
+</li>
+<li>
+<h4><code><a title="chillapi.abc.AuditLog" href="#chillapi.abc.AuditLog">AuditLog</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.abc.AuditLog.date" href="#chillapi.abc.AuditLog.date">date</a></code></li>
+<li><code><a title="chillapi.abc.AuditLog.for_json" href="#chillapi.abc.AuditLog.for_json">for_json</a></code></li>
+<li><code><a title="chillapi.abc.AuditLog.message" href="#chillapi.abc.AuditLog.message">message</a></code></li>
+<li><code><a title="chillapi.abc.AuditLog.prev_request_id" href="#chillapi.abc.AuditLog.prev_request_id">prev_request_id</a></code></li>
+<li><code><a title="chillapi.abc.AuditLog.request_id" href="#chillapi.abc.AuditLog.request_id">request_id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.abc.AuditLogHandler" href="#chillapi.abc.AuditLogHandler">AuditLogHandler</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.abc.AuditLogHandler.log" href="#chillapi.abc.AuditLogHandler.log">log</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.abc.Extension" href="#chillapi.abc.Extension">Extension</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.abc.Extension.execute" href="#chillapi.abc.Extension.execute">execute</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.abc.Repository" href="#chillapi.abc.Repository">Repository</a></code></h4>
+<ul class="two-column">
+<li><code><a title="chillapi.abc.Repository.delete_batch" href="#chillapi.abc.Repository.delete_batch">delete_batch</a></code></li>
+<li><code><a title="chillapi.abc.Repository.delete_record" href="#chillapi.abc.Repository.delete_record">delete_record</a></code></li>
+<li><code><a title="chillapi.abc.Repository.execute" href="#chillapi.abc.Repository.execute">execute</a></code></li>
+<li><code><a title="chillapi.abc.Repository.execute_insert" href="#chillapi.abc.Repository.execute_insert">execute_insert</a></code></li>
+<li><code><a title="chillapi.abc.Repository.fetch_by" href="#chillapi.abc.Repository.fetch_by">fetch_by</a></code></li>
+<li><code><a title="chillapi.abc.Repository.insert" href="#chillapi.abc.Repository.insert">insert</a></code></li>
+<li><code><a title="chillapi.abc.Repository.insert_batch" href="#chillapi.abc.Repository.insert_batch">insert_batch</a></code></li>
+<li><code><a title="chillapi.abc.Repository.insert_record" href="#chillapi.abc.Repository.insert_record">insert_record</a></code></li>
+<li><code><a title="chillapi.abc.Repository.update_batch" href="#chillapi.abc.Repository.update_batch">update_batch</a></code></li>
+<li><code><a title="chillapi.abc.Repository.update_record" href="#chillapi.abc.Repository.update_record">update_record</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.abc.TableExtension" href="#chillapi.abc.TableExtension">TableExtension</a></code></h4>
+<ul class="two-column">
+<li><code><a title="chillapi.abc.TableExtension.config" href="#chillapi.abc.TableExtension.config">config</a></code></li>
+<li><code><a title="chillapi.abc.TableExtension.enabled" href="#chillapi.abc.TableExtension.enabled">enabled</a></code></li>
+<li><code><a title="chillapi.abc.TableExtension.inspector" href="#chillapi.abc.TableExtension.inspector">inspector</a></code></li>
+<li><code><a title="chillapi.abc.TableExtension.repository" href="#chillapi.abc.TableExtension.repository">repository</a></code></li>
+<li><code><a title="chillapi.abc.TableExtension.table" href="#chillapi.abc.TableExtension.table">table</a></code></li>
+<li><code><a title="chillapi.abc.TableExtension.validate" href="#chillapi.abc.TableExtension.validate">validate</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

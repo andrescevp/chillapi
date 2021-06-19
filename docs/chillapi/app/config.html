@@ -1,0 +1,1522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>chillapi.app.config API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>chillapi.app.config</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import copy
+import importlib
+import os
+from typing import List
+
+import slug
+from mergedeep import merge as dict_deepmerge
+from sqlalchemy.engine import Inspector
+from sqlalchemy.orm.scoping import ScopedSession
+
+from chillapi.abc import Repository, TableExtension
+from chillapi.app import (
+    _app_defaults,
+    _database_defaults,
+    _environment_defaults,
+    _logger_defaults,
+    _sql_default_config,
+    _sql_template_default_config,
+    _table_default_config,
+    _tables_default_config,
+)
+from chillapi.database.connection import create_db
+from chillapi.database.repository import DataRepository
+from chillapi.exceptions.api_manager import ColumnNotExist, ConfigError, TableNotExist
+from chillapi.extensions import LIVECYCLE_EXTENSIONS, REQUEST_EXTENSIONS
+from chillapi.extensions.record_livecycle import INTERNAL_EXTENSION_DEFAULTS
+from chillapi.logger.app_loggers import set_logger_config
+
+CWD = os.getcwd()
+
+
+class ChillApiModuleLoader(dict):
+    &#34;&#34;&#34;Module loader class&#34;&#34;&#34;
+
+    _modules: dict = {}
+    loaded = False
+
+    def add_module(self, module: str):
+        &#34;&#34;&#34;
+        Add a imported instance of the specified python package
+        :param module: str:
+
+        &#34;&#34;&#34;
+        if self.has_module(module):
+            return
+
+        self._modules[module] = importlib.import_module(module)
+
+    def get_module(self, module: str):
+        &#34;&#34;&#34;
+
+        :param module: str:
+
+        &#34;&#34;&#34;
+        if not self.has_module(module):
+            raise ConfigError(f&#34;{module} not loaded!&#34;)
+
+        return self._modules.get(module)
+
+    def get_module_attr(self, module: str, attr: str, args: dict):
+        &#34;&#34;&#34;
+
+        :param module: str:
+        :param attr: str:
+        :param args: dict:
+
+        &#34;&#34;&#34;
+        return getattr(self.get_module(module), attr)(**args)
+
+    def has_module_attr(self, module: str, attr: str):
+        &#34;&#34;&#34;
+
+        :param module: str:
+        :param attr: str:
+
+        &#34;&#34;&#34;
+        return hasattr(self.get_module(module), attr)
+
+    def has_module(self, module: str):
+        &#34;&#34;&#34;
+
+        :param module: str:
+
+        &#34;&#34;&#34;
+        return module in self._modules.keys()
+
+
+class ChillApiExtensions(dict):
+    &#34;&#34;&#34;Module wrapper to load modules as extensions in the different library contexts&#34;&#34;&#34;
+
+    tables: dict = dict({})
+    app: dict = dict({})
+
+    def __init__(self, module_loader: ChillApiModuleLoader):
+        super().__init__()
+        self.module_loader = module_loader
+        self.internal_extension_map = INTERNAL_EXTENSION_DEFAULTS.copy()
+
+    def set_extension(self, name: str, package_config: dict, type: str = &#34;app&#34;):
+        &#34;&#34;&#34;
+
+        :param name: str:
+        :param package_config: dict:
+        :param type: str:  (Default value = &#34;app&#34;)
+
+        &#34;&#34;&#34;
+        self.module_loader.add_module(package_config[&#34;package&#34;])
+
+        extension = self.module_loader.get_module_attr(
+            package_config[&#34;package&#34;],
+            package_config[&#34;handler&#34;],
+            package_config[&#34;handler_args&#34;] if &#34;handler_args&#34; in package_config else {},
+        )
+
+        _attr = getattr(self, type)
+        _attr[name] = extension
+        setattr(self, type, _attr)
+
+    def set_livecycle_table_extension(
+        self, extension_name: str, columns: dict, extension_config: dict, table_name: str, repository: Repository, inspector: Inspector
+    ):
+        &#34;&#34;&#34;
+
+        :param extension_name: str:
+        :param columns: dict:
+        :param extension_config: dict:
+        :param table_name: str:
+        :param repository: Repository:
+        :param inspector: Inspector:
+
+        &#34;&#34;&#34;
+        _extension = self.internal_extension_map[&#34;livecycle&#34;][extension_name]
+        extension = _extension(
+            **{&#34;config&#34;: extension_config, &#34;table&#34;: table_name, &#34;repository&#34;: repository, &#34;columns&#34;: columns, &#34;inspector&#34;: inspector}
+        )
+        extension.validate()
+
+        if table_name not in self.tables.keys():
+            self.tables[table_name] = {}
+        self.tables[table_name][extension_name] = extension
+
+    def set_request_table_extension(self, extension_name: str, extension_config: dict, table_name: str):
+        &#34;&#34;&#34;
+
+        :param extension_name: str:
+        :param extension_config: dict:
+        :param table_name: str:
+
+        &#34;&#34;&#34;
+        self.module_loader.add_module(extension_config[&#34;package&#34;])
+
+        extension = self.module_loader.get_module_attr(
+            extension_config[&#34;package&#34;],
+            extension_config[&#34;handler&#34;],
+            extension_config[&#34;handler_args&#34;],
+        )
+
+        if table_name not in self.tables.keys():
+            self.tables[table_name] = {}
+        self.tables[table_name][extension_name] = extension
+
+    def set_validator_column_table_extension(self, column_name: str, extension_config: dict, table_name: str):
+        &#34;&#34;&#34;
+
+        :param column_name: str:
+        :param extension_config: dict:
+        :param table_name: str:
+
+        &#34;&#34;&#34;
+        self.module_loader.add_module(extension_config[&#34;package&#34;])
+
+        extension = self.module_loader.get_module_attr(
+            extension_config[&#34;package&#34;],
+            extension_config[&#34;handler&#34;],
+            extension_config[&#34;handler_args&#34;],
+        )
+
+        if table_name not in self.tables.keys():
+            self.tables[table_name] = {}
+        if &#34;validators&#34; not in self.tables[table_name].keys():
+            self.tables[table_name][&#34;validators&#34;] = {}
+        if column_name not in self.tables[table_name][&#34;validators&#34;].keys():
+            self.tables[table_name][&#34;validators&#34;][column_name] = []
+        self.tables[table_name][&#34;validators&#34;][column_name].append(extension)
+
+    def is_extension_enabled(self, extension_name: str, type: str = &#34;app&#34;) -&gt; bool:
+        &#34;&#34;&#34;
+
+        :param extension_name: str:
+        :param type: str:  (Default value = &#34;app&#34;)
+
+        &#34;&#34;&#34;
+        return hasattr(getattr(self, type), extension_name)
+
+    def is_table_extension_enabled(self, table_name: str, extension_name: str) -&gt; bool:
+        &#34;&#34;&#34;
+
+        :param table_name: str:
+        :param extension_name: str:
+
+        &#34;&#34;&#34;
+        if hasattr(self.tables, table_name):
+            return hasattr(getattr(self.tables, table_name), extension_name)
+        return False
+
+    def get_extension(self, extension_name: str, type: str = &#34;app&#34;):
+        &#34;&#34;&#34;
+
+        :param extension_name: str:
+        :param type: str:  (Default value = &#34;app&#34;)
+
+        &#34;&#34;&#34;
+        return getattr(self, type)[extension_name]
+
+    def get_table_extension(self, table_name: str, extension_name: str) -&gt; TableExtension:
+        &#34;&#34;&#34;
+
+        :param table_name: str:
+        :param extension_name: str:
+
+        &#34;&#34;&#34;
+        return getattr(getattr(self.tables, table_name), extension_name)
+
+
+class ApiConfig:
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    app: dict = {}
+    environment: dict = {}
+    logger: dict = {}
+    database: dict = {}
+    model_names: List = []
+    db: ScopedSession
+    db_inspector: Inspector
+
+    def __init__(self, extensions: ChillApiExtensions, app: dict, environment: dict = None, logger: dict = None, database: dict = None):
+        self.extensions = extensions
+        app = {} if app is None else app
+        environment = {} if environment is None else environment
+        logger = {} if logger is None else logger
+        database = {} if database is None else database
+
+        self.logger = dict(dict_deepmerge({}, _logger_defaults, logger))
+
+        set_logger_config(self.logger)
+
+        self.app = dict(dict_deepmerge({}, _app_defaults, app))
+
+        self.environment = dict(dict_deepmerge({}, _environment_defaults, environment))
+
+        if &#34;__CHILLAPI_DB_DSN__&#34; in self.environment and self.environment[&#34;__CHILLAPI_DB_DSN__&#34;].startswith(&#34;$&#34;):
+            self.environment[&#34;__CHILLAPI_DB_DSN__&#34;] = os.getenv(self.environment[&#34;__CHILLAPI_DB_DSN__&#34;].replace(&#34;$&#34;, &#34;&#34;, 1))
+
+        for _env_key in self.environment.keys():
+            os.environ.setdefault(_env_key, self.environment.get(_env_key))
+
+        self.database = dict(dict_deepmerge({}, _database_defaults, database))
+
+        if &#34;defaults&#34; in self.database and &#34;tables&#34; in self.database[&#34;defaults&#34;]:
+            self.database[&#34;defaults&#34;][&#34;tables&#34;] = dict(dict_deepmerge({}, _tables_default_config, self.database[&#34;defaults&#34;][&#34;tables&#34;]))
+        else:
+            self.database[&#34;defaults&#34;][&#34;tables&#34;] = _tables_default_config
+
+        self._init_tables()
+
+        if &#34;sql&#34; in self.database and len(self.database[&#34;sql&#34;]) &gt; 0:
+            self.database[&#34;sql&#34;] = [dict(dict_deepmerge({}, _sql_default_config, t)) for t in self.database[&#34;sql&#34;]]
+
+        if &#34;templates&#34; in self.database and len(self.database[&#34;templates&#34;]) &gt; 0:
+            self.database[&#34;templates&#34;] = [dict(dict_deepmerge({}, _sql_template_default_config, t)) for t in self.database[&#34;templates&#34;]]
+
+        self.db, self.db_inspector = create_db(self.environment, self.database[&#34;schema&#34;])
+        self.repository = DataRepository(self.db)
+
+        _db_tables = self.db_inspector.get_table_names()
+        for key, _table in enumerate(self.database[&#34;tables&#34;]):
+            _table_name = _table[&#34;name&#34;]
+            if _table_name not in _db_tables:
+                raise TableNotExist(f&#34;Table {_table_name} do not exist!&#34;)
+
+        self.load_table_columns()
+        self.load_extensions()
+
+    def _init_tables(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        if &#34;tables&#34; in self.database and len(self.database[&#34;tables&#34;]) &gt; 0:
+            _global_defaults = copy.deepcopy(self.database[&#34;defaults&#34;][&#34;tables&#34;])
+            if &#34;audit_logger&#34; in _global_defaults[&#34;extensions&#34;]:
+                del _global_defaults[&#34;extensions&#34;][&#34;audit_logger&#34;]
+
+            self.database[&#34;tables&#34;] = [
+                dict(
+                    dict_deepmerge(
+                        {},
+                        dict_deepmerge(
+                            {},
+                            _table_default_config,
+                            _global_defaults,
+                        ),
+                        t,
+                    )
+                )
+                for t in self.database[&#34;tables&#34;]
+            ]
+            for key, _table in enumerate(self.database[&#34;tables&#34;]):
+                if _table[&#34;fields_excluded&#34;]:
+                    for _method in _table[&#34;fields_excluded&#34;].keys():
+                        if _method == &#34;all&#34;:
+                            continue
+                        for _endpoint in _table[&#34;fields_excluded&#34;][_method].keys():
+                            if _table[&#34;fields_excluded&#34;][_method][_endpoint]:
+                                _table[&#34;fields_excluded&#34;][_method][_endpoint].extend(
+                                    x for x in _table[&#34;fields_excluded&#34;][&#34;all&#34;] if x not in _table[&#34;fields_excluded&#34;][_method][_endpoint]
+                                )
+                            else:
+                                _table[&#34;fields_excluded&#34;][_method][_endpoint] = _table[&#34;fields_excluded&#34;][&#34;all&#34;]
+
+                _model_name = self.get_class_name_from_model_name(_table[&#34;name&#34;] if not _table[&#34;alias&#34;] else _table[&#34;alias&#34;])
+                _table[&#34;model_name&#34;] = _model_name
+                _table[&#34;slug&#34;] = slug.slug(_table[&#34;name&#34;] if not _table[&#34;alias&#34;] else _table[&#34;alias&#34;])
+                if _model_name in self.model_names:
+                    raise ConfigError(
+                        f&#34;&#34;&#34;
+                        Table &#39;{_table[&#39;name&#39;]}&#39; with alias &#39;{_table[&#39;alias&#39;]}&#39; is already defined.
+                        Please add or change the alias
+                        &#34;&#34;&#34;
+                    )
+                self.model_names.append(_model_name)
+
+    @classmethod
+    def reset(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        cls.app = {}
+        cls.environment = {}
+        cls.logger = {}
+        cls.database = {}
+        cls.model_names = []
+
+    def get_columns_table_details(self, table_name):
+        &#34;&#34;&#34;
+
+        :param table_name:
+
+        &#34;&#34;&#34;
+        return self.db_inspector.get_columns(table_name)
+
+    def get_class_name_from_model_name(self, model_name):
+        &#34;&#34;&#34;
+
+        :param model_name:
+
+        &#34;&#34;&#34;
+        class_name = model_name.replace(&#34;_&#34;, &#34; &#34;).title().replace(&#34; &#34;, &#34;&#34;)
+        return class_name
+
+    def validate_sources(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        pass
+
+    def get_table_columns(self, name):
+        &#34;&#34;&#34;
+
+        :param name:
+
+        &#34;&#34;&#34;
+        table_columns = self.get_columns_table_details(name)
+        return {v[&#34;name&#34;]: v for i, v in enumerate(table_columns)}
+
+    def load_table_columns(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        for _it, table in enumerate(self.database[&#34;tables&#34;]):
+            table_name = table[&#34;name&#34;]
+            _table_columns = self.get_table_columns(table_name)
+            self.database[&#34;tables&#34;][_it][&#34;columns&#34;] = _table_columns
+
+    def load_extension(self, table_config: dict, extension_name: str):
+        &#34;&#34;&#34;
+
+        :param table_config: dict:
+        :param extension_name: str:
+
+        &#34;&#34;&#34;
+        table_name = table_config[&#34;model_name&#34;]
+        if extension_name in LIVECYCLE_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
+            self.extensions.set_livecycle_table_extension(
+                extension_name, table_config[&#34;columns&#34;], table_config[&#34;extensions&#34;][extension_name], table_name, self.repository, self.db_inspector
+            )
+        if extension_name in REQUEST_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
+            _extension_conf = table_config[&#34;extensions&#34;][extension_name]
+            self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)
+        if extension_name == &#34;validators&#34;:
+            _columns_in_table = table_config[&#34;columns&#34;].keys()
+            for column_to_validate, validators in table_config[&#34;extensions&#34;][extension_name].items():
+                if column_to_validate not in _columns_in_table:
+                    raise ColumnNotExist(f&#34;{column_to_validate} to validate does not exists!&#34;)
+                for _v, validator in enumerate(validators):
+                    self.extensions.set_validator_column_table_extension(column_to_validate, validator, table_name)
+            # _extension_conf = table_config[&#34;extensions&#34;][extension_name]
+            # self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)
+
+    def load_extensions(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        if not self.extensions.is_extension_enabled(&#34;audit&#34;):
+            self.extensions.set_extension(&#34;audit&#34;, self.database[&#34;defaults&#34;][&#34;tables&#34;][&#34;extensions&#34;][&#34;audit_logger&#34;])
+
+        for _it, table in enumerate(self.database[&#34;tables&#34;]):
+            for _extension_name in table[&#34;extensions&#34;].keys():
+                self.load_extension(table, _extension_name)
+
+    def to_dict(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return {
+            &#34;app&#34;: self.app,
+            &#34;logger&#34;: self.logger,
+            &#34;environment&#34;: self.environment,
+            &#34;database&#34;: self.database,
+        }</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="chillapi.app.config.ApiConfig"><code class="flex name class">
+<span>class <span class="ident">ApiConfig</span></span>
+<span>(</span><span>extensions: <a title="chillapi.app.config.ChillApiExtensions" href="#chillapi.app.config.ChillApiExtensions">ChillApiExtensions</a>, app: dict, environment: dict = None, logger: dict = None, database: dict = None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ApiConfig:
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    app: dict = {}
+    environment: dict = {}
+    logger: dict = {}
+    database: dict = {}
+    model_names: List = []
+    db: ScopedSession
+    db_inspector: Inspector
+
+    def __init__(self, extensions: ChillApiExtensions, app: dict, environment: dict = None, logger: dict = None, database: dict = None):
+        self.extensions = extensions
+        app = {} if app is None else app
+        environment = {} if environment is None else environment
+        logger = {} if logger is None else logger
+        database = {} if database is None else database
+
+        self.logger = dict(dict_deepmerge({}, _logger_defaults, logger))
+
+        set_logger_config(self.logger)
+
+        self.app = dict(dict_deepmerge({}, _app_defaults, app))
+
+        self.environment = dict(dict_deepmerge({}, _environment_defaults, environment))
+
+        if &#34;__CHILLAPI_DB_DSN__&#34; in self.environment and self.environment[&#34;__CHILLAPI_DB_DSN__&#34;].startswith(&#34;$&#34;):
+            self.environment[&#34;__CHILLAPI_DB_DSN__&#34;] = os.getenv(self.environment[&#34;__CHILLAPI_DB_DSN__&#34;].replace(&#34;$&#34;, &#34;&#34;, 1))
+
+        for _env_key in self.environment.keys():
+            os.environ.setdefault(_env_key, self.environment.get(_env_key))
+
+        self.database = dict(dict_deepmerge({}, _database_defaults, database))
+
+        if &#34;defaults&#34; in self.database and &#34;tables&#34; in self.database[&#34;defaults&#34;]:
+            self.database[&#34;defaults&#34;][&#34;tables&#34;] = dict(dict_deepmerge({}, _tables_default_config, self.database[&#34;defaults&#34;][&#34;tables&#34;]))
+        else:
+            self.database[&#34;defaults&#34;][&#34;tables&#34;] = _tables_default_config
+
+        self._init_tables()
+
+        if &#34;sql&#34; in self.database and len(self.database[&#34;sql&#34;]) &gt; 0:
+            self.database[&#34;sql&#34;] = [dict(dict_deepmerge({}, _sql_default_config, t)) for t in self.database[&#34;sql&#34;]]
+
+        if &#34;templates&#34; in self.database and len(self.database[&#34;templates&#34;]) &gt; 0:
+            self.database[&#34;templates&#34;] = [dict(dict_deepmerge({}, _sql_template_default_config, t)) for t in self.database[&#34;templates&#34;]]
+
+        self.db, self.db_inspector = create_db(self.environment, self.database[&#34;schema&#34;])
+        self.repository = DataRepository(self.db)
+
+        _db_tables = self.db_inspector.get_table_names()
+        for key, _table in enumerate(self.database[&#34;tables&#34;]):
+            _table_name = _table[&#34;name&#34;]
+            if _table_name not in _db_tables:
+                raise TableNotExist(f&#34;Table {_table_name} do not exist!&#34;)
+
+        self.load_table_columns()
+        self.load_extensions()
+
+    def _init_tables(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        if &#34;tables&#34; in self.database and len(self.database[&#34;tables&#34;]) &gt; 0:
+            _global_defaults = copy.deepcopy(self.database[&#34;defaults&#34;][&#34;tables&#34;])
+            if &#34;audit_logger&#34; in _global_defaults[&#34;extensions&#34;]:
+                del _global_defaults[&#34;extensions&#34;][&#34;audit_logger&#34;]
+
+            self.database[&#34;tables&#34;] = [
+                dict(
+                    dict_deepmerge(
+                        {},
+                        dict_deepmerge(
+                            {},
+                            _table_default_config,
+                            _global_defaults,
+                        ),
+                        t,
+                    )
+                )
+                for t in self.database[&#34;tables&#34;]
+            ]
+            for key, _table in enumerate(self.database[&#34;tables&#34;]):
+                if _table[&#34;fields_excluded&#34;]:
+                    for _method in _table[&#34;fields_excluded&#34;].keys():
+                        if _method == &#34;all&#34;:
+                            continue
+                        for _endpoint in _table[&#34;fields_excluded&#34;][_method].keys():
+                            if _table[&#34;fields_excluded&#34;][_method][_endpoint]:
+                                _table[&#34;fields_excluded&#34;][_method][_endpoint].extend(
+                                    x for x in _table[&#34;fields_excluded&#34;][&#34;all&#34;] if x not in _table[&#34;fields_excluded&#34;][_method][_endpoint]
+                                )
+                            else:
+                                _table[&#34;fields_excluded&#34;][_method][_endpoint] = _table[&#34;fields_excluded&#34;][&#34;all&#34;]
+
+                _model_name = self.get_class_name_from_model_name(_table[&#34;name&#34;] if not _table[&#34;alias&#34;] else _table[&#34;alias&#34;])
+                _table[&#34;model_name&#34;] = _model_name
+                _table[&#34;slug&#34;] = slug.slug(_table[&#34;name&#34;] if not _table[&#34;alias&#34;] else _table[&#34;alias&#34;])
+                if _model_name in self.model_names:
+                    raise ConfigError(
+                        f&#34;&#34;&#34;
+                        Table &#39;{_table[&#39;name&#39;]}&#39; with alias &#39;{_table[&#39;alias&#39;]}&#39; is already defined.
+                        Please add or change the alias
+                        &#34;&#34;&#34;
+                    )
+                self.model_names.append(_model_name)
+
+    @classmethod
+    def reset(cls):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        cls.app = {}
+        cls.environment = {}
+        cls.logger = {}
+        cls.database = {}
+        cls.model_names = []
+
+    def get_columns_table_details(self, table_name):
+        &#34;&#34;&#34;
+
+        :param table_name:
+
+        &#34;&#34;&#34;
+        return self.db_inspector.get_columns(table_name)
+
+    def get_class_name_from_model_name(self, model_name):
+        &#34;&#34;&#34;
+
+        :param model_name:
+
+        &#34;&#34;&#34;
+        class_name = model_name.replace(&#34;_&#34;, &#34; &#34;).title().replace(&#34; &#34;, &#34;&#34;)
+        return class_name
+
+    def validate_sources(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        pass
+
+    def get_table_columns(self, name):
+        &#34;&#34;&#34;
+
+        :param name:
+
+        &#34;&#34;&#34;
+        table_columns = self.get_columns_table_details(name)
+        return {v[&#34;name&#34;]: v for i, v in enumerate(table_columns)}
+
+    def load_table_columns(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        for _it, table in enumerate(self.database[&#34;tables&#34;]):
+            table_name = table[&#34;name&#34;]
+            _table_columns = self.get_table_columns(table_name)
+            self.database[&#34;tables&#34;][_it][&#34;columns&#34;] = _table_columns
+
+    def load_extension(self, table_config: dict, extension_name: str):
+        &#34;&#34;&#34;
+
+        :param table_config: dict:
+        :param extension_name: str:
+
+        &#34;&#34;&#34;
+        table_name = table_config[&#34;model_name&#34;]
+        if extension_name in LIVECYCLE_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
+            self.extensions.set_livecycle_table_extension(
+                extension_name, table_config[&#34;columns&#34;], table_config[&#34;extensions&#34;][extension_name], table_name, self.repository, self.db_inspector
+            )
+        if extension_name in REQUEST_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
+            _extension_conf = table_config[&#34;extensions&#34;][extension_name]
+            self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)
+        if extension_name == &#34;validators&#34;:
+            _columns_in_table = table_config[&#34;columns&#34;].keys()
+            for column_to_validate, validators in table_config[&#34;extensions&#34;][extension_name].items():
+                if column_to_validate not in _columns_in_table:
+                    raise ColumnNotExist(f&#34;{column_to_validate} to validate does not exists!&#34;)
+                for _v, validator in enumerate(validators):
+                    self.extensions.set_validator_column_table_extension(column_to_validate, validator, table_name)
+            # _extension_conf = table_config[&#34;extensions&#34;][extension_name]
+            # self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)
+
+    def load_extensions(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        if not self.extensions.is_extension_enabled(&#34;audit&#34;):
+            self.extensions.set_extension(&#34;audit&#34;, self.database[&#34;defaults&#34;][&#34;tables&#34;][&#34;extensions&#34;][&#34;audit_logger&#34;])
+
+        for _it, table in enumerate(self.database[&#34;tables&#34;]):
+            for _extension_name in table[&#34;extensions&#34;].keys():
+                self.load_extension(table, _extension_name)
+
+    def to_dict(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return {
+            &#34;app&#34;: self.app,
+            &#34;logger&#34;: self.logger,
+            &#34;environment&#34;: self.environment,
+            &#34;database&#34;: self.database,
+        }</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="chillapi.app.config.ApiConfig.app"><code class="name">var <span class="ident">app</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.database"><code class="name">var <span class="ident">database</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.db"><code class="name">var <span class="ident">db</span> : sqlalchemy.orm.scoping.scoped_session</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.db_inspector"><code class="name">var <span class="ident">db_inspector</span> : sqlalchemy.engine.reflection.Inspector</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.environment"><code class="name">var <span class="ident">environment</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.logger"><code class="name">var <span class="ident">logger</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.model_names"><code class="name">var <span class="ident">model_names</span> : List</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="chillapi.app.config.ApiConfig.reset"><code class="name flex">
+<span>def <span class="ident">reset</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def reset(cls):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    cls.app = {}
+    cls.environment = {}
+    cls.logger = {}
+    cls.database = {}
+    cls.model_names = []</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.app.config.ApiConfig.get_class_name_from_model_name"><code class="name flex">
+<span>def <span class="ident">get_class_name_from_model_name</span></span>(<span>self, model_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param model_name:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_class_name_from_model_name(self, model_name):
+    &#34;&#34;&#34;
+
+    :param model_name:
+
+    &#34;&#34;&#34;
+    class_name = model_name.replace(&#34;_&#34;, &#34; &#34;).title().replace(&#34; &#34;, &#34;&#34;)
+    return class_name</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.get_columns_table_details"><code class="name flex">
+<span>def <span class="ident">get_columns_table_details</span></span>(<span>self, table_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table_name:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_columns_table_details(self, table_name):
+    &#34;&#34;&#34;
+
+    :param table_name:
+
+    &#34;&#34;&#34;
+    return self.db_inspector.get_columns(table_name)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.get_table_columns"><code class="name flex">
+<span>def <span class="ident">get_table_columns</span></span>(<span>self, name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param name:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_table_columns(self, name):
+    &#34;&#34;&#34;
+
+    :param name:
+
+    &#34;&#34;&#34;
+    table_columns = self.get_columns_table_details(name)
+    return {v[&#34;name&#34;]: v for i, v in enumerate(table_columns)}</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.load_extension"><code class="name flex">
+<span>def <span class="ident">load_extension</span></span>(<span>self, table_config: dict, extension_name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table_config: dict:
+:param extension_name: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_extension(self, table_config: dict, extension_name: str):
+    &#34;&#34;&#34;
+
+    :param table_config: dict:
+    :param extension_name: str:
+
+    &#34;&#34;&#34;
+    table_name = table_config[&#34;model_name&#34;]
+    if extension_name in LIVECYCLE_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
+        self.extensions.set_livecycle_table_extension(
+            extension_name, table_config[&#34;columns&#34;], table_config[&#34;extensions&#34;][extension_name], table_name, self.repository, self.db_inspector
+        )
+    if extension_name in REQUEST_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
+        _extension_conf = table_config[&#34;extensions&#34;][extension_name]
+        self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)
+    if extension_name == &#34;validators&#34;:
+        _columns_in_table = table_config[&#34;columns&#34;].keys()
+        for column_to_validate, validators in table_config[&#34;extensions&#34;][extension_name].items():
+            if column_to_validate not in _columns_in_table:
+                raise ColumnNotExist(f&#34;{column_to_validate} to validate does not exists!&#34;)
+            for _v, validator in enumerate(validators):
+                self.extensions.set_validator_column_table_extension(column_to_validate, validator, table_name)
+        # _extension_conf = table_config[&#34;extensions&#34;][extension_name]
+        # self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.load_extensions"><code class="name flex">
+<span>def <span class="ident">load_extensions</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_extensions(self):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    if not self.extensions.is_extension_enabled(&#34;audit&#34;):
+        self.extensions.set_extension(&#34;audit&#34;, self.database[&#34;defaults&#34;][&#34;tables&#34;][&#34;extensions&#34;][&#34;audit_logger&#34;])
+
+    for _it, table in enumerate(self.database[&#34;tables&#34;]):
+        for _extension_name in table[&#34;extensions&#34;].keys():
+            self.load_extension(table, _extension_name)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.load_table_columns"><code class="name flex">
+<span>def <span class="ident">load_table_columns</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_table_columns(self):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    for _it, table in enumerate(self.database[&#34;tables&#34;]):
+        table_name = table[&#34;name&#34;]
+        _table_columns = self.get_table_columns(table_name)
+        self.database[&#34;tables&#34;][_it][&#34;columns&#34;] = _table_columns</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.to_dict"><code class="name flex">
+<span>def <span class="ident">to_dict</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_dict(self):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    return {
+        &#34;app&#34;: self.app,
+        &#34;logger&#34;: self.logger,
+        &#34;environment&#34;: self.environment,
+        &#34;database&#34;: self.database,
+    }</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ApiConfig.validate_sources"><code class="name flex">
+<span>def <span class="ident">validate_sources</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_sources(self):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="chillapi.app.config.ChillApiExtensions"><code class="flex name class">
+<span>class <span class="ident">ChillApiExtensions</span></span>
+<span>(</span><span>module_loader: <a title="chillapi.app.config.ChillApiModuleLoader" href="#chillapi.app.config.ChillApiModuleLoader">ChillApiModuleLoader</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Module wrapper to load modules as extensions in the different library contexts</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChillApiExtensions(dict):
+    &#34;&#34;&#34;Module wrapper to load modules as extensions in the different library contexts&#34;&#34;&#34;
+
+    tables: dict = dict({})
+    app: dict = dict({})
+
+    def __init__(self, module_loader: ChillApiModuleLoader):
+        super().__init__()
+        self.module_loader = module_loader
+        self.internal_extension_map = INTERNAL_EXTENSION_DEFAULTS.copy()
+
+    def set_extension(self, name: str, package_config: dict, type: str = &#34;app&#34;):
+        &#34;&#34;&#34;
+
+        :param name: str:
+        :param package_config: dict:
+        :param type: str:  (Default value = &#34;app&#34;)
+
+        &#34;&#34;&#34;
+        self.module_loader.add_module(package_config[&#34;package&#34;])
+
+        extension = self.module_loader.get_module_attr(
+            package_config[&#34;package&#34;],
+            package_config[&#34;handler&#34;],
+            package_config[&#34;handler_args&#34;] if &#34;handler_args&#34; in package_config else {},
+        )
+
+        _attr = getattr(self, type)
+        _attr[name] = extension
+        setattr(self, type, _attr)
+
+    def set_livecycle_table_extension(
+        self, extension_name: str, columns: dict, extension_config: dict, table_name: str, repository: Repository, inspector: Inspector
+    ):
+        &#34;&#34;&#34;
+
+        :param extension_name: str:
+        :param columns: dict:
+        :param extension_config: dict:
+        :param table_name: str:
+        :param repository: Repository:
+        :param inspector: Inspector:
+
+        &#34;&#34;&#34;
+        _extension = self.internal_extension_map[&#34;livecycle&#34;][extension_name]
+        extension = _extension(
+            **{&#34;config&#34;: extension_config, &#34;table&#34;: table_name, &#34;repository&#34;: repository, &#34;columns&#34;: columns, &#34;inspector&#34;: inspector}
+        )
+        extension.validate()
+
+        if table_name not in self.tables.keys():
+            self.tables[table_name] = {}
+        self.tables[table_name][extension_name] = extension
+
+    def set_request_table_extension(self, extension_name: str, extension_config: dict, table_name: str):
+        &#34;&#34;&#34;
+
+        :param extension_name: str:
+        :param extension_config: dict:
+        :param table_name: str:
+
+        &#34;&#34;&#34;
+        self.module_loader.add_module(extension_config[&#34;package&#34;])
+
+        extension = self.module_loader.get_module_attr(
+            extension_config[&#34;package&#34;],
+            extension_config[&#34;handler&#34;],
+            extension_config[&#34;handler_args&#34;],
+        )
+
+        if table_name not in self.tables.keys():
+            self.tables[table_name] = {}
+        self.tables[table_name][extension_name] = extension
+
+    def set_validator_column_table_extension(self, column_name: str, extension_config: dict, table_name: str):
+        &#34;&#34;&#34;
+
+        :param column_name: str:
+        :param extension_config: dict:
+        :param table_name: str:
+
+        &#34;&#34;&#34;
+        self.module_loader.add_module(extension_config[&#34;package&#34;])
+
+        extension = self.module_loader.get_module_attr(
+            extension_config[&#34;package&#34;],
+            extension_config[&#34;handler&#34;],
+            extension_config[&#34;handler_args&#34;],
+        )
+
+        if table_name not in self.tables.keys():
+            self.tables[table_name] = {}
+        if &#34;validators&#34; not in self.tables[table_name].keys():
+            self.tables[table_name][&#34;validators&#34;] = {}
+        if column_name not in self.tables[table_name][&#34;validators&#34;].keys():
+            self.tables[table_name][&#34;validators&#34;][column_name] = []
+        self.tables[table_name][&#34;validators&#34;][column_name].append(extension)
+
+    def is_extension_enabled(self, extension_name: str, type: str = &#34;app&#34;) -&gt; bool:
+        &#34;&#34;&#34;
+
+        :param extension_name: str:
+        :param type: str:  (Default value = &#34;app&#34;)
+
+        &#34;&#34;&#34;
+        return hasattr(getattr(self, type), extension_name)
+
+    def is_table_extension_enabled(self, table_name: str, extension_name: str) -&gt; bool:
+        &#34;&#34;&#34;
+
+        :param table_name: str:
+        :param extension_name: str:
+
+        &#34;&#34;&#34;
+        if hasattr(self.tables, table_name):
+            return hasattr(getattr(self.tables, table_name), extension_name)
+        return False
+
+    def get_extension(self, extension_name: str, type: str = &#34;app&#34;):
+        &#34;&#34;&#34;
+
+        :param extension_name: str:
+        :param type: str:  (Default value = &#34;app&#34;)
+
+        &#34;&#34;&#34;
+        return getattr(self, type)[extension_name]
+
+    def get_table_extension(self, table_name: str, extension_name: str) -&gt; TableExtension:
+        &#34;&#34;&#34;
+
+        :param table_name: str:
+        :param extension_name: str:
+
+        &#34;&#34;&#34;
+        return getattr(getattr(self.tables, table_name), extension_name)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chillapi.app.config.ChillApiExtensions.app"><code class="name">var <span class="ident">app</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="chillapi.app.config.ChillApiExtensions.tables"><code class="name">var <span class="ident">tables</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.app.config.ChillApiExtensions.get_extension"><code class="name flex">
+<span>def <span class="ident">get_extension</span></span>(<span>self, extension_name: str, type: str = 'app')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param extension_name: str:
+:param type: str:
+(Default value = "app")</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_extension(self, extension_name: str, type: str = &#34;app&#34;):
+    &#34;&#34;&#34;
+
+    :param extension_name: str:
+    :param type: str:  (Default value = &#34;app&#34;)
+
+    &#34;&#34;&#34;
+    return getattr(self, type)[extension_name]</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiExtensions.get_table_extension"><code class="name flex">
+<span>def <span class="ident">get_table_extension</span></span>(<span>self, table_name: str, extension_name: str) ‑> <a title="chillapi.abc.TableExtension" href="../abc.html#chillapi.abc.TableExtension">TableExtension</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table_name: str:
+:param extension_name: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_table_extension(self, table_name: str, extension_name: str) -&gt; TableExtension:
+    &#34;&#34;&#34;
+
+    :param table_name: str:
+    :param extension_name: str:
+
+    &#34;&#34;&#34;
+    return getattr(getattr(self.tables, table_name), extension_name)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiExtensions.is_extension_enabled"><code class="name flex">
+<span>def <span class="ident">is_extension_enabled</span></span>(<span>self, extension_name: str, type: str = 'app') ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param extension_name: str:
+:param type: str:
+(Default value = "app")</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_extension_enabled(self, extension_name: str, type: str = &#34;app&#34;) -&gt; bool:
+    &#34;&#34;&#34;
+
+    :param extension_name: str:
+    :param type: str:  (Default value = &#34;app&#34;)
+
+    &#34;&#34;&#34;
+    return hasattr(getattr(self, type), extension_name)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiExtensions.is_table_extension_enabled"><code class="name flex">
+<span>def <span class="ident">is_table_extension_enabled</span></span>(<span>self, table_name: str, extension_name: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param table_name: str:
+:param extension_name: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_table_extension_enabled(self, table_name: str, extension_name: str) -&gt; bool:
+    &#34;&#34;&#34;
+
+    :param table_name: str:
+    :param extension_name: str:
+
+    &#34;&#34;&#34;
+    if hasattr(self.tables, table_name):
+        return hasattr(getattr(self.tables, table_name), extension_name)
+    return False</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiExtensions.set_extension"><code class="name flex">
+<span>def <span class="ident">set_extension</span></span>(<span>self, name: str, package_config: dict, type: str = 'app')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param name: str:
+:param package_config: dict:
+:param type: str:
+(Default value = "app")</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_extension(self, name: str, package_config: dict, type: str = &#34;app&#34;):
+    &#34;&#34;&#34;
+
+    :param name: str:
+    :param package_config: dict:
+    :param type: str:  (Default value = &#34;app&#34;)
+
+    &#34;&#34;&#34;
+    self.module_loader.add_module(package_config[&#34;package&#34;])
+
+    extension = self.module_loader.get_module_attr(
+        package_config[&#34;package&#34;],
+        package_config[&#34;handler&#34;],
+        package_config[&#34;handler_args&#34;] if &#34;handler_args&#34; in package_config else {},
+    )
+
+    _attr = getattr(self, type)
+    _attr[name] = extension
+    setattr(self, type, _attr)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiExtensions.set_livecycle_table_extension"><code class="name flex">
+<span>def <span class="ident">set_livecycle_table_extension</span></span>(<span>self, extension_name: str, columns: dict, extension_config: dict, table_name: str, repository: <a title="chillapi.abc.Repository" href="../abc.html#chillapi.abc.Repository">Repository</a>, inspector: sqlalchemy.engine.reflection.Inspector)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param extension_name: str:
+:param columns: dict:
+:param extension_config: dict:
+:param table_name: str:
+:param repository: Repository:
+:param inspector: Inspector:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_livecycle_table_extension(
+    self, extension_name: str, columns: dict, extension_config: dict, table_name: str, repository: Repository, inspector: Inspector
+):
+    &#34;&#34;&#34;
+
+    :param extension_name: str:
+    :param columns: dict:
+    :param extension_config: dict:
+    :param table_name: str:
+    :param repository: Repository:
+    :param inspector: Inspector:
+
+    &#34;&#34;&#34;
+    _extension = self.internal_extension_map[&#34;livecycle&#34;][extension_name]
+    extension = _extension(
+        **{&#34;config&#34;: extension_config, &#34;table&#34;: table_name, &#34;repository&#34;: repository, &#34;columns&#34;: columns, &#34;inspector&#34;: inspector}
+    )
+    extension.validate()
+
+    if table_name not in self.tables.keys():
+        self.tables[table_name] = {}
+    self.tables[table_name][extension_name] = extension</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiExtensions.set_request_table_extension"><code class="name flex">
+<span>def <span class="ident">set_request_table_extension</span></span>(<span>self, extension_name: str, extension_config: dict, table_name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param extension_name: str:
+:param extension_config: dict:
+:param table_name: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_request_table_extension(self, extension_name: str, extension_config: dict, table_name: str):
+    &#34;&#34;&#34;
+
+    :param extension_name: str:
+    :param extension_config: dict:
+    :param table_name: str:
+
+    &#34;&#34;&#34;
+    self.module_loader.add_module(extension_config[&#34;package&#34;])
+
+    extension = self.module_loader.get_module_attr(
+        extension_config[&#34;package&#34;],
+        extension_config[&#34;handler&#34;],
+        extension_config[&#34;handler_args&#34;],
+    )
+
+    if table_name not in self.tables.keys():
+        self.tables[table_name] = {}
+    self.tables[table_name][extension_name] = extension</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiExtensions.set_validator_column_table_extension"><code class="name flex">
+<span>def <span class="ident">set_validator_column_table_extension</span></span>(<span>self, column_name: str, extension_config: dict, table_name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param column_name: str:
+:param extension_config: dict:
+:param table_name: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_validator_column_table_extension(self, column_name: str, extension_config: dict, table_name: str):
+    &#34;&#34;&#34;
+
+    :param column_name: str:
+    :param extension_config: dict:
+    :param table_name: str:
+
+    &#34;&#34;&#34;
+    self.module_loader.add_module(extension_config[&#34;package&#34;])
+
+    extension = self.module_loader.get_module_attr(
+        extension_config[&#34;package&#34;],
+        extension_config[&#34;handler&#34;],
+        extension_config[&#34;handler_args&#34;],
+    )
+
+    if table_name not in self.tables.keys():
+        self.tables[table_name] = {}
+    if &#34;validators&#34; not in self.tables[table_name].keys():
+        self.tables[table_name][&#34;validators&#34;] = {}
+    if column_name not in self.tables[table_name][&#34;validators&#34;].keys():
+        self.tables[table_name][&#34;validators&#34;][column_name] = []
+    self.tables[table_name][&#34;validators&#34;][column_name].append(extension)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="chillapi.app.config.ChillApiModuleLoader"><code class="flex name class">
+<span>class <span class="ident">ChillApiModuleLoader</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Module loader class</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChillApiModuleLoader(dict):
+    &#34;&#34;&#34;Module loader class&#34;&#34;&#34;
+
+    _modules: dict = {}
+    loaded = False
+
+    def add_module(self, module: str):
+        &#34;&#34;&#34;
+        Add a imported instance of the specified python package
+        :param module: str:
+
+        &#34;&#34;&#34;
+        if self.has_module(module):
+            return
+
+        self._modules[module] = importlib.import_module(module)
+
+    def get_module(self, module: str):
+        &#34;&#34;&#34;
+
+        :param module: str:
+
+        &#34;&#34;&#34;
+        if not self.has_module(module):
+            raise ConfigError(f&#34;{module} not loaded!&#34;)
+
+        return self._modules.get(module)
+
+    def get_module_attr(self, module: str, attr: str, args: dict):
+        &#34;&#34;&#34;
+
+        :param module: str:
+        :param attr: str:
+        :param args: dict:
+
+        &#34;&#34;&#34;
+        return getattr(self.get_module(module), attr)(**args)
+
+    def has_module_attr(self, module: str, attr: str):
+        &#34;&#34;&#34;
+
+        :param module: str:
+        :param attr: str:
+
+        &#34;&#34;&#34;
+        return hasattr(self.get_module(module), attr)
+
+    def has_module(self, module: str):
+        &#34;&#34;&#34;
+
+        :param module: str:
+
+        &#34;&#34;&#34;
+        return module in self._modules.keys()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chillapi.app.config.ChillApiModuleLoader.loaded"><code class="name">var <span class="ident">loaded</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="chillapi.app.config.ChillApiModuleLoader.add_module"><code class="name flex">
+<span>def <span class="ident">add_module</span></span>(<span>self, module: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a imported instance of the specified python package
+:param module: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_module(self, module: str):
+    &#34;&#34;&#34;
+    Add a imported instance of the specified python package
+    :param module: str:
+
+    &#34;&#34;&#34;
+    if self.has_module(module):
+        return
+
+    self._modules[module] = importlib.import_module(module)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiModuleLoader.get_module"><code class="name flex">
+<span>def <span class="ident">get_module</span></span>(<span>self, module: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param module: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_module(self, module: str):
+    &#34;&#34;&#34;
+
+    :param module: str:
+
+    &#34;&#34;&#34;
+    if not self.has_module(module):
+        raise ConfigError(f&#34;{module} not loaded!&#34;)
+
+    return self._modules.get(module)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiModuleLoader.get_module_attr"><code class="name flex">
+<span>def <span class="ident">get_module_attr</span></span>(<span>self, module: str, attr: str, args: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param module: str:
+:param attr: str:
+:param args: dict:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_module_attr(self, module: str, attr: str, args: dict):
+    &#34;&#34;&#34;
+
+    :param module: str:
+    :param attr: str:
+    :param args: dict:
+
+    &#34;&#34;&#34;
+    return getattr(self.get_module(module), attr)(**args)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiModuleLoader.has_module"><code class="name flex">
+<span>def <span class="ident">has_module</span></span>(<span>self, module: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param module: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def has_module(self, module: str):
+    &#34;&#34;&#34;
+
+    :param module: str:
+
+    &#34;&#34;&#34;
+    return module in self._modules.keys()</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.config.ChillApiModuleLoader.has_module_attr"><code class="name flex">
+<span>def <span class="ident">has_module_attr</span></span>(<span>self, module: str, attr: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param module: str:
+:param attr: str:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def has_module_attr(self, module: str, attr: str):
+    &#34;&#34;&#34;
+
+    :param module: str:
+    :param attr: str:
+
+    &#34;&#34;&#34;
+    return hasattr(self.get_module(module), attr)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="chillapi.app" href="index.html">chillapi.app</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="chillapi.app.config.ApiConfig" href="#chillapi.app.config.ApiConfig">ApiConfig</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.app.config.ApiConfig.app" href="#chillapi.app.config.ApiConfig.app">app</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.database" href="#chillapi.app.config.ApiConfig.database">database</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.db" href="#chillapi.app.config.ApiConfig.db">db</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.db_inspector" href="#chillapi.app.config.ApiConfig.db_inspector">db_inspector</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.environment" href="#chillapi.app.config.ApiConfig.environment">environment</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.get_class_name_from_model_name" href="#chillapi.app.config.ApiConfig.get_class_name_from_model_name">get_class_name_from_model_name</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.get_columns_table_details" href="#chillapi.app.config.ApiConfig.get_columns_table_details">get_columns_table_details</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.get_table_columns" href="#chillapi.app.config.ApiConfig.get_table_columns">get_table_columns</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.load_extension" href="#chillapi.app.config.ApiConfig.load_extension">load_extension</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.load_extensions" href="#chillapi.app.config.ApiConfig.load_extensions">load_extensions</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.load_table_columns" href="#chillapi.app.config.ApiConfig.load_table_columns">load_table_columns</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.logger" href="#chillapi.app.config.ApiConfig.logger">logger</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.model_names" href="#chillapi.app.config.ApiConfig.model_names">model_names</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.reset" href="#chillapi.app.config.ApiConfig.reset">reset</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.to_dict" href="#chillapi.app.config.ApiConfig.to_dict">to_dict</a></code></li>
+<li><code><a title="chillapi.app.config.ApiConfig.validate_sources" href="#chillapi.app.config.ApiConfig.validate_sources">validate_sources</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.app.config.ChillApiExtensions" href="#chillapi.app.config.ChillApiExtensions">ChillApiExtensions</a></code></h4>
+<ul class="">
+<li><code><a title="chillapi.app.config.ChillApiExtensions.app" href="#chillapi.app.config.ChillApiExtensions.app">app</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiExtensions.get_extension" href="#chillapi.app.config.ChillApiExtensions.get_extension">get_extension</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiExtensions.get_table_extension" href="#chillapi.app.config.ChillApiExtensions.get_table_extension">get_table_extension</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiExtensions.is_extension_enabled" href="#chillapi.app.config.ChillApiExtensions.is_extension_enabled">is_extension_enabled</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiExtensions.is_table_extension_enabled" href="#chillapi.app.config.ChillApiExtensions.is_table_extension_enabled">is_table_extension_enabled</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiExtensions.set_extension" href="#chillapi.app.config.ChillApiExtensions.set_extension">set_extension</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiExtensions.set_livecycle_table_extension" href="#chillapi.app.config.ChillApiExtensions.set_livecycle_table_extension">set_livecycle_table_extension</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiExtensions.set_request_table_extension" href="#chillapi.app.config.ChillApiExtensions.set_request_table_extension">set_request_table_extension</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiExtensions.set_validator_column_table_extension" href="#chillapi.app.config.ChillApiExtensions.set_validator_column_table_extension">set_validator_column_table_extension</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiExtensions.tables" href="#chillapi.app.config.ChillApiExtensions.tables">tables</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chillapi.app.config.ChillApiModuleLoader" href="#chillapi.app.config.ChillApiModuleLoader">ChillApiModuleLoader</a></code></h4>
+<ul class="two-column">
+<li><code><a title="chillapi.app.config.ChillApiModuleLoader.add_module" href="#chillapi.app.config.ChillApiModuleLoader.add_module">add_module</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiModuleLoader.get_module" href="#chillapi.app.config.ChillApiModuleLoader.get_module">get_module</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiModuleLoader.get_module_attr" href="#chillapi.app.config.ChillApiModuleLoader.get_module_attr">get_module_attr</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiModuleLoader.has_module" href="#chillapi.app.config.ChillApiModuleLoader.has_module">has_module</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiModuleLoader.has_module_attr" href="#chillapi.app.config.ChillApiModuleLoader.has_module_attr">has_module_attr</a></code></li>
+<li><code><a title="chillapi.app.config.ChillApiModuleLoader.loaded" href="#chillapi.app.config.ChillApiModuleLoader.loaded">loaded</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,2216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>chillapi.app.flask_restful_swagger_3.swagger API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>chillapi.app.flask_restful_swagger_3.swagger</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import collections
+import copy
+import inspect
+import re
+from functools import wraps
+
+from flask import request
+from flask_restful import inputs, reqparse, Resource
+
+
+class ValidationError(ValueError):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    pass
+
+
+def auth(request_obj, endpoint, method):
+    &#34;&#34;&#34;Override this function in your application.
+
+    If this function returns False, 401 forbidden is raised and the documentation is not visible.
+
+    :param request_obj:
+    :param endpoint:
+    :param method:
+
+    &#34;&#34;&#34;
+    return True
+
+
+def _auth(*args, **kwargs):
+    &#34;&#34;&#34;
+
+    :param *args:
+    :param **kwargs:
+
+    &#34;&#34;&#34;
+    return auth(*args, **kwargs)
+
+
+def create_swagger_endpoint(swagger_object, _security_level: str = &#34;STANDARD&#34;):
+    &#34;&#34;&#34;Creates a flask_restful api endpoint for the swagger spec
+
+    :param swagger_object:
+    :param _security_level: str:  (Default value = &#34;STANDARD&#34;)
+
+    &#34;&#34;&#34;
+
+    class SwaggerEndpoint(Resource):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+
+        def get(self):
+            &#34;&#34;&#34; &#34;&#34;&#34;
+            swagger_doc = {}
+            # filter keys with empty values
+            for k, v in swagger_object.items():
+                if v or k == &#34;paths&#34;:
+                    if k == &#34;paths&#34;:
+                        paths = {}
+                        for endpoint, view in v.items():
+                            views = {}
+                            for method, docs in view.items():
+                                # check permissions. If a user has not access to an api, do not show the docs of it
+                                if _security_level == &#34;STRICT&#34; and auth(request_obj=request, endpoint=endpoint, method=method):
+                                    views[method] = docs
+                                if _security_level == &#34;STANDARD&#34;:
+                                    views[method] = docs
+                            if views:
+                                paths[endpoint] = views
+                        swagger_doc[&#34;paths&#34;] = collections.OrderedDict(sorted(paths.items()))
+                    else:
+                        swagger_doc[k] = v
+
+                if k == &#34;servers&#34;:
+                    if isinstance(v, list):
+                        for server in v:
+                            validate_server_object(server)
+                            continue
+                    else:
+                        raise ValidationError(
+                            &#34;Invalid servers. must a list. See {url}&#34;.format(field=k, url=&#34;http://swagger.io/specification/#infoObject&#34;)  # noqa F522
+                        )
+
+                if k == &#34;info&#34;:
+                    validate_info_object(v)
+                    continue
+
+            return swagger_doc
+
+    return SwaggerEndpoint
+
+
+def set_nested(d, key_spec, value):
+    &#34;&#34;&#34;Sets a value in a nested dictionary.
+
+    :param d: The dictionary to set
+    :param key_spec: The key specifier in dotted notation
+    :param value: The value to set
+
+    &#34;&#34;&#34;
+    keys = key_spec.split(&#34;.&#34;)
+
+    for key in keys[:-1]:
+        d = d.setdefault(key, {})
+
+    d[keys[-1]] = value
+
+
+def add_parameters(swagger_object, parameters):
+    &#34;&#34;&#34;Populates a swagger document with parameters.
+
+    :param parameters: A collection of parameters to add
+    :param swagger_object: The swagger document to add parameters to
+
+    &#34;&#34;&#34;
+    # A list of accepted parameters.  The first item in the tuple is the
+    # name of keyword argument, the second item is the default value,
+    # and the third item is the key name in the swagger object.
+    fields = [
+        (&#34;title&#34;, &#34;&#34;, &#34;info.title&#34;),
+        (&#34;description&#34;, &#34;&#34;, &#34;info.description&#34;),
+        (&#34;terms&#34;, &#34;&#34;, &#34;info.termsOfService&#34;),
+        (&#34;version&#34;, &#34;&#34;, &#34;info.version&#34;),
+        (&#34;contact&#34;, {}, &#34;info.contact&#34;),
+        (&#34;license&#34;, {}, &#34;info.license&#34;),
+        # (&#39;host&#39;, &#39;&#39;, &#39;host&#39;),
+        # (&#39;base_path&#39;, &#39;&#39;, &#39;basePath&#39;),
+        # (&#39;schemes&#39;, [], &#39;schemes&#39;),
+        (&#34;servers&#34;, [], &#34;servers&#34;),
+        # (&#39;consumes&#39;, [], &#39;consumes&#39;),
+        # (&#39;produces&#39;, [], &#39;produces&#39;),
+        # (&#39;parameters&#39;, {}, &#39;parameters&#39;),
+        # (&#39;responses&#39;, {}, &#39;responses&#39;),
+        # (&#39;security_definitions&#39;, {}, &#39;securityDefinitions&#39;),
+        # (&#39;security&#39;, [], &#39;security&#39;),
+        # (&#39;tags&#39;, [], &#39;tags&#39;),
+        # (&#39;external_docs&#39;, {}, &#39;externalDocs&#39;),
+        (&#34;components&#34;, {}, &#34;components&#34;),
+        (&#34;paths&#34;, {}, &#34;paths&#34;),
+        (&#34;security&#34;, [], &#34;security&#34;),
+        (&#34;tags&#34;, [], &#34;tags&#34;),
+        (&#34;externalDocs&#34;, {}, &#34;externalDocs&#34;),
+    ]
+
+    for field in fields:
+        value = parameters.pop(field[0], field[1])
+        if value:
+            set_nested(swagger_object, field[2], value)
+
+
+def get_data_type(param):
+    &#34;&#34;&#34;Maps swagger data types to Python types.
+
+    :param param: swagger parameter
+    :returns: Python type
+
+    &#34;&#34;&#34;
+    if &#34;schema&#34; not in param:
+        return None
+    param = param[&#34;schema&#34;]
+    param_type = param.get(&#34;type&#34;, None)
+    if param_type:
+        if param_type == &#34;array&#34;:
+            if &#34;items&#34; in param:
+                param = param[&#34;items&#34;]
+            param_type = param.get(&#34;type&#34;, None)
+        if param_type == &#34;string&#34;:
+            param_format = param.get(&#34;format&#34;, None)
+
+            if param_format == &#34;date&#34;:
+                return inputs.date
+
+            elif param_format == &#34;date-time&#34;:
+                return inputs.datetime_from_iso8601
+
+            return str
+
+        elif param_type == &#34;integer&#34;:
+            return int
+
+        elif param_type == &#34;boolean&#34;:
+            return inputs.boolean
+
+        elif param_type == &#34;number&#34;:
+            param_format = param.get(&#34;format&#34;, None)
+
+            if param_format == &#34;float&#34; or param_format == &#34;double&#34;:
+                return float
+
+    return None
+
+
+def get_data_action(param):
+    &#34;&#34;&#34;
+
+    :param param:
+
+    &#34;&#34;&#34;
+    if &#34;schema&#34; in param:
+        param_type = param[&#34;schema&#34;].get(&#34;type&#34;, None)
+
+        if param_type == &#34;array&#34;:
+            return &#34;append&#34;
+        return &#34;store&#34;
+
+    return None
+
+
+def get_parser_arg(param):
+    &#34;&#34;&#34;Return an argument for the request parser.
+
+    :param param: Swagger document parameter
+    :returns: Request parser argument
+
+    &#34;&#34;&#34;
+    return (
+        param[&#34;name&#34;],
+        {
+            &#34;dest&#34;: param[&#34;name&#34;],
+            &#34;type&#34;: get_data_type(param),
+            &#34;location&#34;: &#34;args&#34;,
+            &#34;help&#34;: param.get(&#34;description&#34;, None),
+            &#34;required&#34;: param.get(&#34;required&#34;, False),
+            &#34;default&#34;: param.get(&#34;default&#34;, None),
+            &#34;action&#34;: get_data_action(param),
+        },
+    )
+
+
+def get_parser_args(params):
+    &#34;&#34;&#34;Return a list of arguments for the request parser.
+
+    :param params: Swagger document parameters
+    :returns: Request parser arguments
+
+    &#34;&#34;&#34;
+    return [get_parser_arg(p) for p in params if p[&#34;in&#34;] == &#34;query&#34;]
+
+
+def get_parser(params):
+    &#34;&#34;&#34;Returns a parser for query parameters from swagger document parameters.
+
+    :param params: swagger doc parameters
+    :returns: Query parameter parser
+
+    &#34;&#34;&#34;
+    parser = reqparse.RequestParser()
+
+    for arg in get_parser_args(params):
+        parser.add_argument(arg[0], **arg[1])
+
+    return parser
+
+
+def doc(operation_object):
+    &#34;&#34;&#34;Decorator to save the documentation of an api endpoint.
+
+    Saves the passed arguments as an attribute to use them later when generating the swagger spec.
+
+    :param operation_object:
+
+    &#34;&#34;&#34;
+
+    def decorated(f):
+        &#34;&#34;&#34;
+
+        :param f:
+
+        &#34;&#34;&#34;
+        f.__swagger_operation_object = copy.deepcopy(operation_object)
+
+        @wraps(f)
+        def inner(self, *args, **kwargs):
+            &#34;&#34;&#34;
+
+            :param *args:
+            :param **kwargs:
+
+            &#34;&#34;&#34;
+            # Get names of resource function arguments
+
+            func_args = inspect.getfullargspec(f).args
+            # You can also use
+            # func_args = list(inspect.signature(f).parameters.keys())
+
+            # Add a parser for query arguments if the special argument &#39;_parser&#39; is present
+            if &#34;parameters&#34; in f.__swagger_operation_object and &#34;_parser&#34; in func_args:
+                kwargs.update({&#34;_parser&#34;: get_parser(f.__swagger_operation_object[&#34;parameters&#34;])})
+
+            return f(self, *args, **kwargs)
+
+        return inner
+
+    return decorated
+
+
+def validate_info_object(info_object):
+    &#34;&#34;&#34;
+
+    :param info_object:
+
+    &#34;&#34;&#34;
+    for k, v in info_object.items():
+        if k not in [&#34;title&#34;, &#34;description&#34;, &#34;termsOfService&#34;, &#34;contact&#34;, &#34;license&#34;, &#34;version&#34;]:
+            raise ValidationError(
+                &#39;Invalid info object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#infoObject&#34;)
+            )
+
+        if k == &#34;contact&#34;:
+            validate_contact_object(v)
+            continue
+
+        if k == &#34;license&#34;:
+            validate_license_object(v)
+            continue
+
+    if &#34;title&#34; not in info_object:
+        raise ValidationError(&#39;Invalid info object. Missing field &#34;title&#34;&#39;)
+
+    if &#34;version&#34; not in info_object:
+        raise ValidationError(&#39;Invalid info object. Missing field &#34;version&#34;&#39;)
+
+
+def validate_contact_object(contact_object):
+    &#34;&#34;&#34;
+
+    :param contact_object:
+
+    &#34;&#34;&#34;
+    if contact_object:
+        for k, v in contact_object.items():
+            if k not in [&#34;name&#34;, &#34;url&#34;, &#34;email&#34;]:
+                raise ValidationError(
+                    &#39;Invalid contact object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#contactObject&#34;)
+                )
+
+            if k == &#34;email&#34;:
+                validate_email(v)
+                continue
+
+
+def validate_license_object(license_object):
+    &#34;&#34;&#34;
+
+    :param license_object:
+
+    &#34;&#34;&#34;
+    if license_object:
+        for k, v in license_object.items():
+            if k not in [&#34;name&#34;, &#34;url&#34;]:
+                raise ValidationError(
+                    &#39;Invalid license object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#licenseObject&#34;)
+                )
+
+            if k == &#34;url&#34;:
+                validate_url(v)
+                continue
+
+        if &#34;name&#34; not in license_object:
+            raise ValidationError(&#39;Invalid license object. Missing field &#34;name&#34;&#39;)
+
+
+def validate_path_item_object(path_item_object):
+    &#34;&#34;&#34;Checks if the passed object is valid according to http://swagger.io/specification/#pathItemObject
+
+    :param path_item_object:
+
+    &#34;&#34;&#34;
+
+    for k, v in path_item_object.items():
+        if k == &#34;$ref&#34;:
+            continue
+        if k in [&#34;get&#34;, &#34;put&#34;, &#34;post&#34;, &#34;delete&#34;, &#34;options&#34;, &#34;head&#34;, &#34;patch&#34;, &#34;trace&#34;]:
+            validate_operation_object(v)
+            continue
+        if k == &#34;servers&#34;:
+            validate_server_object(v)
+            continue
+        if k == &#34;parameters&#34;:
+            for parameter in v:
+                try:
+                    validate_reference_object(parameter)
+                except ValidationError:
+                    validate_parameter_object(parameter)
+            continue
+        if k == &#34;summary&#34;:
+            continue
+        if k == &#34;description&#34;:
+            continue
+        raise ValidationError(
+            &#39;Invalid path item object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#pathItemObject&#34;)
+        )
+
+
+def validate_operation_object(operation_object):  # noqa C901
+    &#34;&#34;&#34;
+
+    :param operation_object:
+
+    &#34;&#34;&#34;
+    for k, v in operation_object.items():
+        if k in [&#34;tags&#34;]:
+            if isinstance(v, list):
+                continue
+            raise ValidationError(&#39;Invalid operation object. &#34;{0}&#34; must be a list but was &#34;{1}&#34;&#39;, k, type(v))
+        if k in [&#34;summary&#34;, &#34;description&#34;, &#34;operationId&#34;]:
+            if isinstance(v, str):
+                continue
+            raise ValidationError(&#39;Invalid operation object. &#34;{0}&#34; must be a string but was &#34;{1}&#34;&#39;, k, type(v))
+        if k in [&#34;requestBody&#34;]:
+            validate_request_body_object(v)
+            continue
+        if k in [&#34;deprecated&#34;]:
+            if isinstance(v, bool):
+                continue
+            raise ValidationError(&#39;Invalid operation object. &#34;{0}&#34; must be a bool but was &#34;{1}&#34;&#39;, k, type(v))
+        if k in [&#34;externalDocs&#34;]:
+            validate_external_documentation_object(v)  # to check
+            continue
+        if k in [&#34;parameters&#34;]:
+            for parameter in v:
+                validate_parameter_object(parameter)
+            continue
+        if k in [&#34;responses&#34;]:
+            validate_responses_object(v)
+            continue
+        if k in [&#34;security&#34;]:
+            validate_security_requirement_object(v)
+            continue
+        if k.startswith(&#34;x-&#34;):
+            continue
+        raise ValidationError(
+            &#39;Invalid operation object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#pathItemObject&#34;)
+        )
+    if &#34;responses&#34; not in operation_object:
+        raise ValidationError(&#39;Invalid operation object. Missing field &#34;responses&#34;&#39;)
+
+
+def validate_parameter_object(parameter_object):
+    &#34;&#34;&#34;
+
+    :param parameter_object:
+
+    &#34;&#34;&#34;
+    for k, v in parameter_object.items():
+        if k not in [
+            &#34;name&#34;,
+            &#34;in&#34;,
+            &#34;description&#34;,
+            &#34;required&#34;,
+            &#34;deprecated&#34;,
+            &#34;allowEmptyValue&#34;,
+            &#34;style&#34;,
+            &#34;explode&#34;,
+            &#34;allowReserved&#34;,
+            &#34;schema&#34;,
+            &#34;example&#34;,
+            &#34;examples&#34;,
+            &#34;content&#34;,
+            &#34;matrix&#34;,
+            &#34;label&#34;,
+            &#34;form&#34;,
+            &#34;simple&#34;,
+            &#34;spaceDelimited&#34;,
+            &#34;pipeDelimited&#34;,
+            &#34;deepObject&#34;,
+            &#34;reqparser&#34;,
+        ]:
+            raise ValidationError(
+                &#39;Invalid parameter object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#parameterObject&#34;)
+            )
+    if &#34;reqparser&#34; in parameter_object:
+        if &#34;name&#34; not in parameter_object:
+            raise ValidationError(&#34;name for request parser not specified&#34;)
+        if &#34;parser&#34; not in parameter_object or not isinstance(parameter_object[&#34;parser&#34;], reqparse.RequestParser):
+            raise ValidationError(&#34;RequestParser object not specified&#34;)
+        return
+    if &#34;name&#34; not in parameter_object:
+        raise ValidationError(&#39;Invalid parameter object. Missing field &#34;name&#34;&#39;)
+    if &#34;in&#34; not in parameter_object:
+        raise ValidationError(&#39;Invalid parameter object. Missing field &#34;in&#34;&#39;)
+    else:
+        if parameter_object[&#34;in&#34;] not in [&#34;path&#34;, &#34;query&#34;, &#34;header&#34;, &#34;cookie&#34;]:
+            raise ValidationError(
+                &#39;Invalid parameter object. Value of field &#34;in&#34; must be path, query, header, cookie was &#34;{}&#34;&#39;.format(parameter_object[&#34;in&#34;])
+            )
+    if &#34;schema&#34; in parameter_object:
+        validate_schema_object(parameter_object[&#34;schema&#34;])
+
+
+def validate_reference_object(parameter_object):
+    &#34;&#34;&#34;
+
+    :param parameter_object:
+
+    &#34;&#34;&#34;
+    if len(parameter_object.keys()) &gt; 1 or &#34;$ref&#34; not in parameter_object:
+        raise ValidationError(&#39;Invalid reference object. It may only contain key &#34;$ref&#34;&#39;)
+
+
+def validate_external_documentation_object(external_documentation_object):
+    &#34;&#34;&#34;
+
+    :param external_documentation_object:
+
+    &#34;&#34;&#34;
+    pass
+
+
+def validate_responses_object(responses_object):
+    &#34;&#34;&#34;
+
+    :param responses_object:
+
+    &#34;&#34;&#34;
+    for k, v in responses_object.items():
+        if k in [&#34;1XX&#34;, &#34;2XX&#34;, &#34;3XX&#34;, &#34;4XX&#34;, &#34;5XX&#34;, &#34;default&#34;]:
+            try:
+                validate_reference_object(v)
+            except ValidationError:
+                validate_response_object(v)
+            continue
+        if 99 &lt; int(k) &lt; 600:
+            try:
+                validate_reference_object(v)
+            except ValidationError:
+                validate_response_object(v)
+                continue
+
+
+def validate_response_object(response_object):
+    &#34;&#34;&#34;
+
+    :param response_object:
+
+    &#34;&#34;&#34;
+    for k, v in response_object.items():
+        if k == &#34;description&#34;:
+            continue
+        if k == &#34;headers&#34;:
+            try:
+                validate_reference_object(v)
+            except ValidationError:
+                validate_headers_object(v)
+            continue
+        if k == &#34;content&#34;:
+            validate_content_object(v)
+            continue
+        if k == &#34;links&#34;:
+            validate_link_object(v)
+            continue
+        raise ValidationError(
+            &#39;Invalid response object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#responseObject&#34;)
+        )
+    if &#34;description&#34; not in response_object:
+        raise ValidationError(&#39;Invalid response object. Missing field &#34;description&#34;&#39;)
+
+
+def validate_request_body_object(request_body_object):
+    &#34;&#34;&#34;
+
+    :param request_body_object:
+
+    &#34;&#34;&#34;
+    for k, v in request_body_object.items():
+        if k in [&#34;description&#34;]:
+            continue
+        if k in [&#34;required&#34;]:
+            if isinstance(v, bool):
+                continue
+        if k in [&#34;content&#34;]:
+            validate_content_object(v)
+            continue
+
+
+def validate_content_object(content_object):
+    &#34;&#34;&#34;
+
+    :param content_object:
+
+    &#34;&#34;&#34;
+    for k, v in content_object.items():
+        if re.match(r&#34;(.*)/(.*)&#34;, k):
+            validate_media_type_object(v)
+            continue
+        raise ValidationError(
+            &#39;Invalid content object, the field must match the following patter (&#34;application/json&#34;, &#34;*/*&#34; ...&#34;).&#39;
+            &#34;. See http://swagger.io/specification/#mediaObject&#34;
+        )
+
+
+def validate_media_type_object(media_type_object):
+    &#34;&#34;&#34;
+
+    :param media_type_object:
+
+    &#34;&#34;&#34;
+    for k, v in media_type_object.items():
+        if k == &#34;schema&#34;:
+            validate_schema_object(v)
+            continue
+        if k == &#34;examples&#34;:
+            validate_example_object(v)
+            continue
+
+
+def validate_security_requirement_object(security_requirement_object):
+    &#34;&#34;&#34;
+
+    :param security_requirement_object:
+
+    &#34;&#34;&#34;
+    pass
+
+
+def validate_components_object(definition_object):
+    &#34;&#34;&#34;
+
+    :param definition_object:
+
+    &#34;&#34;&#34;
+    for k, v in definition_object.items():
+        if k == &#34;schemas&#34;:
+            validate_schema_object(v)
+            continue
+
+
+def validate_schema_object(schema_object):
+    &#34;&#34;&#34;
+
+    :param schema_object:
+
+    &#34;&#34;&#34;
+    for k, v in schema_object.items():
+        try:
+            validate_reference_object(v)
+            continue
+        except AttributeError:
+            if k == &#34;required&#34; and not isinstance(v, list):
+                raise ValidationError(&#39;Invalid schema object. &#34;{}&#34; must be a list but was {}&#39;.format(k, type(v)))
+
+
+def validate_headers_object(headers_object):
+    &#34;&#34;&#34;
+
+    :param headers_object:
+
+    &#34;&#34;&#34;
+    for k, v in headers_object.items():
+        if k not in [
+            &#34;name&#34;,
+            &#34;in&#34;,
+            &#34;description&#34;,
+            &#34;required&#34;,
+            &#34;deprecated&#34;,
+            &#34;allowEmptyValue&#34;,
+            &#34;style&#34;,
+            &#34;explode&#34;,
+            &#34;allowReserved&#34;,
+            &#34;schema&#34;,
+            &#34;example&#34;,
+            &#34;examples&#34;,
+            &#34;content&#34;,
+            &#34;matrix&#34;,
+            &#34;label&#34;,
+            &#34;form&#34;,
+            &#34;simple&#34;,
+            &#34;spaceDelimited&#34;,
+            &#34;pipeDelimited&#34;,
+            &#34;deepObject&#34;,
+        ]:
+            raise ValidationError(
+                &#39;Invalid headers object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#headerObject&#34;)
+            )
+        if k == &#34;name&#34;:
+            raise ValidationError(&#39;&#34;name&#34; must not be specified. See http://swagger.io/specification/#headerObject&#39;)
+        if k == &#34;in&#34;:
+            raise ValidationError(&#39;&#34;in&#34; must not be specified. See http://swagger.io/specification/#headerObject&#39;)
+
+        if k == &#34;schema&#34;:
+            validate_schema_object(headers_object[&#34;schema&#34;])
+            continue
+
+
+def validate_link_object(link_object):
+    &#34;&#34;&#34;
+
+    :param link_object:
+
+    &#34;&#34;&#34;
+    for k, v in link_object.items:
+        if k in [&#34;operationRef&#34;, &#34;operationId&#34;, &#34;parameters&#34;, &#34;requestBody&#34;, &#34;description&#34;]:
+            continue
+        if k == &#34;server&#34;:
+            validate_server_object(v)
+
+
+def validate_server_object(server_object):
+    &#34;&#34;&#34;
+
+    :param server_object:
+
+    &#34;&#34;&#34;
+    if isinstance(server_object, dict):
+        for k, v in server_object.items():
+            if k not in [&#34;url&#34;, &#34;description&#34;, &#34;variables&#34;]:
+                raise ValidationError(
+                    &#39;Invalid server object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#serverObject&#34;)
+                )
+
+            if k == &#34;variables&#34;:
+                validate_server_variables_object(v)
+                continue
+
+            if k == &#34;url&#34;:
+                if not validate_url(v):
+                    raise ValidationError(&#34;Invalid url. See {url}&#34;.format(url=&#34;http://swagger.io/specification/#serverObject&#34;))
+
+        if &#34;url&#34; not in server_object:
+            raise ValidationError(&#39;Invalid server object. Missing field &#34;url&#34;&#39;)
+    else:
+        raise ValidationError(&#34;Invalid server object. See {url}&#34;.format(url=&#34;http://swagger.io/specification/#serverObject&#34;))
+
+
+def validate_url(url):
+    &#34;&#34;&#34;
+
+    :param url:
+
+    &#34;&#34;&#34;
+    url_regex = re.compile(
+        r&#34;^(?:http|ftp)s?://&#34;  # http:// or https://
+        r&#34;(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|&#34;  # domain...
+        r&#34;localhost|&#34;  # localhost...
+        r&#34;\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})&#34;  # ...or ip
+        r&#34;(?::\d+)?&#34;  # optional port
+        r&#34;(?:/?|[/?]\S+)$&#34;,
+        re.IGNORECASE,
+    )
+
+    return re.match(url_regex, url) is not None
+
+
+def validate_email(email):
+    &#34;&#34;&#34;
+
+    :param email:
+
+    &#34;&#34;&#34;
+    email_regex = re.compile(
+        r&#34;(^[-!#$%&amp;&#39;*+/=?^_`{}|~0-9A-Z]+(\.[-!#$%&amp;&#39;*+/=?^_`{}|~0-9A-Z]+)*&#34;  # dot-atom
+        r&#39;|^&#34;([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-011\013\014\016-\177])*&#34;&#39;  # quoted-string
+        r&#34;)@(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?$&#34;,
+        re.IGNORECASE,
+    )  # domain
+
+    return re.match(email_regex, email) is not None
+
+
+def validate_server_variables_object(server_variables_object):
+    &#34;&#34;&#34;
+
+    :param server_variables_object:
+
+    &#34;&#34;&#34;
+    for k, v in server_variables_object.items():
+        if k not in [&#34;enum&#34;, &#34;default&#34;, &#34;description&#34;]:
+            raise ValidationError(
+                &#39;Invalid server variables object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(
+                    field=k, url=&#34;http://swagger.io/specification/#headerObject&#34;
+                )
+            )
+
+        if k == &#34;enum&#34;:
+            if isinstance(v, list):
+                if not all(isinstance(x, str) for x in v):
+                    raise ValidationError(
+                        &#34;Invalid server variables object object. Each item of enum must be string&#34;
+                        &#34;See http://swagger.io/specification/#serverVariablesObject&#34;
+                    )
+            else:
+                raise ValidationError(
+                    &#34;Invalid server variables object object. Enum must be a list of strings&#34;
+                    &#34;See http://swagger.io/specification/#serverVariablesObject&#34;
+                )
+
+    if &#34;default&#34; not in server_variables_object:
+        raise ValidationError(
+            &#39;Invalid server variables object object. Missing field &#34;url&#34;&#39; &#34;See http://swagger.io/specification/#serverVariablesObject&#34;
+        )
+
+
+def validate_example_object(example_object):
+    &#34;&#34;&#34;
+
+    :param example_object:
+
+    &#34;&#34;&#34;
+    pass
+
+
+def extract_swagger_path(path):
+    &#34;&#34;&#34;Extracts a swagger type path from the given flask style path.
+    This /path/&lt;parameter&gt; turns into this /path/{parameter}
+    And this /&lt;string(length=2):lang_code&gt;/&lt;string:id&gt;/&lt;float:probability&gt;
+    to this: /{lang_code}/{id}/{probability}
+
+    :param path:
+
+    &#34;&#34;&#34;
+    return re.sub(&#34;&lt;(?:[^:]+:)?([^&gt;]+)&gt;&#34;, &#34;{\\1}&#34;, path)
+
+
+def sanitize_doc(comment):
+    &#34;&#34;&#34;Substitute HTML breaks for new lines in comment text.
+
+    :param comment: The comment text
+    :returns: Sanitized comment text
+
+    &#34;&#34;&#34;
+    if isinstance(comment, list):
+        return sanitize_doc(&#34;\n&#34;.join(filter(None, comment)))
+    else:
+        return comment.replace(&#34;\n&#34;, &#34;&lt;br/&gt;&#34;) if comment else comment
+
+
+def parse_method_doc(method, operation):
+    &#34;&#34;&#34;Parse documentation from a resource method.
+
+    :param method: The resource method
+    :param operation: The operation document
+    :returns: The operation summary
+
+    &#34;&#34;&#34;
+    summary = None
+
+    full_doc = inspect.getdoc(method)
+    if full_doc:
+        lines = full_doc.split(&#34;\n&#34;)
+        if lines:
+            # Append the first line of the docstring to any summary specified
+            # in the operation document
+            summary = sanitize_doc([operation.get(&#34;summary&#34;, None), lines[0]])
+
+    return summary
+
+
+def parse_schema_doc(cls, definition):
+    &#34;&#34;&#34;Parse documentation from a schema class.
+
+    :param cls: The schema class
+    :param definition: The schema definition
+    :returns: The schema description
+
+    &#34;&#34;&#34;
+    description = None
+
+    # Skip processing the docstring of the schema class if the schema
+    # definition already contains a description
+    if &#34;description&#34; not in definition:
+        full_doc = inspect.getdoc(cls)
+
+        # Avoid returning the docstring of the base dict class
+        if full_doc and full_doc != inspect.getdoc(dict):
+            lines = full_doc.split(&#34;\n&#34;)
+            if lines:
+                # Use the first line of the class docstring as the description
+                description = sanitize_doc(lines[0])
+
+    return description</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.add_parameters"><code class="name flex">
+<span>def <span class="ident">add_parameters</span></span>(<span>swagger_object, parameters)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Populates a swagger document with parameters.</p>
+<p>:param parameters: A collection of parameters to add
+:param swagger_object: The swagger document to add parameters to</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_parameters(swagger_object, parameters):
+    &#34;&#34;&#34;Populates a swagger document with parameters.
+
+    :param parameters: A collection of parameters to add
+    :param swagger_object: The swagger document to add parameters to
+
+    &#34;&#34;&#34;
+    # A list of accepted parameters.  The first item in the tuple is the
+    # name of keyword argument, the second item is the default value,
+    # and the third item is the key name in the swagger object.
+    fields = [
+        (&#34;title&#34;, &#34;&#34;, &#34;info.title&#34;),
+        (&#34;description&#34;, &#34;&#34;, &#34;info.description&#34;),
+        (&#34;terms&#34;, &#34;&#34;, &#34;info.termsOfService&#34;),
+        (&#34;version&#34;, &#34;&#34;, &#34;info.version&#34;),
+        (&#34;contact&#34;, {}, &#34;info.contact&#34;),
+        (&#34;license&#34;, {}, &#34;info.license&#34;),
+        # (&#39;host&#39;, &#39;&#39;, &#39;host&#39;),
+        # (&#39;base_path&#39;, &#39;&#39;, &#39;basePath&#39;),
+        # (&#39;schemes&#39;, [], &#39;schemes&#39;),
+        (&#34;servers&#34;, [], &#34;servers&#34;),
+        # (&#39;consumes&#39;, [], &#39;consumes&#39;),
+        # (&#39;produces&#39;, [], &#39;produces&#39;),
+        # (&#39;parameters&#39;, {}, &#39;parameters&#39;),
+        # (&#39;responses&#39;, {}, &#39;responses&#39;),
+        # (&#39;security_definitions&#39;, {}, &#39;securityDefinitions&#39;),
+        # (&#39;security&#39;, [], &#39;security&#39;),
+        # (&#39;tags&#39;, [], &#39;tags&#39;),
+        # (&#39;external_docs&#39;, {}, &#39;externalDocs&#39;),
+        (&#34;components&#34;, {}, &#34;components&#34;),
+        (&#34;paths&#34;, {}, &#34;paths&#34;),
+        (&#34;security&#34;, [], &#34;security&#34;),
+        (&#34;tags&#34;, [], &#34;tags&#34;),
+        (&#34;externalDocs&#34;, {}, &#34;externalDocs&#34;),
+    ]
+
+    for field in fields:
+        value = parameters.pop(field[0], field[1])
+        if value:
+            set_nested(swagger_object, field[2], value)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.auth"><code class="name flex">
+<span>def <span class="ident">auth</span></span>(<span>request_obj, endpoint, method)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Override this function in your application.</p>
+<p>If this function returns False, 401 forbidden is raised and the documentation is not visible.</p>
+<p>:param request_obj:
+:param endpoint:
+:param method:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def auth(request_obj, endpoint, method):
+    &#34;&#34;&#34;Override this function in your application.
+
+    If this function returns False, 401 forbidden is raised and the documentation is not visible.
+
+    :param request_obj:
+    :param endpoint:
+    :param method:
+
+    &#34;&#34;&#34;
+    return True</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.create_swagger_endpoint"><code class="name flex">
+<span>def <span class="ident">create_swagger_endpoint</span></span>(<span>swagger_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a flask_restful api endpoint for the swagger spec</p>
+<p>:param swagger_object:
+:param _security_level: str:
+(Default value = "STANDARD")</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_swagger_endpoint(swagger_object, _security_level: str = &#34;STANDARD&#34;):
+    &#34;&#34;&#34;Creates a flask_restful api endpoint for the swagger spec
+
+    :param swagger_object:
+    :param _security_level: str:  (Default value = &#34;STANDARD&#34;)
+
+    &#34;&#34;&#34;
+
+    class SwaggerEndpoint(Resource):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+
+        def get(self):
+            &#34;&#34;&#34; &#34;&#34;&#34;
+            swagger_doc = {}
+            # filter keys with empty values
+            for k, v in swagger_object.items():
+                if v or k == &#34;paths&#34;:
+                    if k == &#34;paths&#34;:
+                        paths = {}
+                        for endpoint, view in v.items():
+                            views = {}
+                            for method, docs in view.items():
+                                # check permissions. If a user has not access to an api, do not show the docs of it
+                                if _security_level == &#34;STRICT&#34; and auth(request_obj=request, endpoint=endpoint, method=method):
+                                    views[method] = docs
+                                if _security_level == &#34;STANDARD&#34;:
+                                    views[method] = docs
+                            if views:
+                                paths[endpoint] = views
+                        swagger_doc[&#34;paths&#34;] = collections.OrderedDict(sorted(paths.items()))
+                    else:
+                        swagger_doc[k] = v
+
+                if k == &#34;servers&#34;:
+                    if isinstance(v, list):
+                        for server in v:
+                            validate_server_object(server)
+                            continue
+                    else:
+                        raise ValidationError(
+                            &#34;Invalid servers. must a list. See {url}&#34;.format(field=k, url=&#34;http://swagger.io/specification/#infoObject&#34;)  # noqa F522
+                        )
+
+                if k == &#34;info&#34;:
+                    validate_info_object(v)
+                    continue
+
+            return swagger_doc
+
+    return SwaggerEndpoint</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.doc"><code class="name flex">
+<span>def <span class="ident">doc</span></span>(<span>operation_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Decorator to save the documentation of an api endpoint.</p>
+<p>Saves the passed arguments as an attribute to use them later when generating the swagger spec.</p>
+<p>:param operation_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def doc(operation_object):
+    &#34;&#34;&#34;Decorator to save the documentation of an api endpoint.
+
+    Saves the passed arguments as an attribute to use them later when generating the swagger spec.
+
+    :param operation_object:
+
+    &#34;&#34;&#34;
+
+    def decorated(f):
+        &#34;&#34;&#34;
+
+        :param f:
+
+        &#34;&#34;&#34;
+        f.__swagger_operation_object = copy.deepcopy(operation_object)
+
+        @wraps(f)
+        def inner(self, *args, **kwargs):
+            &#34;&#34;&#34;
+
+            :param *args:
+            :param **kwargs:
+
+            &#34;&#34;&#34;
+            # Get names of resource function arguments
+
+            func_args = inspect.getfullargspec(f).args
+            # You can also use
+            # func_args = list(inspect.signature(f).parameters.keys())
+
+            # Add a parser for query arguments if the special argument &#39;_parser&#39; is present
+            if &#34;parameters&#34; in f.__swagger_operation_object and &#34;_parser&#34; in func_args:
+                kwargs.update({&#34;_parser&#34;: get_parser(f.__swagger_operation_object[&#34;parameters&#34;])})
+
+            return f(self, *args, **kwargs)
+
+        return inner
+
+    return decorated</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.extract_swagger_path"><code class="name flex">
+<span>def <span class="ident">extract_swagger_path</span></span>(<span>path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extracts a swagger type path from the given flask style path.
+This /path/<parameter> turns into this /path/{parameter}
+And this /<string(length=2):lang_code>/<string:id>/<float:probability>
+to this: /{lang_code}/{id}/{probability}</p>
+<p>:param path:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_swagger_path(path):
+    &#34;&#34;&#34;Extracts a swagger type path from the given flask style path.
+    This /path/&lt;parameter&gt; turns into this /path/{parameter}
+    And this /&lt;string(length=2):lang_code&gt;/&lt;string:id&gt;/&lt;float:probability&gt;
+    to this: /{lang_code}/{id}/{probability}
+
+    :param path:
+
+    &#34;&#34;&#34;
+    return re.sub(&#34;&lt;(?:[^:]+:)?([^&gt;]+)&gt;&#34;, &#34;{\\1}&#34;, path)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.get_data_action"><code class="name flex">
+<span>def <span class="ident">get_data_action</span></span>(<span>param)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param param:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_data_action(param):
+    &#34;&#34;&#34;
+
+    :param param:
+
+    &#34;&#34;&#34;
+    if &#34;schema&#34; in param:
+        param_type = param[&#34;schema&#34;].get(&#34;type&#34;, None)
+
+        if param_type == &#34;array&#34;:
+            return &#34;append&#34;
+        return &#34;store&#34;
+
+    return None</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.get_data_type"><code class="name flex">
+<span>def <span class="ident">get_data_type</span></span>(<span>param)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Maps swagger data types to Python types.</p>
+<p>:param param: swagger parameter
+:returns: Python type</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_data_type(param):
+    &#34;&#34;&#34;Maps swagger data types to Python types.
+
+    :param param: swagger parameter
+    :returns: Python type
+
+    &#34;&#34;&#34;
+    if &#34;schema&#34; not in param:
+        return None
+    param = param[&#34;schema&#34;]
+    param_type = param.get(&#34;type&#34;, None)
+    if param_type:
+        if param_type == &#34;array&#34;:
+            if &#34;items&#34; in param:
+                param = param[&#34;items&#34;]
+            param_type = param.get(&#34;type&#34;, None)
+        if param_type == &#34;string&#34;:
+            param_format = param.get(&#34;format&#34;, None)
+
+            if param_format == &#34;date&#34;:
+                return inputs.date
+
+            elif param_format == &#34;date-time&#34;:
+                return inputs.datetime_from_iso8601
+
+            return str
+
+        elif param_type == &#34;integer&#34;:
+            return int
+
+        elif param_type == &#34;boolean&#34;:
+            return inputs.boolean
+
+        elif param_type == &#34;number&#34;:
+            param_format = param.get(&#34;format&#34;, None)
+
+            if param_format == &#34;float&#34; or param_format == &#34;double&#34;:
+                return float
+
+    return None</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.get_parser"><code class="name flex">
+<span>def <span class="ident">get_parser</span></span>(<span>params)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a parser for query parameters from swagger document parameters.</p>
+<p>:param params: swagger doc parameters
+:returns: Query parameter parser</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_parser(params):
+    &#34;&#34;&#34;Returns a parser for query parameters from swagger document parameters.
+
+    :param params: swagger doc parameters
+    :returns: Query parameter parser
+
+    &#34;&#34;&#34;
+    parser = reqparse.RequestParser()
+
+    for arg in get_parser_args(params):
+        parser.add_argument(arg[0], **arg[1])
+
+    return parser</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.get_parser_arg"><code class="name flex">
+<span>def <span class="ident">get_parser_arg</span></span>(<span>param)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return an argument for the request parser.</p>
+<p>:param param: Swagger document parameter
+:returns: Request parser argument</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_parser_arg(param):
+    &#34;&#34;&#34;Return an argument for the request parser.
+
+    :param param: Swagger document parameter
+    :returns: Request parser argument
+
+    &#34;&#34;&#34;
+    return (
+        param[&#34;name&#34;],
+        {
+            &#34;dest&#34;: param[&#34;name&#34;],
+            &#34;type&#34;: get_data_type(param),
+            &#34;location&#34;: &#34;args&#34;,
+            &#34;help&#34;: param.get(&#34;description&#34;, None),
+            &#34;required&#34;: param.get(&#34;required&#34;, False),
+            &#34;default&#34;: param.get(&#34;default&#34;, None),
+            &#34;action&#34;: get_data_action(param),
+        },
+    )</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.get_parser_args"><code class="name flex">
+<span>def <span class="ident">get_parser_args</span></span>(<span>params)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a list of arguments for the request parser.</p>
+<p>:param params: Swagger document parameters
+:returns: Request parser arguments</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_parser_args(params):
+    &#34;&#34;&#34;Return a list of arguments for the request parser.
+
+    :param params: Swagger document parameters
+    :returns: Request parser arguments
+
+    &#34;&#34;&#34;
+    return [get_parser_arg(p) for p in params if p[&#34;in&#34;] == &#34;query&#34;]</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.parse_method_doc"><code class="name flex">
+<span>def <span class="ident">parse_method_doc</span></span>(<span>method, operation)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse documentation from a resource method.</p>
+<p>:param method: The resource method
+:param operation: The operation document
+:returns: The operation summary</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_method_doc(method, operation):
+    &#34;&#34;&#34;Parse documentation from a resource method.
+
+    :param method: The resource method
+    :param operation: The operation document
+    :returns: The operation summary
+
+    &#34;&#34;&#34;
+    summary = None
+
+    full_doc = inspect.getdoc(method)
+    if full_doc:
+        lines = full_doc.split(&#34;\n&#34;)
+        if lines:
+            # Append the first line of the docstring to any summary specified
+            # in the operation document
+            summary = sanitize_doc([operation.get(&#34;summary&#34;, None), lines[0]])
+
+    return summary</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.parse_schema_doc"><code class="name flex">
+<span>def <span class="ident">parse_schema_doc</span></span>(<span>cls, definition)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse documentation from a schema class.</p>
+<p>:param cls: The schema class
+:param definition: The schema definition
+:returns: The schema description</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_schema_doc(cls, definition):
+    &#34;&#34;&#34;Parse documentation from a schema class.
+
+    :param cls: The schema class
+    :param definition: The schema definition
+    :returns: The schema description
+
+    &#34;&#34;&#34;
+    description = None
+
+    # Skip processing the docstring of the schema class if the schema
+    # definition already contains a description
+    if &#34;description&#34; not in definition:
+        full_doc = inspect.getdoc(cls)
+
+        # Avoid returning the docstring of the base dict class
+        if full_doc and full_doc != inspect.getdoc(dict):
+            lines = full_doc.split(&#34;\n&#34;)
+            if lines:
+                # Use the first line of the class docstring as the description
+                description = sanitize_doc(lines[0])
+
+    return description</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.sanitize_doc"><code class="name flex">
+<span>def <span class="ident">sanitize_doc</span></span>(<span>comment)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Substitute HTML breaks for new lines in comment text.</p>
+<p>:param comment: The comment text
+:returns: Sanitized comment text</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sanitize_doc(comment):
+    &#34;&#34;&#34;Substitute HTML breaks for new lines in comment text.
+
+    :param comment: The comment text
+    :returns: Sanitized comment text
+
+    &#34;&#34;&#34;
+    if isinstance(comment, list):
+        return sanitize_doc(&#34;\n&#34;.join(filter(None, comment)))
+    else:
+        return comment.replace(&#34;\n&#34;, &#34;&lt;br/&gt;&#34;) if comment else comment</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.set_nested"><code class="name flex">
+<span>def <span class="ident">set_nested</span></span>(<span>d, key_spec, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets a value in a nested dictionary.</p>
+<p>:param d: The dictionary to set
+:param key_spec: The key specifier in dotted notation
+:param value: The value to set</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_nested(d, key_spec, value):
+    &#34;&#34;&#34;Sets a value in a nested dictionary.
+
+    :param d: The dictionary to set
+    :param key_spec: The key specifier in dotted notation
+    :param value: The value to set
+
+    &#34;&#34;&#34;
+    keys = key_spec.split(&#34;.&#34;)
+
+    for key in keys[:-1]:
+        d = d.setdefault(key, {})
+
+    d[keys[-1]] = value</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_components_object"><code class="name flex">
+<span>def <span class="ident">validate_components_object</span></span>(<span>definition_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param definition_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_components_object(definition_object):
+    &#34;&#34;&#34;
+
+    :param definition_object:
+
+    &#34;&#34;&#34;
+    for k, v in definition_object.items():
+        if k == &#34;schemas&#34;:
+            validate_schema_object(v)
+            continue</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_contact_object"><code class="name flex">
+<span>def <span class="ident">validate_contact_object</span></span>(<span>contact_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param contact_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_contact_object(contact_object):
+    &#34;&#34;&#34;
+
+    :param contact_object:
+
+    &#34;&#34;&#34;
+    if contact_object:
+        for k, v in contact_object.items():
+            if k not in [&#34;name&#34;, &#34;url&#34;, &#34;email&#34;]:
+                raise ValidationError(
+                    &#39;Invalid contact object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#contactObject&#34;)
+                )
+
+            if k == &#34;email&#34;:
+                validate_email(v)
+                continue</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_content_object"><code class="name flex">
+<span>def <span class="ident">validate_content_object</span></span>(<span>content_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param content_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_content_object(content_object):
+    &#34;&#34;&#34;
+
+    :param content_object:
+
+    &#34;&#34;&#34;
+    for k, v in content_object.items():
+        if re.match(r&#34;(.*)/(.*)&#34;, k):
+            validate_media_type_object(v)
+            continue
+        raise ValidationError(
+            &#39;Invalid content object, the field must match the following patter (&#34;application/json&#34;, &#34;*/*&#34; ...&#34;).&#39;
+            &#34;. See http://swagger.io/specification/#mediaObject&#34;
+        )</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_email"><code class="name flex">
+<span>def <span class="ident">validate_email</span></span>(<span>email)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param email:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_email(email):
+    &#34;&#34;&#34;
+
+    :param email:
+
+    &#34;&#34;&#34;
+    email_regex = re.compile(
+        r&#34;(^[-!#$%&amp;&#39;*+/=?^_`{}|~0-9A-Z]+(\.[-!#$%&amp;&#39;*+/=?^_`{}|~0-9A-Z]+)*&#34;  # dot-atom
+        r&#39;|^&#34;([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-011\013\014\016-\177])*&#34;&#39;  # quoted-string
+        r&#34;)@(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?$&#34;,
+        re.IGNORECASE,
+    )  # domain
+
+    return re.match(email_regex, email) is not None</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_example_object"><code class="name flex">
+<span>def <span class="ident">validate_example_object</span></span>(<span>example_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param example_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_example_object(example_object):
+    &#34;&#34;&#34;
+
+    :param example_object:
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_external_documentation_object"><code class="name flex">
+<span>def <span class="ident">validate_external_documentation_object</span></span>(<span>external_documentation_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param external_documentation_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_external_documentation_object(external_documentation_object):
+    &#34;&#34;&#34;
+
+    :param external_documentation_object:
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_headers_object"><code class="name flex">
+<span>def <span class="ident">validate_headers_object</span></span>(<span>headers_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param headers_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_headers_object(headers_object):
+    &#34;&#34;&#34;
+
+    :param headers_object:
+
+    &#34;&#34;&#34;
+    for k, v in headers_object.items():
+        if k not in [
+            &#34;name&#34;,
+            &#34;in&#34;,
+            &#34;description&#34;,
+            &#34;required&#34;,
+            &#34;deprecated&#34;,
+            &#34;allowEmptyValue&#34;,
+            &#34;style&#34;,
+            &#34;explode&#34;,
+            &#34;allowReserved&#34;,
+            &#34;schema&#34;,
+            &#34;example&#34;,
+            &#34;examples&#34;,
+            &#34;content&#34;,
+            &#34;matrix&#34;,
+            &#34;label&#34;,
+            &#34;form&#34;,
+            &#34;simple&#34;,
+            &#34;spaceDelimited&#34;,
+            &#34;pipeDelimited&#34;,
+            &#34;deepObject&#34;,
+        ]:
+            raise ValidationError(
+                &#39;Invalid headers object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#headerObject&#34;)
+            )
+        if k == &#34;name&#34;:
+            raise ValidationError(&#39;&#34;name&#34; must not be specified. See http://swagger.io/specification/#headerObject&#39;)
+        if k == &#34;in&#34;:
+            raise ValidationError(&#39;&#34;in&#34; must not be specified. See http://swagger.io/specification/#headerObject&#39;)
+
+        if k == &#34;schema&#34;:
+            validate_schema_object(headers_object[&#34;schema&#34;])
+            continue</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_info_object"><code class="name flex">
+<span>def <span class="ident">validate_info_object</span></span>(<span>info_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param info_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_info_object(info_object):
+    &#34;&#34;&#34;
+
+    :param info_object:
+
+    &#34;&#34;&#34;
+    for k, v in info_object.items():
+        if k not in [&#34;title&#34;, &#34;description&#34;, &#34;termsOfService&#34;, &#34;contact&#34;, &#34;license&#34;, &#34;version&#34;]:
+            raise ValidationError(
+                &#39;Invalid info object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#infoObject&#34;)
+            )
+
+        if k == &#34;contact&#34;:
+            validate_contact_object(v)
+            continue
+
+        if k == &#34;license&#34;:
+            validate_license_object(v)
+            continue
+
+    if &#34;title&#34; not in info_object:
+        raise ValidationError(&#39;Invalid info object. Missing field &#34;title&#34;&#39;)
+
+    if &#34;version&#34; not in info_object:
+        raise ValidationError(&#39;Invalid info object. Missing field &#34;version&#34;&#39;)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_license_object"><code class="name flex">
+<span>def <span class="ident">validate_license_object</span></span>(<span>license_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param license_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_license_object(license_object):
+    &#34;&#34;&#34;
+
+    :param license_object:
+
+    &#34;&#34;&#34;
+    if license_object:
+        for k, v in license_object.items():
+            if k not in [&#34;name&#34;, &#34;url&#34;]:
+                raise ValidationError(
+                    &#39;Invalid license object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#licenseObject&#34;)
+                )
+
+            if k == &#34;url&#34;:
+                validate_url(v)
+                continue
+
+        if &#34;name&#34; not in license_object:
+            raise ValidationError(&#39;Invalid license object. Missing field &#34;name&#34;&#39;)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_link_object"><code class="name flex">
+<span>def <span class="ident">validate_link_object</span></span>(<span>link_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param link_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_link_object(link_object):
+    &#34;&#34;&#34;
+
+    :param link_object:
+
+    &#34;&#34;&#34;
+    for k, v in link_object.items:
+        if k in [&#34;operationRef&#34;, &#34;operationId&#34;, &#34;parameters&#34;, &#34;requestBody&#34;, &#34;description&#34;]:
+            continue
+        if k == &#34;server&#34;:
+            validate_server_object(v)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_media_type_object"><code class="name flex">
+<span>def <span class="ident">validate_media_type_object</span></span>(<span>media_type_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param media_type_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_media_type_object(media_type_object):
+    &#34;&#34;&#34;
+
+    :param media_type_object:
+
+    &#34;&#34;&#34;
+    for k, v in media_type_object.items():
+        if k == &#34;schema&#34;:
+            validate_schema_object(v)
+            continue
+        if k == &#34;examples&#34;:
+            validate_example_object(v)
+            continue</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_operation_object"><code class="name flex">
+<span>def <span class="ident">validate_operation_object</span></span>(<span>operation_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param operation_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_operation_object(operation_object):  # noqa C901
+    &#34;&#34;&#34;
+
+    :param operation_object:
+
+    &#34;&#34;&#34;
+    for k, v in operation_object.items():
+        if k in [&#34;tags&#34;]:
+            if isinstance(v, list):
+                continue
+            raise ValidationError(&#39;Invalid operation object. &#34;{0}&#34; must be a list but was &#34;{1}&#34;&#39;, k, type(v))
+        if k in [&#34;summary&#34;, &#34;description&#34;, &#34;operationId&#34;]:
+            if isinstance(v, str):
+                continue
+            raise ValidationError(&#39;Invalid operation object. &#34;{0}&#34; must be a string but was &#34;{1}&#34;&#39;, k, type(v))
+        if k in [&#34;requestBody&#34;]:
+            validate_request_body_object(v)
+            continue
+        if k in [&#34;deprecated&#34;]:
+            if isinstance(v, bool):
+                continue
+            raise ValidationError(&#39;Invalid operation object. &#34;{0}&#34; must be a bool but was &#34;{1}&#34;&#39;, k, type(v))
+        if k in [&#34;externalDocs&#34;]:
+            validate_external_documentation_object(v)  # to check
+            continue
+        if k in [&#34;parameters&#34;]:
+            for parameter in v:
+                validate_parameter_object(parameter)
+            continue
+        if k in [&#34;responses&#34;]:
+            validate_responses_object(v)
+            continue
+        if k in [&#34;security&#34;]:
+            validate_security_requirement_object(v)
+            continue
+        if k.startswith(&#34;x-&#34;):
+            continue
+        raise ValidationError(
+            &#39;Invalid operation object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#pathItemObject&#34;)
+        )
+    if &#34;responses&#34; not in operation_object:
+        raise ValidationError(&#39;Invalid operation object. Missing field &#34;responses&#34;&#39;)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_parameter_object"><code class="name flex">
+<span>def <span class="ident">validate_parameter_object</span></span>(<span>parameter_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param parameter_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_parameter_object(parameter_object):
+    &#34;&#34;&#34;
+
+    :param parameter_object:
+
+    &#34;&#34;&#34;
+    for k, v in parameter_object.items():
+        if k not in [
+            &#34;name&#34;,
+            &#34;in&#34;,
+            &#34;description&#34;,
+            &#34;required&#34;,
+            &#34;deprecated&#34;,
+            &#34;allowEmptyValue&#34;,
+            &#34;style&#34;,
+            &#34;explode&#34;,
+            &#34;allowReserved&#34;,
+            &#34;schema&#34;,
+            &#34;example&#34;,
+            &#34;examples&#34;,
+            &#34;content&#34;,
+            &#34;matrix&#34;,
+            &#34;label&#34;,
+            &#34;form&#34;,
+            &#34;simple&#34;,
+            &#34;spaceDelimited&#34;,
+            &#34;pipeDelimited&#34;,
+            &#34;deepObject&#34;,
+            &#34;reqparser&#34;,
+        ]:
+            raise ValidationError(
+                &#39;Invalid parameter object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#parameterObject&#34;)
+            )
+    if &#34;reqparser&#34; in parameter_object:
+        if &#34;name&#34; not in parameter_object:
+            raise ValidationError(&#34;name for request parser not specified&#34;)
+        if &#34;parser&#34; not in parameter_object or not isinstance(parameter_object[&#34;parser&#34;], reqparse.RequestParser):
+            raise ValidationError(&#34;RequestParser object not specified&#34;)
+        return
+    if &#34;name&#34; not in parameter_object:
+        raise ValidationError(&#39;Invalid parameter object. Missing field &#34;name&#34;&#39;)
+    if &#34;in&#34; not in parameter_object:
+        raise ValidationError(&#39;Invalid parameter object. Missing field &#34;in&#34;&#39;)
+    else:
+        if parameter_object[&#34;in&#34;] not in [&#34;path&#34;, &#34;query&#34;, &#34;header&#34;, &#34;cookie&#34;]:
+            raise ValidationError(
+                &#39;Invalid parameter object. Value of field &#34;in&#34; must be path, query, header, cookie was &#34;{}&#34;&#39;.format(parameter_object[&#34;in&#34;])
+            )
+    if &#34;schema&#34; in parameter_object:
+        validate_schema_object(parameter_object[&#34;schema&#34;])</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_path_item_object"><code class="name flex">
+<span>def <span class="ident">validate_path_item_object</span></span>(<span>path_item_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Checks if the passed object is valid according to <a href="http://swagger.io/specification/#pathItemObject">http://swagger.io/specification/#pathItemObject</a></p>
+<p>:param path_item_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_path_item_object(path_item_object):
+    &#34;&#34;&#34;Checks if the passed object is valid according to http://swagger.io/specification/#pathItemObject
+
+    :param path_item_object:
+
+    &#34;&#34;&#34;
+
+    for k, v in path_item_object.items():
+        if k == &#34;$ref&#34;:
+            continue
+        if k in [&#34;get&#34;, &#34;put&#34;, &#34;post&#34;, &#34;delete&#34;, &#34;options&#34;, &#34;head&#34;, &#34;patch&#34;, &#34;trace&#34;]:
+            validate_operation_object(v)
+            continue
+        if k == &#34;servers&#34;:
+            validate_server_object(v)
+            continue
+        if k == &#34;parameters&#34;:
+            for parameter in v:
+                try:
+                    validate_reference_object(parameter)
+                except ValidationError:
+                    validate_parameter_object(parameter)
+            continue
+        if k == &#34;summary&#34;:
+            continue
+        if k == &#34;description&#34;:
+            continue
+        raise ValidationError(
+            &#39;Invalid path item object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#pathItemObject&#34;)
+        )</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_reference_object"><code class="name flex">
+<span>def <span class="ident">validate_reference_object</span></span>(<span>parameter_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param parameter_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_reference_object(parameter_object):
+    &#34;&#34;&#34;
+
+    :param parameter_object:
+
+    &#34;&#34;&#34;
+    if len(parameter_object.keys()) &gt; 1 or &#34;$ref&#34; not in parameter_object:
+        raise ValidationError(&#39;Invalid reference object. It may only contain key &#34;$ref&#34;&#39;)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_request_body_object"><code class="name flex">
+<span>def <span class="ident">validate_request_body_object</span></span>(<span>request_body_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param request_body_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_request_body_object(request_body_object):
+    &#34;&#34;&#34;
+
+    :param request_body_object:
+
+    &#34;&#34;&#34;
+    for k, v in request_body_object.items():
+        if k in [&#34;description&#34;]:
+            continue
+        if k in [&#34;required&#34;]:
+            if isinstance(v, bool):
+                continue
+        if k in [&#34;content&#34;]:
+            validate_content_object(v)
+            continue</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_response_object"><code class="name flex">
+<span>def <span class="ident">validate_response_object</span></span>(<span>response_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param response_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_response_object(response_object):
+    &#34;&#34;&#34;
+
+    :param response_object:
+
+    &#34;&#34;&#34;
+    for k, v in response_object.items():
+        if k == &#34;description&#34;:
+            continue
+        if k == &#34;headers&#34;:
+            try:
+                validate_reference_object(v)
+            except ValidationError:
+                validate_headers_object(v)
+            continue
+        if k == &#34;content&#34;:
+            validate_content_object(v)
+            continue
+        if k == &#34;links&#34;:
+            validate_link_object(v)
+            continue
+        raise ValidationError(
+            &#39;Invalid response object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#responseObject&#34;)
+        )
+    if &#34;description&#34; not in response_object:
+        raise ValidationError(&#39;Invalid response object. Missing field &#34;description&#34;&#39;)</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_responses_object"><code class="name flex">
+<span>def <span class="ident">validate_responses_object</span></span>(<span>responses_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param responses_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_responses_object(responses_object):
+    &#34;&#34;&#34;
+
+    :param responses_object:
+
+    &#34;&#34;&#34;
+    for k, v in responses_object.items():
+        if k in [&#34;1XX&#34;, &#34;2XX&#34;, &#34;3XX&#34;, &#34;4XX&#34;, &#34;5XX&#34;, &#34;default&#34;]:
+            try:
+                validate_reference_object(v)
+            except ValidationError:
+                validate_response_object(v)
+            continue
+        if 99 &lt; int(k) &lt; 600:
+            try:
+                validate_reference_object(v)
+            except ValidationError:
+                validate_response_object(v)
+                continue</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_schema_object"><code class="name flex">
+<span>def <span class="ident">validate_schema_object</span></span>(<span>schema_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param schema_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_schema_object(schema_object):
+    &#34;&#34;&#34;
+
+    :param schema_object:
+
+    &#34;&#34;&#34;
+    for k, v in schema_object.items():
+        try:
+            validate_reference_object(v)
+            continue
+        except AttributeError:
+            if k == &#34;required&#34; and not isinstance(v, list):
+                raise ValidationError(&#39;Invalid schema object. &#34;{}&#34; must be a list but was {}&#39;.format(k, type(v)))</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_security_requirement_object"><code class="name flex">
+<span>def <span class="ident">validate_security_requirement_object</span></span>(<span>security_requirement_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param security_requirement_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_security_requirement_object(security_requirement_object):
+    &#34;&#34;&#34;
+
+    :param security_requirement_object:
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_server_object"><code class="name flex">
+<span>def <span class="ident">validate_server_object</span></span>(<span>server_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param server_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_server_object(server_object):
+    &#34;&#34;&#34;
+
+    :param server_object:
+
+    &#34;&#34;&#34;
+    if isinstance(server_object, dict):
+        for k, v in server_object.items():
+            if k not in [&#34;url&#34;, &#34;description&#34;, &#34;variables&#34;]:
+                raise ValidationError(
+                    &#39;Invalid server object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(field=k, url=&#34;http://swagger.io/specification/#serverObject&#34;)
+                )
+
+            if k == &#34;variables&#34;:
+                validate_server_variables_object(v)
+                continue
+
+            if k == &#34;url&#34;:
+                if not validate_url(v):
+                    raise ValidationError(&#34;Invalid url. See {url}&#34;.format(url=&#34;http://swagger.io/specification/#serverObject&#34;))
+
+        if &#34;url&#34; not in server_object:
+            raise ValidationError(&#39;Invalid server object. Missing field &#34;url&#34;&#39;)
+    else:
+        raise ValidationError(&#34;Invalid server object. See {url}&#34;.format(url=&#34;http://swagger.io/specification/#serverObject&#34;))</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_server_variables_object"><code class="name flex">
+<span>def <span class="ident">validate_server_variables_object</span></span>(<span>server_variables_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param server_variables_object:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_server_variables_object(server_variables_object):
+    &#34;&#34;&#34;
+
+    :param server_variables_object:
+
+    &#34;&#34;&#34;
+    for k, v in server_variables_object.items():
+        if k not in [&#34;enum&#34;, &#34;default&#34;, &#34;description&#34;]:
+            raise ValidationError(
+                &#39;Invalid server variables object. Unknown field &#34;{field}&#34;. See {url}&#39;.format(
+                    field=k, url=&#34;http://swagger.io/specification/#headerObject&#34;
+                )
+            )
+
+        if k == &#34;enum&#34;:
+            if isinstance(v, list):
+                if not all(isinstance(x, str) for x in v):
+                    raise ValidationError(
+                        &#34;Invalid server variables object object. Each item of enum must be string&#34;
+                        &#34;See http://swagger.io/specification/#serverVariablesObject&#34;
+                    )
+            else:
+                raise ValidationError(
+                    &#34;Invalid server variables object object. Enum must be a list of strings&#34;
+                    &#34;See http://swagger.io/specification/#serverVariablesObject&#34;
+                )
+
+    if &#34;default&#34; not in server_variables_object:
+        raise ValidationError(
+            &#39;Invalid server variables object object. Missing field &#34;url&#34;&#39; &#34;See http://swagger.io/specification/#serverVariablesObject&#34;
+        )</code></pre>
+</details>
+</dd>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.validate_url"><code class="name flex">
+<span>def <span class="ident">validate_url</span></span>(<span>url)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param url:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_url(url):
+    &#34;&#34;&#34;
+
+    :param url:
+
+    &#34;&#34;&#34;
+    url_regex = re.compile(
+        r&#34;^(?:http|ftp)s?://&#34;  # http:// or https://
+        r&#34;(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|&#34;  # domain...
+        r&#34;localhost|&#34;  # localhost...
+        r&#34;\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})&#34;  # ...or ip
+        r&#34;(?::\d+)?&#34;  # optional port
+        r&#34;(?:/?|[/?]\S+)$&#34;,
+        re.IGNORECASE,
+    )
+
+    return re.match(url_regex, url) is not None</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="chillapi.app.flask_restful_swagger_3.swagger.ValidationError"><code class="flex name class">
+<span>class <span class="ident">ValidationError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ValidationError(ValueError):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.ValueError</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="chillapi.app.flask_restful_swagger_3" href="index.html">chillapi.app.flask_restful_swagger_3</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.add_parameters" href="#chillapi.app.flask_restful_swagger_3.swagger.add_parameters">add_parameters</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.auth" href="#chillapi.app.flask_restful_swagger_3.swagger.auth">auth</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.create_swagger_endpoint" href="#chillapi.app.flask_restful_swagger_3.swagger.create_swagger_endpoint">create_swagger_endpoint</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.doc" href="#chillapi.app.flask_restful_swagger_3.swagger.doc">doc</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.extract_swagger_path" href="#chillapi.app.flask_restful_swagger_3.swagger.extract_swagger_path">extract_swagger_path</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.get_data_action" href="#chillapi.app.flask_restful_swagger_3.swagger.get_data_action">get_data_action</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.get_data_type" href="#chillapi.app.flask_restful_swagger_3.swagger.get_data_type">get_data_type</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.get_parser" href="#chillapi.app.flask_restful_swagger_3.swagger.get_parser">get_parser</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.get_parser_arg" href="#chillapi.app.flask_restful_swagger_3.swagger.get_parser_arg">get_parser_arg</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.get_parser_args" href="#chillapi.app.flask_restful_swagger_3.swagger.get_parser_args">get_parser_args</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.parse_method_doc" href="#chillapi.app.flask_restful_swagger_3.swagger.parse_method_doc">parse_method_doc</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.parse_schema_doc" href="#chillapi.app.flask_restful_swagger_3.swagger.parse_schema_doc">parse_schema_doc</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.sanitize_doc" href="#chillapi.app.flask_restful_swagger_3.swagger.sanitize_doc">sanitize_doc</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.set_nested" href="#chillapi.app.flask_restful_swagger_3.swagger.set_nested">set_nested</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_components_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_components_object">validate_components_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_contact_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_contact_object">validate_contact_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_content_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_content_object">validate_content_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_email" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_email">validate_email</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_example_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_example_object">validate_example_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_external_documentation_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_external_documentation_object">validate_external_documentation_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_headers_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_headers_object">validate_headers_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_info_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_info_object">validate_info_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_license_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_license_object">validate_license_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_link_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_link_object">validate_link_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_media_type_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_media_type_object">validate_media_type_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_operation_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_operation_object">validate_operation_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_parameter_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_parameter_object">validate_parameter_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_path_item_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_path_item_object">validate_path_item_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_reference_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_reference_object">validate_reference_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_request_body_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_request_body_object">validate_request_body_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_response_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_response_object">validate_response_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_responses_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_responses_object">validate_responses_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_schema_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_schema_object">validate_schema_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_security_requirement_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_security_requirement_object">validate_security_requirement_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_server_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_server_object">validate_server_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_server_variables_object" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_server_variables_object">validate_server_variables_object</a></code></li>
+<li><code><a title="chillapi.app.flask_restful_swagger_3.swagger.validate_url" href="#chillapi.app.flask_restful_swagger_3.swagger.validate_url">validate_url</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="chillapi.app.flask_restful_swagger_3.swagger.ValidationError" href="#chillapi.app.flask_restful_swagger_3.swagger.ValidationError">ValidationError</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
