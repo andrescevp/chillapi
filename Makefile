@@ -1,3 +1,4 @@
+.PHONY: all test clean
 VENV_NAME?=venv
 VENV_ACTIVATE=. ${VENV_NAME}/bin/activate
 PYTHON=${VENV_NAME}/bin/python
@@ -56,4 +57,6 @@ db_schema_docs:
 api_definition_validate:
 	${DOCKER} sh -c "${VENV_ACTIVATE} && pykwalify -d api.yaml -s api.schema.yaml  && chown -Rf 1000:1000 ."
 docs:
-	${DOCKER} sh -c "${VENV_ACTIVATE} && pdoc --html --output-dir docs chillapi"
+	${DOCKER} sh -c "${VENV_ACTIVATE} && pdoc --html --output-dir build/docs chillapi && mv build/docs/chillapi docs && chown -Rf 1000:1000 ."
+clean:
+	rm -rf build docs

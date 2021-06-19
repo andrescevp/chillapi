@@ -1,6 +1,4 @@
 """
-ChillAPI
-
 .. include:: ../README.md
 """
 
