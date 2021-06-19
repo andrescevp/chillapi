@@ -9,10 +9,23 @@ not_found_swagger_schema = get_not_found_swagger_schema()
 
 
 def create_swagger_type_from_dict(name, swagger_dict_definition):
+    """
+
+    :param name:
+    :param swagger_dict_definition:
+
+    """
     return type(name, (Schema,), swagger_dict_definition)
 
 
 def get_get_single_endpoint_schema(class_name, id_field_where_type, response_schema):
+    """
+
+    :param class_name:
+    :param id_field_where_type:
+    :param response_schema:
+
+    """
     return {
         "tags": [class_name],
         "description": f"Get a {class_name} model representation",
@@ -33,6 +46,13 @@ def get_get_single_endpoint_schema(class_name, id_field_where_type, response_sch
 
 
 def get_put_single_endpoint_schema(class_name, form_schema_model, response_schema):
+    """
+
+    :param class_name:
+    :param form_schema_model:
+    :param response_schema:
+
+    """
     return {
         "tags": [class_name],
         "description": f"Create a {class_name}",
@@ -49,6 +69,14 @@ def get_put_single_endpoint_schema(class_name, form_schema_model, response_schem
 
 
 def get_post_single_endpoint_schema(class_name, form_schema_model, response_schema, id_field_where_type):
+    """
+
+    :param class_name:
+    :param form_schema_model:
+    :param response_schema:
+    :param id_field_where_type:
+
+    """
     return {
         "tags": [class_name],
         "description": f"Update a {class_name}",
@@ -74,6 +102,12 @@ def get_post_single_endpoint_schema(class_name, form_schema_model, response_sche
 
 
 def get_delete_single_endpoint_schema(class_name, id_field_where_type):
+    """
+
+    :param class_name:
+    :param id_field_where_type:
+
+    """
     return {
         "tags": [class_name],
         "description": f"Update a {class_name}",
@@ -95,6 +129,13 @@ def get_delete_single_endpoint_schema(class_name, id_field_where_type):
 
 
 def get_get_list_endpoint_schema(class_name, response_schema, request_schema):
+    """
+
+    :param class_name:
+    :param response_schema:
+    :param request_schema:
+
+    """
     return {
         "tags": [class_name],
         "description": f"Get {class_name} model list",
@@ -108,6 +149,12 @@ def get_get_list_endpoint_schema(class_name, response_schema, request_schema):
 
 
 def get_put_list_endpoint_schema(class_name, form_schema_model):
+    """
+
+    :param class_name:
+    :param form_schema_model:
+
+    """
     return {
         "tags": [class_name],
         "description": f"Create several {class_name}",
@@ -125,6 +172,12 @@ def get_put_list_endpoint_schema(class_name, form_schema_model):
 
 
 def get_post_list_endpoint_schema(class_name, form_schema_model):
+    """
+
+    :param class_name:
+    :param form_schema_model:
+
+    """
     return {
         "tags": [class_name],
         "description": f"Update several {class_name}",
@@ -144,6 +197,16 @@ def get_post_list_endpoint_schema(class_name, form_schema_model):
 def get_query_endpoint_schema(
     class_name: str, tags: list, query_parameters: List, description: str = None, request_schema: dict = None, response_schema: dict = None
 ):
+    """
+
+    :param class_name: str:
+    :param tags: list:
+    :param query_parameters: List:
+    :param description: str:  (Default value = None)
+    :param request_schema: dict:  (Default value = None)
+    :param response_schema: dict:  (Default value = None)
+
+    """
     schema = {
         "tags": tags,
         "description": description,
@@ -166,6 +229,12 @@ def get_query_endpoint_schema(
 
 
 def get_delete_list_endpoint_schema(class_name, request_body_schema):
+    """
+
+    :param class_name:
+    :param request_body_schema:
+
+    """
     return {
         "tags": [class_name],
         "description": f"Delete several {class_name}",

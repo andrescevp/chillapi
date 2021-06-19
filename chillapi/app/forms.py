@@ -13,10 +13,18 @@ wtform_to_swagger_schema = WTFormToJSONSchema()
 
 
 class JSONField(fields.Field):
+    """ """
+
     def _value(self):
+        """ """
         return json.dumps(self.data) if self.data else ""
 
     def process_formdata(self, valuelist):
+        """
+
+        :param valuelist:
+
+        """
         if valuelist:
             value = valuelist[0]
             try:
@@ -27,6 +35,11 @@ class JSONField(fields.Field):
             self.data = None
 
     def pre_validate(self, form):
+        """
+
+        :param form:
+
+        """
         super().pre_validate(form)
         if self.data:
             if type(self.data) == str:
@@ -45,6 +58,13 @@ class JSONField(fields.Field):
 
 
 def generate_form_swagger_schema_from_form(method: str, form: Form, as_array=False):
+    """
+
+    :param method: str:
+    :param form: Form:
+    :param as_array:  (Default value = False)
+
+    """
     form_schema = wtform_to_swagger_schema.convert_form(form)
     form_schema["description"] = f"{form.__name__} Form validated model"
 
@@ -57,6 +77,13 @@ def generate_form_swagger_schema_from_form(method: str, form: Form, as_array=Fal
 
 
 def column_to_flask_form_property(column_name: str, column_info: dict, extensions: dict) -> Field:
+    """
+
+    :param column_name: str:
+    :param column_info: dict:
+    :param extensions: dict:
+
+    """
     validators = []
     if "validators" in extensions and column_name in extensions["validators"]:
         validators = extensions["validators"][column_name]
@@ -78,11 +105,23 @@ def column_to_flask_form_property(column_name: str, column_info: dict, extension
 
 
 def create_form_class(class_name: str, method: str, columns_map: dict, extensions: dict):
+    """
+
+    :param class_name: str:
+    :param method: str:
+    :param columns_map: dict:
+    :param extensions: dict:
+
+    """
+
     class FormResource(Form):
+        """ """
+
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
 
         def for_json(self) -> dict:
+            """ """
             return self.data
 
     for column_name, column_info in columns_map.items():

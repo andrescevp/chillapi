@@ -24,11 +24,18 @@ inflector = inflect.engine()
 created_endpoint_used_names = []
 
 
-class SqlApiManager(ApiManager):
+class FlaskSqlApiManager(ApiManager):
+    """ """
+
     def __init__(self, config: ApiConfig):
         self.config = config
 
     def create_api(self, api):
+        """
+
+        :param api:
+
+        """
         for i, sql_endpoint in enumerate(self.config.database["sql"]):
             sql = sql_endpoint["sql"]
             duplicated_name_postfix = "_SQL"
@@ -46,6 +53,15 @@ class SqlApiManager(ApiManager):
             self.create_sql_endpoint(api, duplicated_name_postfix, i, sql, sql_endpoint)
 
     def create_sql_endpoint(self, api, duplicated_name_postfix, i, sql, sql_endpoint):
+        """
+
+        :param api:
+        :param duplicated_name_postfix:
+        :param i:
+        :param sql:
+        :param sql_endpoint:
+
+        """
         method = sql_endpoint["method"]
         name = sql_endpoint["name"]
         tags = [name]
@@ -89,7 +105,9 @@ class SqlApiManager(ApiManager):
         api.add_resource(sql_endpoint_class, sql_endpoint_class.route, endpoint=sql_endpoint_class.endpoint)
 
 
-class TableApiManager(ApiManager):
+class FlaskTableApiManager(ApiManager):
+    """ """
+
     def __init__(self, config: ApiConfig):
         self.config = config
 
@@ -103,6 +121,17 @@ class TableApiManager(ApiManager):
         allowed_columns_map: dict,
         extensions: dict,
     ):
+        """
+
+        :param table: dict:
+        :param endpoint: str:
+        :param action: str:
+        :param allowed_columns: List:
+        :param excluded_columns: List:
+        :param allowed_columns_map: dict:
+        :param extensions: dict:
+
+        """
 
         return create_get_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository)
 
@@ -116,6 +145,17 @@ class TableApiManager(ApiManager):
         allowed_columns_map: dict,
         extensions: dict,
     ):
+        """
+
+        :param table: dict:
+        :param endpoint: str:
+        :param action: str:
+        :param allowed_columns: List:
+        :param excluded_columns: List:
+        :param allowed_columns_map: dict:
+        :param extensions: dict:
+
+        """
 
         return create_put_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository)
 
@@ -129,6 +169,17 @@ class TableApiManager(ApiManager):
         allowed_columns_map: dict,
         extensions: dict,
     ):
+        """
+
+        :param table: dict:
+        :param endpoint: str:
+        :param action: str:
+        :param allowed_columns: List:
+        :param excluded_columns: List:
+        :param allowed_columns_map: dict:
+        :param extensions: dict:
+
+        """
 
         return create_post_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository)
 
@@ -142,6 +193,17 @@ class TableApiManager(ApiManager):
         allowed_columns_map: dict,
         extensions: dict,
     ):
+        """
+
+        :param table: dict:
+        :param endpoint: str:
+        :param action: str:
+        :param allowed_columns: List:
+        :param excluded_columns: List:
+        :param allowed_columns_map: dict:
+        :param extensions: dict:
+
+        """
         return create_delete_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository)
 
     def create_get_list_endpoint(
@@ -154,6 +216,17 @@ class TableApiManager(ApiManager):
         allowed_columns_map: dict,
         extensions: dict,
     ):
+        """
+
+        :param table: dict:
+        :param endpoint: str:
+        :param action: str:
+        :param allowed_columns: List:
+        :param excluded_columns: List:
+        :param allowed_columns_map: dict:
+        :param extensions: dict:
+
+        """
         return create_get_list_endpoint_class(
             table,
             allowed_columns,
@@ -172,6 +245,17 @@ class TableApiManager(ApiManager):
         allowed_columns_map: dict,
         extensions: dict,
     ):
+        """
+
+        :param table: dict:
+        :param endpoint: str:
+        :param action: str:
+        :param allowed_columns: List:
+        :param excluded_columns: List:
+        :param allowed_columns_map: dict:
+        :param extensions: dict:
+
+        """
         return create_put_list_endpoint_class(
             table,
             allowed_columns,
@@ -190,6 +274,17 @@ class TableApiManager(ApiManager):
         allowed_columns_map: dict,
         extensions: dict,
     ):
+        """
+
+        :param table: dict:
+        :param endpoint: str:
+        :param action: str:
+        :param allowed_columns: List:
+        :param excluded_columns: List:
+        :param allowed_columns_map: dict:
+        :param extensions: dict:
+
+        """
         return create_post_list_endpoint_class(
             table,
             allowed_columns,
@@ -208,6 +303,17 @@ class TableApiManager(ApiManager):
         allowed_columns_map: dict,
         extensions: dict,
     ):
+        """
+
+        :param table: dict:
+        :param endpoint: str:
+        :param action: str:
+        :param allowed_columns: List:
+        :param excluded_columns: List:
+        :param allowed_columns_map: dict:
+        :param extensions: dict:
+
+        """
         return create_delete_list_endpoint_class(
             table,
             allowed_columns,
@@ -217,6 +323,11 @@ class TableApiManager(ApiManager):
         )
 
     def create_api(self, api):
+        """
+
+        :param api:
+
+        """
         for table in self.config.database["tables"]:
             for endpoint, actions in table["api_endpoints"].items():
                 for action in actions:
@@ -258,10 +369,17 @@ class TableApiManager(ApiManager):
 
 
 class FlaskApiManager(ApiManager):
+    """ """
+
     def __init__(self, config: ApiConfig):
-        self.sql_manager = SqlApiManager(config)
-        self.table_manager = TableApiManager(config)
+        self.sql_manager = FlaskSqlApiManager(config)
+        self.table_manager = FlaskTableApiManager(config)
 
     def create_api(self, api):
+        """
+
+        :param api:
+
+        """
         self.table_manager.create_api(api)
         self.sql_manager.create_api(api)

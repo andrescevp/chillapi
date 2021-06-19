@@ -6,7 +6,7 @@ swagger_ui==0.1.2
 requests==2.25.1
 inflect==5.3.0
 openapi_spec_validator==0.3.0
-Flask==1.1.2
+Flask==1.1.4
 Flask_Cors==3.0.9
 slug==2.0
 WTForms_JSON==0.3.3

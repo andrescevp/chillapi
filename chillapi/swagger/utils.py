@@ -3,6 +3,8 @@ from chillapi.database.query_builder import sql_operators
 
 
 class ColumnSwaggerDefinition:
+    """ """
+
     column_swagger_properties = {}
 
     def __init__(self, name: str, column_swagger_properties: dict):
@@ -11,9 +13,16 @@ class ColumnSwaggerDefinition:
 
 
 def get_filter_schema(class_name) -> Schema:
+    """
+
+    :param class_name:
+
+    """
     _ops = [str(o) for o in sql_operators.keys()]
 
     class FilterModel(Schema):
+        """ """
+
         type = "object"
         properties = {
             "op": {
@@ -30,7 +39,15 @@ def get_filter_schema(class_name) -> Schema:
 
 
 def get_order_schema(class_name):
+    """
+
+    :param class_name:
+
+    """
+
     class OrderByModel(Schema):
+        """ """
+
         type = "object"
         properties = {"field": {"type": "array", "items": {"type": "string"}}, "direction": {"type": "string", "enum": ["asc", "desc"]}}
         required = ["field", "direction"]
@@ -41,7 +58,15 @@ def get_order_schema(class_name):
 
 
 def get_size_schema(class_name):
+    """
+
+    :param class_name:
+
+    """
+
     class SizeListModel(Schema):
+        """ """
+
         type = "object"
         properties = {"limit": {"type": "integer", "default": 100}, "offset": {"type": "integer", "default": 0}}
         required = ["limit", "offset"]
@@ -52,6 +77,11 @@ def get_size_schema(class_name):
 
 
 def python_to_swagger_types(python_type):
+    """
+
+    :param python_type:
+
+    """
     switcher = {
         "str": "string",
         "int": "integer",
@@ -66,6 +96,12 @@ def python_to_swagger_types(python_type):
 
 
 def columns_map_to_swagger_properties(columns_map, columns_swagger_definition: dict = None):
+    """
+
+    :param columns_map:
+    :param columns_swagger_definition: dict:  (Default value = None)
+
+    """
     properties = {}
 
     for property_name, column_info in columns_map.items():
@@ -78,9 +114,18 @@ def columns_map_to_swagger_properties(columns_map, columns_swagger_definition: d
 
 
 def get_response_swagger_schema(columns_map: dict, class_name: str, columns_swagger_definition: dict = None):
+    """
+
+    :param columns_map: dict:
+    :param class_name: str:
+    :param columns_swagger_definition: dict:  (Default value = None)
+
+    """
     columns_as_properties = columns_map_to_swagger_properties(columns_map, columns_swagger_definition)
 
     class ResponseModel(Schema):
+        """ """
+
         type = "object"
         properties = columns_as_properties
 
@@ -92,7 +137,19 @@ def get_response_swagger_schema(columns_map: dict, class_name: str, columns_swag
 def get_form_array_swagger_schema(
     class_name: str, form_schema: type(Schema), class_name_postfix: str = "ArrayFormModel", min_items: int = 1, max_items: int = 100
 ):
+    """
+
+    :param class_name: str:
+    :param form_schema: type(Schema):
+    :param class_name_postfix: str:  (Default value = "ArrayFormModel")
+    :param min_items: int:  (Default value = 1)
+    :param max_items: int:  (Default value = 100)
+
+    """
+
     class ArrayFormModel(Schema):
+        """ """
+
         type = "array"
         items = form_schema
         minItems = min_items
@@ -104,6 +161,14 @@ def get_form_array_swagger_schema(
 
 
 def get_list_filtered_response_swagger_schema(columns_map: dict, request_schema: dict, class_name: str, columns_swagger_definition: dict = None):
+    """
+
+    :param columns_map: dict:
+    :param request_schema: dict:
+    :param class_name: str:
+    :param columns_swagger_definition: dict:  (Default value = None)
+
+    """
     columns_as_properties = columns_map_to_swagger_properties(columns_map, columns_swagger_definition)
 
     meta = {v["name"]: {"type": "object", "schema": v["schema"]} for v in request_schema}
@@ -111,6 +176,8 @@ def get_list_filtered_response_swagger_schema(columns_map: dict, request_schema:
     meta["total_records"] = {"type": "integer"}
 
     class ResponseModel(Schema):
+        """ """
+
         type = "object"
         properties = {
             "data": {"type": "array", "items": {"type": "object", "properties": columns_as_properties}},
@@ -123,6 +190,12 @@ def get_list_filtered_response_swagger_schema(columns_map: dict, request_schema:
 
 
 def get_list_filtered_request_swagger_schema(class_name: str, columns_map: dict):
+    """
+
+    :param class_name: str:
+    :param columns_map: dict:
+
+    """
     schema = []
     for property_name, column_info in columns_map.items():
         schema.append({"in": "query", "name": property_name, "allowEmptyValue": True, "schema": get_filter_schema(class_name)})
@@ -135,7 +208,11 @@ def get_list_filtered_request_swagger_schema(class_name: str, columns_map: dict)
 
 
 def get_revisable_response_swagger_schema():
+    """ """
+
     class RevisableOperationResponseModel(Schema):
+        """ """
+
         type = "object"
         properties = {
             "message": {
@@ -149,7 +226,11 @@ def get_revisable_response_swagger_schema():
 
 
 def get_error_swagger_schema():
+    """ """
+
     class ErrorResponseModel(Schema):
+        """ """
+
         type = "object"
         properties = {
             "code": {
@@ -164,7 +245,11 @@ def get_error_swagger_schema():
 
 
 def get_not_found_swagger_schema():
+    """ """
+
     class NotFoundResponseModel(Schema):
+        """ """
+
         type = "object"
         properties = {
             "message": {
@@ -176,9 +261,19 @@ def get_not_found_swagger_schema():
 
 
 def get_request_swagger_schema(columns_map: dict, class_name: str, columns_swagger_definition: dict = None, required_fields=None):
+    """
+
+    :param columns_map: dict:
+    :param class_name: str:
+    :param columns_swagger_definition: dict:  (Default value = None)
+    :param required_fields:  (Default value = None)
+
+    """
     columns_as_properties = columns_map_to_swagger_properties(columns_map, columns_swagger_definition)
 
     class RequestModel(Schema):
+        """ """
+
         type = "object"
         properties = columns_as_properties
         required = required_fields

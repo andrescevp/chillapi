@@ -10,15 +10,27 @@ from chillapi.swagger import AfterResponseEventType, BeforeRequestEventType, Bef
 
 
 class ResourceResponse:
+    """ """
+
     response = {}
     headers: dict = {}
     http_code = 200
     audit = None
 
     def make_audit_log(self, **args):
+        """
+
+        :param **args:
+
+        """
         self.audit = AuditLog(**args)
 
     def make_response(self, as_json: bool = True):
+        """
+
+        :param as_json: bool:  (Default value = True)
+
+        """
         data = jsonify(self.response) if as_json else self.response
         response = make_response(data, self.http_code)
         if self.headers:
@@ -30,6 +42,7 @@ class ResourceResponse:
         return response
 
     def for_json(self) -> dict:
+        """ """
         return {
             "response": self.response,
             "headers": self.headers,
@@ -38,6 +51,8 @@ class ResourceResponse:
 
 
 class AutomaticResource(Resource):
+    """ """
+
     route = "/"
     endpoint = "root"
     _swagger_schema: Schema = None
@@ -58,18 +73,38 @@ class AutomaticResource(Resource):
 
             @flask.after_this_request
             def response_processor(response):
+                """
+
+                :param response:
+
+                """
                 after_response.on_event(**{"resource": self, "response": response})
                 return response
 
     @abc.abstractmethod
     def request(self, **args) -> ResourceResponse:
+        """
+
+        :param **args:
+
+        """
         pass
 
     @abc.abstractmethod
     def validate_request(self, **args):
+        """
+
+        :param **args:
+
+        """
         pass
 
     def process_request(self, **args):
+        """
+
+        :param **args:
+
+        """
         logger.debug("Request start", extra=args)
         before_response_event = None
         before_request_event = None

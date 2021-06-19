@@ -23,7 +23,14 @@ from chillapi.http.utils import get_request_id
 
 
 class CustomEncoder(simplejson.JSONEncoder):
+    """ """
+
     def default(self, o):
+        """
+
+        :param o:
+
+        """
         if isinstance(o, types.BuiltinFunctionType):
             if o in sql_operators.values():
                 return sql_operators.keys()[sql_operators.values().index(o)]
@@ -84,11 +91,11 @@ RESERVED_ATTRS = (
 def _prefix(str):
     """Prefixes a string with an underscore.
 
-    Args:
-        str (str): The string to prefix.
+    :param str: The string to prefix.
+    :type str: str
+    :returns: The prefixed string.
+    :rtype: str
 
-    Returns:
-        str: The prefixed string.
     """
     return str if str.startswith("_") else "_%s" % str
 
@@ -96,11 +103,11 @@ def _prefix(str):
 def _prefix_reserved(str):
     """Prefixes a string with an underscore.
 
-    Args:
-        str (str): The string to prefix.
+    :param str: The string to prefix.
+    :type str: str
+    :returns: The prefixed string.
+    :rtype: str
 
-    Returns:
-        str: The prefixed string.
     """
     if str == "name":
         str = "logger"
@@ -113,19 +120,7 @@ class GelfFormatter(logging.Formatter):
     This formatter extends the Python standard library `logging.Formatter`_ and conforms
     to the GELF specification.
 
-    Attributes:
-        allowed_reserved_attrs: A list of reserved `logging.LogRecord`_ attributes that
-        should not be ignored but rather included as additional fields.
 
-        ignored_attrs: A list of additional attributes passed to a `logging.LogRecord`_
-        via the `extra` keyword that will be ignored in addition to the reserved fields
-        and not be present in the ouput.
-
-    .. _logging.Formatter:
-       https://docs.python.org/3/library/logging.html#logging.Formatter
-
-    .. _logging.LogRecord:
-       https://docs.python.org/3/library/logging.html#logrecord-attributes
     """
 
     def __init__(self, allowed_reserved_attrs=[], ignored_attrs=[]):
@@ -140,15 +135,14 @@ class GelfFormatter(logging.Formatter):
 
         Overrides `logging.Formatter.format`_.
 
-        Args:
-            record (logging.LogRecord): The original log record that should be formatted
+        :param record: The original log record that should be formatted
                 as a GELF log message.
-
-        Returns:
-            str: The serialized JSON GELF log message.
-
+        :type record: logging.LogRecord
+        :returns: The serialized JSON GELF log message.
         .. _logging.Formatter.format:
            https://docs.python.org/3/library/logging.html#logging.Formatter.format
+        :rtype: str
+
         """
         # Base GELF message structure
         request_uuid = get_request_id()

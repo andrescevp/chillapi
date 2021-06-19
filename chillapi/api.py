@@ -29,11 +29,14 @@ _CONFIG_FILE = f"{CWD}/api.yaml"
 
 
 def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: str = f"{CWD}/var"):
-    """
-    ChillApi Loader.
-    :param app:
-    :param config_file:
+    """ChillApi Loader.
+
+    :param app: param config_file:
     :param export_path:
+    :param app: Flask:  (Default value = None)
+    :param config_file: str:  (Default value = _CONFIG_FILE)
+    :param export_path: str:  (Default value = f"{CWD}/var")
+
     """
     if not os.path.exists(export_path):
         os.makedirs(export_path)
@@ -134,6 +137,11 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
         app.config["DEBUG"] = True
 
         def filename_format(env):
+            """
+
+            :param env:
+
+            """
             return "{uuid}.prof".format(uuid=env["HTTP_X_REQUEST_ID"])
 
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30], profile_dir=f"{export_path}/profile", filename_format=filename_format)
@@ -155,6 +163,12 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
 
 
 def set_api_security(api_config, module_loader):
+    """
+
+    :param api_config:
+    :param module_loader:
+
+    """
     if "securitySchemes" in api_config["app"] and len(api_config["app"]["securitySchemes"].keys()) > 0:
         if "security_handler" not in api_config["app"]:
             raise ConfigError("security_handler not defined")
@@ -162,9 +176,15 @@ def set_api_security(api_config, module_loader):
         module_loader.add_module(api_config["app"]["security_handler"]["package"])
 
         def auth(request_obj, endpoint, method):
+            """
+
+            :param request_obj:
+            :param endpoint:
+            :param method:
+
+            """
             security_schemes = api_config["app"]["securitySchemes"]
             security = api_config["app"]["security"]
-            # print(request_obj.headers)
             is_auth = module_loader.get_module_attr(
                 api_config["app"]["security_handler"]["package"],
                 api_config["app"]["security_handler"]["handler"],

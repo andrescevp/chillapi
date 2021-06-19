@@ -3,13 +3,19 @@ from collections import OrderedDict
 
 
 def pretty_name(name):
-    """Converts 'first_name' to 'First name'"""
+    """Converts 'first_name' to 'First name'
+
+    :param name:
+
+    """
     if not name:
         return ""
     return name.replace("_", " ").capitalize()
 
 
 class WTFormToJSONSchema:
+    """ """
+
     DEFAULT_CONVERSIONS = {
         "JSONField": {
             "type": "object",
@@ -93,6 +99,14 @@ class WTFormToJSONSchema:
         self.include_array_title = include_array_title
 
     def convert_form(self, form, json_schema=None, forms_seen=None, path=None):
+        """
+
+        :param form:
+        :param json_schema:  (Default value = None)
+        :param forms_seen:  (Default value = None)
+        :param path:  (Default value = None)
+
+        """
         if forms_seen is None:
             forms_seen = dict()
         if path is None:
@@ -126,6 +140,15 @@ class WTFormToJSONSchema:
         return json_schema
 
     def convert_formfield(self, name, field, json_schema, forms_seen, path):
+        """
+
+        :param name:
+        :param field:
+        :param json_schema:
+        :param forms_seen:
+        :param path:
+
+        """
         widget = field.widget
         path = path + [name]
         target_def = {
@@ -168,6 +191,13 @@ class WTFormToJSONSchema:
         return target_def
 
     def convert_SelectField(self, name, field, json_schema):
+        """
+
+        :param name:
+        :param field:
+        :param json_schema:
+
+        """
         values = list()
         for val, label in field.choices:
             if isinstance(label, (list, tuple)):  # wonky option groups
@@ -188,6 +218,13 @@ class WTFormToJSONSchema:
         return target_def
 
     def convert_QuerySelectField(self, name, field, json_schema):
+        """
+
+        :param name:
+        :param field:
+        :param json_schema:
+
+        """
         values = list()
         choices = list()
         query_values = field.query_factory()
@@ -207,6 +244,13 @@ class WTFormToJSONSchema:
         return target_def
 
     def convert_RadioField(self, name, field, json_schema):
+        """
+
+        :param name:
+        :param field:
+        :param json_schema:
+
+        """
         target_def = {
             "title": field.label.text,
             "description": field.description,

@@ -7,6 +7,12 @@ from sqlalchemy.orm.scoping import ScopedSession
 
 
 def create_db(environment: dict, schemas: str = None) -> Tuple[ScopedSession, Inspector]:
+    """
+
+    :param environment: dict:
+    :param schemas: str:  (Default value = None)
+
+    """
     db_url = environment["__CHILLAPI_DB_DSN__"]
     connect_args = {}
 

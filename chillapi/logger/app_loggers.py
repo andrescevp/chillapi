@@ -29,6 +29,11 @@ logging.getLogger("sqlalchemy.engine").addHandler(stout_handler)
 
 
 def set_logger_config(logger_config: dict):
+    """
+
+    :param logger_config: dict:
+
+    """
     log_file_handler = None
     for logger_name, config in logger_config.items():
         if logger_name == "sqlalchemy":

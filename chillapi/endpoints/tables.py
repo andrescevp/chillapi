@@ -56,6 +56,12 @@ inflector = inflect.engine()
 
 
 def _get_extension_default_field(table_extensions, extension):
+    """
+
+    :param table_extensions:
+    :param extension:
+
+    """
     _registered = extension in table_extensions.keys()
     _enable = False
     default_field = None
@@ -70,6 +76,15 @@ def _get_extension_default_field(table_extensions, extension):
 
 
 def _get_form(class_name: str, columns_map: dict, method: str, extensions: dict, as_array=False):
+    """
+
+    :param class_name: str:
+    :param columns_map: dict:
+    :param method: str:
+    :param extensions: dict:
+    :param as_array:  (Default value = False)
+
+    """
     form_class = create_form_class(class_name, method, columns_map, extensions)
     form_schema_json = generate_form_swagger_schema_from_form(method, form_class, as_array=as_array)
 
@@ -77,6 +92,11 @@ def _get_form(class_name: str, columns_map: dict, method: str, extensions: dict,
 
 
 def _column_type_to_swagger_type_url(type):
+    """
+
+    :param type:
+
+    """
     id_field_where_type = f"{type.python_type.__name__}:"
     if id_field_where_type != "int:":
         id_field_where_type = ""
@@ -84,6 +104,15 @@ def _column_type_to_swagger_type_url(type):
 
 
 def create_get_single_endpoint_class(table: dict, allowed_columns: List, allowed_columns_map: dict, extensions: dict, repository: Repository):
+    """
+
+    :param table: dict:
+    :param allowed_columns: List:
+    :param allowed_columns_map: dict:
+    :param extensions: dict:
+    :param repository: Repository:
+
+    """
     table_slug = table["slug"]
     table_name = table["name"]
     model_name = table["model_name"]
@@ -95,12 +124,19 @@ def create_get_single_endpoint_class(table: dict, allowed_columns: List, allowed
     swagger_docs = get_get_single_endpoint_schema(model_name, id_field_where_type, response_schema)
 
     class GetSingleEndpoint(AutomaticResource):
+        """ """
+
         route = f"/read/{table_slug}/<{id_field_where_type}id>"
         endpoint = f"{model_name}GetSingleEndpoint"
         representations = swagger_docs
         db_table = table
 
         def request(self, **args) -> ResourceResponse:
+            """
+
+            :param **args:
+
+            """
             id = args["id"]
             try:
                 response = ResourceResponse()
@@ -132,6 +168,11 @@ def create_get_single_endpoint_class(table: dict, allowed_columns: List, allowed
 
         @swagger.doc(swagger_docs)
         def get(self, id):
+            """
+
+            :param id:
+
+            """
             return self.process_request(id=id)
 
     GetSingleEndpoint.__name__ = GetSingleEndpoint.endpoint
@@ -139,6 +180,15 @@ def create_get_single_endpoint_class(table: dict, allowed_columns: List, allowed
 
 
 def create_put_single_endpoint_class(table: dict, allowed_columns: List, allowed_columns_map: dict, extensions: dict, repository: Repository):
+    """
+
+    :param table: dict:
+    :param allowed_columns: List:
+    :param allowed_columns_map: dict:
+    :param extensions: dict:
+    :param repository: Repository:
+
+    """
     table_slug = table["slug"]
     table_name = table["name"]
     model_name = table["model_name"]
@@ -150,17 +200,29 @@ def create_put_single_endpoint_class(table: dict, allowed_columns: List, allowed
     request_schema = get_put_single_endpoint_schema(model_name, form_schema_model, response_schema)
 
     class PutSingleEndpoint(AutomaticResource):
+        """ """
+
         route = f"/create/{table_slug}"
         endpoint = f"{model_name}PutSingleEndpoint"
         representations = request_schema
         db_table = table
 
         def validate_request(self, **args):
+            """
+
+            :param **args:
+
+            """
             form = args["form"]
             if not form.validate():
                 raise RequestInvalidFieldSchemaError(simplejson.dumps(form.errors))
 
         def request(self, **args) -> ResourceResponse:
+            """
+
+            :param **args:
+
+            """
             form = args["form"]
             form_data = form.data
             response = ResourceResponse()
@@ -199,6 +261,7 @@ def create_put_single_endpoint_class(table: dict, allowed_columns: List, allowed
 
         @swagger.doc(request_schema)
         def put(self):
+            """ """
             data = request.json
             try:
                 form = form_class(data=data)
@@ -212,6 +275,15 @@ def create_put_single_endpoint_class(table: dict, allowed_columns: List, allowed
 
 
 def create_post_single_endpoint_class(table: dict, allowed_columns: List, allowed_columns_map: dict, extensions: dict, repository: Repository):
+    """
+
+    :param table: dict:
+    :param allowed_columns: List:
+    :param allowed_columns_map: dict:
+    :param extensions: dict:
+    :param repository: Repository:
+
+    """
     table_slug = table["slug"]
     table_name = table["name"]
     model_name = table["model_name"]
@@ -227,12 +299,19 @@ def create_post_single_endpoint_class(table: dict, allowed_columns: List, allowe
     request_schema = get_post_single_endpoint_schema(model_name, form_schema_model, response_schema, id_field_where_type)
 
     class PostSingleEndpoint(AutomaticResource):
+        """ """
+
         route = f"/update/{table_slug}/<{id_field_where_type}id>"
         endpoint = f"{model_name}PostSingleEndpoint"
         representations = request_schema
         db_table = table
 
         def request(self, **args) -> ResourceResponse:
+            """
+
+            :param **args:
+
+            """
             form = args["form"]
             form_data = form.data
             oid = args["id"]
@@ -266,6 +345,11 @@ def create_post_single_endpoint_class(table: dict, allowed_columns: List, allowe
             return response
 
         def validate_request(self, **args):
+            """
+
+            :param **args:
+
+            """
             form = args["form"]
             id = args["id"]
             try:
@@ -290,6 +374,11 @@ def create_post_single_endpoint_class(table: dict, allowed_columns: List, allowe
 
         @swagger.doc(request_schema)
         def post(self, id):
+            """
+
+            :param id:
+
+            """
             data = request.json
             form = form_class(data=data)
             return self.process_request(form=form, data=data, id=id)
@@ -300,6 +389,15 @@ def create_post_single_endpoint_class(table: dict, allowed_columns: List, allowe
 
 
 def create_delete_single_endpoint_class(table: dict, allowed_columns: List, allowed_columns_map: dict, extensions: dict, repository: Repository):
+    """
+
+    :param table: dict:
+    :param allowed_columns: List:
+    :param allowed_columns_map: dict:
+    :param extensions: dict:
+    :param repository: Repository:
+
+    """
     table_slug = table["slug"]
     table_name = table["name"]
     model_name = table["model_name"]
@@ -311,12 +409,19 @@ def create_delete_single_endpoint_class(table: dict, allowed_columns: List, allo
     request_schema = get_delete_single_endpoint_schema(model_name, id_field_where_type)
 
     class DeleteSingleEndpoint(AutomaticResource):
+        """ """
+
         route = f"/delete/{table_slug}/<{id_field_where_type}id>"
         endpoint = f"{model_name}DeleteSingleEndpoint"
         representations = request_schema
         db_table = table
 
         def request(self, **args) -> ResourceResponse:
+            """
+
+            :param **args:
+
+            """
             id = args["id"]
             response = ResourceResponse()
             response.response = {"code": 500, "message": "error", "errors": []}
@@ -358,6 +463,11 @@ def create_delete_single_endpoint_class(table: dict, allowed_columns: List, allo
             return response
 
         def validate_request(self, **args):
+            """
+
+            :param **args:
+
+            """
             oid = args["id"]
             try:
                 logger.debug("Check entity exists", extra=args)
@@ -375,6 +485,11 @@ def create_delete_single_endpoint_class(table: dict, allowed_columns: List, allo
 
         @swagger.doc(request_schema)
         def delete(self, id):
+            """
+
+            :param id:
+
+            """
             return self.process_request(id=id)
 
     DeleteSingleEndpoint.__name__ = DeleteSingleEndpoint.endpoint
@@ -385,6 +500,15 @@ def create_delete_single_endpoint_class(table: dict, allowed_columns: List, allo
 def create_get_list_endpoint_class(  # noqa C901
     table: dict, allowed_columns: List, allowed_columns_map: dict, extensions: dict, repository: Repository
 ):
+    """
+
+    :param # noqa C901table: dict:
+    :param allowed_columns: List:
+    :param allowed_columns_map: dict:
+    :param extensions: dict:
+    :param repository: Repository:
+
+    """
     table_slug = table["slug"]
     table_name = table["name"]
     model_name = table["model_name"]
@@ -400,12 +524,19 @@ def create_get_list_endpoint_class(  # noqa C901
     soft_delete_extension = extensions["soft_delete"]
 
     class GetListEndpoint(AutomaticResource):
+        """ """
+
         route = f"/read/{inflector.plural(table_slug)}"
         endpoint = f"{model_name}GetListEndpoint"
         representations = swagger_schema
         db_table = table
 
         def validate_request(self, **args):
+            """
+
+            :param **args:
+
+            """
             query = {}
             errors = {}
             schema = filter_schema
@@ -426,6 +557,15 @@ def create_get_list_endpoint_class(  # noqa C901
             return query
 
         def validate_query_parameter(self, errors, parameter_name, query, schema, default=None):
+            """
+
+            :param errors:
+            :param parameter_name:
+            :param query:
+            :param schema:
+            :param default:  (Default value = None)
+
+            """
             try:
                 value = request.args.get(parameter_name)
                 if value is not None:
@@ -451,6 +591,11 @@ def create_get_list_endpoint_class(  # noqa C901
                 errors[parameter_name].append(f"'{parameter_name}' query parameter seem to be a malformed JSON")
 
         def request(self, **args) -> ResourceResponse:
+            """
+
+            :param **args:
+
+            """
             query = args["validation_output"]
             if soft_delete_extension.enabled:
                 query, _qv = soft_delete_extension.add_query_filter(query, {})
@@ -491,6 +636,7 @@ def create_get_list_endpoint_class(  # noqa C901
 
         @swagger.doc(swagger_schema)
         def get(self):
+            """ """
             return self.process_request()
 
     GetListEndpoint.__name__ = GetListEndpoint.endpoint
@@ -500,6 +646,15 @@ def create_get_list_endpoint_class(  # noqa C901
 def create_put_list_endpoint_class(  # noqa C901
     table: dict, allowed_columns: List, allowed_columns_map: dict, extensions: dict, repository: Repository
 ):
+    """
+
+    :param # noqa C901table: dict:
+    :param allowed_columns: List:
+    :param allowed_columns_map: dict:
+    :param extensions: dict:
+    :param repository: Repository:
+
+    """
     table_slug = table["slug"]
     table_name = table["name"]
     model_name = table["model_name"]
@@ -516,12 +671,19 @@ def create_put_list_endpoint_class(  # noqa C901
         columns += [create_extension.config["default_field"]]
 
     class PutListEndpoint(AutomaticResource):
+        """ """
+
         route = f"/create/{inflector.plural(table_slug)}"
         endpoint = f"{model_name}PutListEndpoint"
         representations = request_schema
         db_table = table
 
         def validate_request(self, **args):
+            """
+
+            :param **args:
+
+            """
             if hasattr(form_schema_model, "maxItems") and len(args["data"]) > form_schema_model.maxItems:
                 raise ValidationError(message=f"Body too large, max items: {form_schema_model.maxItems}")
             if hasattr(form_schema_model, "minItems") and len(args["data"]) < form_schema_model.minItems:
@@ -536,6 +698,11 @@ def create_put_list_endpoint_class(  # noqa C901
                 raise ValidationError(message=simplejson.dumps(errors))
 
         def request(self, **args) -> ResourceResponse:
+            """
+
+            :param **args:
+
+            """
             forms = args["form"]
             form_data = []
             for form in forms:
@@ -563,6 +730,7 @@ def create_put_list_endpoint_class(  # noqa C901
 
         @swagger.doc(request_schema)
         def put(self):
+            """ """
             data = request.json
             form = [form_class(data=item) for item in data]
             return self.process_request(form=form, data=data)
@@ -575,6 +743,15 @@ def create_put_list_endpoint_class(  # noqa C901
 def create_post_list_endpoint_class(  # noqa C901
     table: dict, allowed_columns: List, allowed_columns_map: dict, extensions: dict, repository: Repository
 ):
+    """
+
+    :param # noqa C901table: dict:
+    :param allowed_columns: List:
+    :param allowed_columns_map: dict:
+    :param extensions: dict:
+    :param repository: Repository:
+
+    """
     table_slug = table["slug"]
     table_name = table["name"]
     model_name = table["model_name"]
@@ -585,12 +762,19 @@ def create_post_list_endpoint_class(  # noqa C901
     extension = extensions["on_update_timestamp"]
 
     class PostListEndpoint(AutomaticResource):
+        """ """
+
         route = f"/update/{inflector.plural(table_slug)}"
         endpoint = f"{model_name}PostListEndpoint"
         representations = request_schema
         db_table = table
 
         def validate_request(self, **args):
+            """
+
+            :param **args:
+
+            """
             forms = args["form"]
             if hasattr(args["data"], "maxItems") and len(args["data"]) > form_schema_model.maxItems:
                 raise ValidationError(message=f"Body too large, max items: {form_schema_model.maxItems}")
@@ -623,6 +807,11 @@ def create_post_list_endpoint_class(  # noqa C901
                 raise ValidationError(message=simplejson.dumps(errors))
 
         def request(self, **args) -> ResourceResponse:
+            """
+
+            :param **args:
+
+            """
             forms = args["form"]
             form_data = []
             for form in forms:
@@ -645,6 +834,7 @@ def create_post_list_endpoint_class(  # noqa C901
 
         @swagger.doc(request_schema)
         def post(self):
+            """ """
             data = request.json
             form = [form_class(data=item) for item in data]
             return self.process_request(form=form, data=data)
@@ -655,6 +845,15 @@ def create_post_list_endpoint_class(  # noqa C901
 
 
 def create_delete_list_endpoint_class(table: dict, allowed_columns: List, allowed_columns_map: dict, extensions: dict, repository: Repository):
+    """
+
+    :param table: dict:
+    :param allowed_columns: List:
+    :param allowed_columns_map: dict:
+    :param extensions: dict:
+    :param repository: Repository:
+
+    """
     table_slug = table["slug"]
     table_name = table["name"]
     model_name = table["model_name"]
@@ -670,12 +869,19 @@ def create_delete_list_endpoint_class(table: dict, allowed_columns: List, allowe
     extension = extensions["soft_delete"]
 
     class DeleteListEndpoint(AutomaticResource):
+        """ """
+
         route = f"/delete/{inflector.plural(table_slug)}"
         endpoint = f"{model_name}DeleteListEndpoint"
         representations = request_schema
         db_table = table
 
         def validate_request(self, **args):
+            """
+
+            :param **args:
+
+            """
             ids = args["data"]
             errors = {}
             try:
@@ -700,6 +906,11 @@ def create_delete_list_endpoint_class(table: dict, allowed_columns: List, allowe
                 raise ValidationError(message=simplejson.dumps(errors))
 
         def request(self, **args) -> ResourceResponse:
+            """
+
+            :param **args:
+
+            """
             data = args["data"]
 
             response = ResourceResponse()
@@ -719,6 +930,7 @@ def create_delete_list_endpoint_class(table: dict, allowed_columns: List, allowe
 
         @swagger.doc(request_schema)
         def delete(self):
+            """ """
             data = request.json
             return self.process_request(data=data)
 

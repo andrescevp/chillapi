@@ -28,15 +28,37 @@ def create_sql_endpoint_class(
     description: str = None,
     is_from_template: bool = False,
 ):
+    """
+
+    :param name: str:
+    :param method: str:
+    :param url: str:
+    :param sql: str:
+    :param repository: DataRepository:
+    :param query_parameters: List:
+    :param tags: List:
+    :param request_schema: type:  (Default value = None)
+    :param response_schema: dict:  (Default value = None)
+    :param description: str:  (Default value = None)
+    :param is_from_template: bool:  (Default value = False)
+
+    """
     schema = get_query_endpoint_schema(name, tags, query_parameters, description, request_schema, response_schema)
 
     class QueryEndpoint(AutomaticResource):
+        """ """
+
         route = f'/{url.lstrip("/")}'
         endpoint = f'/{name}{"Template" if is_from_template else ""}QueryEndpoint'
 
         # representations = schema
 
         def request(self, **args) -> ResourceResponse:
+            """
+
+            :param **args:
+
+            """
             query = args["query"]
             response = ResourceResponse()
             record = repository.execute(sql, query)
@@ -47,6 +69,11 @@ def create_sql_endpoint_class(
 
             @swagger.doc(schema)
             def get(self, **kwargs):
+                """
+
+                :param **kwargs:
+
+                """
                 query = {**{k: v for k, v in request.args.items()}, **kwargs}
                 return self.process_request(query=query)
 
@@ -54,6 +81,11 @@ def create_sql_endpoint_class(
 
             @swagger.doc(schema)
             def post(self, **kwargs):
+                """
+
+                :param **kwargs:
+
+                """
                 query = {**{k: v for k, v in request.args.items()}, **kwargs}
                 query = {**query, **request.json}
                 return self.process_request(query=query)
@@ -62,6 +94,11 @@ def create_sql_endpoint_class(
 
             @swagger.doc(schema)
             def put(self, **kwargs):
+                """
+
+                :param **kwargs:
+
+                """
                 query = {**{k: v for k, v in request.args.items()}, **kwargs}
                 query = {**query, **request.json}
                 return self.process_request(query=query)
@@ -70,6 +107,11 @@ def create_sql_endpoint_class(
 
             @swagger.doc(schema)
             def delete(self, **kwargs):
+                """
+
+                :param **kwargs:
+
+                """
                 query = {**{k: v for k, v in request.args.items()}, **kwargs}
                 query = {**query, **request.json}
                 return self.process_request(query=query)

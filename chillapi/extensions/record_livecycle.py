@@ -6,7 +6,15 @@ from chillapi.exceptions.api_manager import ConfigError
 
 
 class SoftDeleteExtension(TableExtension):
+    """ """
+
     def add_query_filter(self, query: dict, query_values: dict):
+        """
+
+        :param query: dict:
+        :param query_values: dict:
+
+        """
         _field = self.config["default_field"]
         query = {**query, **{_field: {"op": "isnull", "value": None}}}
         query_values = {**query_values, **{_field: None}}
@@ -14,11 +22,22 @@ class SoftDeleteExtension(TableExtension):
         return query, query_values
 
     def unset_field_data(self, form_data):
+        """
+
+        :param form_data:
+
+        """
         _field = self.config["default_field"]
         del form_data[_field]
         return form_data
 
     def _walk_cascade_options(self, one_to_many: callable, many_to_many: callable):
+        """
+
+        :param one_to_many: callable:
+        :param many_to_many: callable:
+
+        """
         if "cascade" in self.config:
             _cascades = self.config["cascade"]
             if "one_to_many" in _cascades:
@@ -49,9 +68,15 @@ class SoftDeleteExtension(TableExtension):
                     )
 
     def validate(self):
+        """ """
         super().validate()
 
         def one_to_many(**args):
+            """
+
+            :param **args:
+
+            """
             _relation_table = args["_relation_table"]
             _pk = args["_pk"]
             _fk = args["_fk"]
@@ -66,6 +91,11 @@ class SoftDeleteExtension(TableExtension):
                 raise ConfigError(f"column_fk: {_pk} in {_relation_table} does not exists!")
 
         def many_to_many(**args):
+            """
+
+            :param **args:
+
+            """
             _relation_table = args["_relation_table"]
             _relation_join_table = args["_relation_join_table"]
             _pk = args["_pk"]
@@ -91,7 +121,20 @@ class SoftDeleteExtension(TableExtension):
         self._walk_cascade_options(one_to_many=one_to_many, many_to_many=many_to_many)
 
     def soft_delete(self, id_field, id, response):
+        """
+
+        :param id_field:
+        :param id:
+        :param response:
+
+        """
+
         def one_to_many(**args):
+            """
+
+            :param **args:
+
+            """
             _relation_table = args["_relation_table"]
             _pk = args["_pk"]
             _fk = args["_fk"]
@@ -103,6 +146,11 @@ class SoftDeleteExtension(TableExtension):
             _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
 
         def many_to_many(**args):
+            """
+
+            :param **args:
+
+            """
             _relation_table = args["_relation_table"]
             _relation_join_table = args["_relation_join_table"]
             _pk = args["_pk"]
@@ -127,7 +175,21 @@ class SoftDeleteExtension(TableExtension):
         return response
 
     def soft_delete_batch(self, table_name, extension_field, id_field, data):
+        """
+
+        :param table_name:
+        :param extension_field:
+        :param id_field:
+        :param data:
+
+        """
+
         def one_to_many(**args):
+            """
+
+            :param **args:
+
+            """
             _relation_table = args["_relation_table"]
             _pk = args["_pk"]
             _fk = args["_fk"]
@@ -140,6 +202,11 @@ class SoftDeleteExtension(TableExtension):
             _repository.update_batch(_relation_table, soft_deletes_one_to_many, where_field=_pk)
 
         def many_to_many(**args):
+            """
+
+            :param **args:
+
+            """
             _relation_table = args["_relation_table"]
             _relation_join_table = args["_relation_join_table"]
             _pk = args["_pk"]
@@ -161,32 +228,61 @@ class SoftDeleteExtension(TableExtension):
 
 
 class OnUpdateTimestampExtension(TableExtension):
+    """ """
+
     def set_field_data(self, form_data):
+        """
+
+        :param form_data:
+
+        """
         _field = self.config["default_field"]
         if _field not in form_data:
             form_data[_field] = datetime.now().isoformat()
         return form_data
 
     def unset_field_data(self, form_data):
+        """
+
+        :param form_data:
+
+        """
         _field = self.config["default_field"]
         del form_data[_field]
         return form_data
 
 
 class OnCreateTimestampExtension(TableExtension):
+    """ """
+
     def set_columns(self, columns):
+        """
+
+        :param columns:
+
+        """
         _field = self.config["default_field"]
         if _field not in columns:
             columns += [_field]
         return columns
 
     def set_field_data(self, params):
+        """
+
+        :param params:
+
+        """
         _field = self.config["default_field"]
         if _field not in params:
             params[_field] = datetime.now().isoformat()
         return params
 
     def unset_field_data(self, form_data):
+        """
+
+        :param form_data:
+
+        """
         _field = self.config["default_field"]
         del form_data[_field]
         return form_data

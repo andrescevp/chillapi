@@ -140,7 +140,7 @@ class ApiTest(DBCase):
         self.assertTrue('data' in response)
         self.assertTrue(len(response['data']) > 1)
         # self.assertTrue(response['_meta']['total_records'] == 6)
-        print(response)
+        # print(response)
         self.assertTrue(rv.status_code == 200)
         _found = False
         for _i, item in enumerate(response['data']):

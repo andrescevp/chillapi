@@ -2,6 +2,7 @@ from flask import has_request_context, request
 
 
 def get_request_id():
+    """ """
     request_uuid = None
 
     if has_request_context():
@@ -11,6 +12,7 @@ def get_request_id():
 
 
 def get_traced_request_uuid():
+    """ """
     request_uuid = None
 
     if has_request_context():

@@ -9,6 +9,8 @@ from flask_restful import inputs, reqparse, Resource
 
 
 class ValidationError(ValueError):
+    """ """
+
     pass
 
 
@@ -16,19 +18,38 @@ def auth(request_obj, endpoint, method):
     """Override this function in your application.
 
     If this function returns False, 401 forbidden is raised and the documentation is not visible.
+
+    :param request_obj:
+    :param endpoint:
+    :param method:
+
     """
     return True
 
 
 def _auth(*args, **kwargs):
+    """
+
+    :param *args:
+    :param **kwargs:
+
+    """
     return auth(*args, **kwargs)
 
 
 def create_swagger_endpoint(swagger_object, _security_level: str = "STANDARD"):
-    """Creates a flask_restful api endpoint for the swagger spec"""
+    """Creates a flask_restful api endpoint for the swagger spec
+
+    :param swagger_object:
+    :param _security_level: str:  (Default value = "STANDARD")
+
+    """
 
     class SwaggerEndpoint(Resource):
+        """ """
+
         def get(self):
+            """ """
             swagger_doc = {}
             # filter keys with empty values
             for k, v in swagger_object.items():
@@ -39,7 +60,7 @@ def create_swagger_endpoint(swagger_object, _security_level: str = "STANDARD"):
                             views = {}
                             for method, docs in view.items():
                                 # check permissions. If a user has not access to an api, do not show the docs of it
-                                if _security_level == "STRICT" and auth(request, endpoint, method):
+                                if _security_level == "STRICT" and auth(request_obj=request, endpoint=endpoint, method=method):
                                     views[method] = docs
                                 if _security_level == "STANDARD":
                                     views[method] = docs
@@ -69,11 +90,12 @@ def create_swagger_endpoint(swagger_object, _security_level: str = "STANDARD"):
 
 
 def set_nested(d, key_spec, value):
-    """
-    Sets a value in a nested dictionary.
+    """Sets a value in a nested dictionary.
+
     :param d: The dictionary to set
     :param key_spec: The key specifier in dotted notation
     :param value: The value to set
+
     """
     keys = key_spec.split(".")
 
@@ -84,10 +106,11 @@ def set_nested(d, key_spec, value):
 
 
 def add_parameters(swagger_object, parameters):
-    """
-    Populates a swagger document with parameters.
+    """Populates a swagger document with parameters.
+
     :param parameters: A collection of parameters to add
     :param swagger_object: The swagger document to add parameters to
+
     """
     # A list of accepted parameters.  The first item in the tuple is the
     # name of keyword argument, the second item is the default value,
@@ -125,10 +148,11 @@ def add_parameters(swagger_object, parameters):
 
 
 def get_data_type(param):
-    """
-    Maps swagger data types to Python types.
+    """Maps swagger data types to Python types.
+
     :param param: swagger parameter
-    :return: Python type
+    :returns: Python type
+
     """
     if "schema" not in param:
         return None
@@ -166,6 +190,11 @@ def get_data_type(param):
 
 
 def get_data_action(param):
+    """
+
+    :param param:
+
+    """
     if "schema" in param:
         param_type = param["schema"].get("type", None)
 
@@ -177,10 +206,11 @@ def get_data_action(param):
 
 
 def get_parser_arg(param):
-    """
-    Return an argument for the request parser.
+    """Return an argument for the request parser.
+
     :param param: Swagger document parameter
-    :return: Request parser argument
+    :returns: Request parser argument
+
     """
     return (
         param["name"],
@@ -197,19 +227,21 @@ def get_parser_arg(param):
 
 
 def get_parser_args(params):
-    """
-    Return a list of arguments for the request parser.
+    """Return a list of arguments for the request parser.
+
     :param params: Swagger document parameters
-    :return: Request parser arguments
+    :returns: Request parser arguments
+
     """
     return [get_parser_arg(p) for p in params if p["in"] == "query"]
 
 
 def get_parser(params):
-    """
-    Returns a parser for query parameters from swagger document parameters.
+    """Returns a parser for query parameters from swagger document parameters.
+
     :param params: swagger doc parameters
-    :return: Query parameter parser
+    :returns: Query parameter parser
+
     """
     parser = reqparse.RequestParser()
 
@@ -223,13 +255,27 @@ def doc(operation_object):
     """Decorator to save the documentation of an api endpoint.
 
     Saves the passed arguments as an attribute to use them later when generating the swagger spec.
+
+    :param operation_object:
+
     """
 
     def decorated(f):
+        """
+
+        :param f:
+
+        """
         f.__swagger_operation_object = copy.deepcopy(operation_object)
 
         @wraps(f)
         def inner(self, *args, **kwargs):
+            """
+
+            :param *args:
+            :param **kwargs:
+
+            """
             # Get names of resource function arguments
 
             func_args = inspect.getfullargspec(f).args
@@ -248,6 +294,11 @@ def doc(operation_object):
 
 
 def validate_info_object(info_object):
+    """
+
+    :param info_object:
+
+    """
     for k, v in info_object.items():
         if k not in ["title", "description", "termsOfService", "contact", "license", "version"]:
             raise ValidationError(
@@ -270,6 +321,11 @@ def validate_info_object(info_object):
 
 
 def validate_contact_object(contact_object):
+    """
+
+    :param contact_object:
+
+    """
     if contact_object:
         for k, v in contact_object.items():
             if k not in ["name", "url", "email"]:
@@ -283,6 +339,11 @@ def validate_contact_object(contact_object):
 
 
 def validate_license_object(license_object):
+    """
+
+    :param license_object:
+
+    """
     if license_object:
         for k, v in license_object.items():
             if k not in ["name", "url"]:
@@ -299,7 +360,11 @@ def validate_license_object(license_object):
 
 
 def validate_path_item_object(path_item_object):
-    """Checks if the passed object is valid according to http://swagger.io/specification/#pathItemObject"""
+    """Checks if the passed object is valid according to http://swagger.io/specification/#pathItemObject
+
+    :param path_item_object:
+
+    """
 
     for k, v in path_item_object.items():
         if k == "$ref":
@@ -327,6 +392,11 @@ def validate_path_item_object(path_item_object):
 
 
 def validate_operation_object(operation_object):  # noqa C901
+    """
+
+    :param operation_object:
+
+    """
     for k, v in operation_object.items():
         if k in ["tags"]:
             if isinstance(v, list):
@@ -366,6 +436,11 @@ def validate_operation_object(operation_object):  # noqa C901
 
 
 def validate_parameter_object(parameter_object):
+    """
+
+    :param parameter_object:
+
+    """
     for k, v in parameter_object.items():
         if k not in [
             "name",
@@ -413,15 +488,30 @@ def validate_parameter_object(parameter_object):
 
 
 def validate_reference_object(parameter_object):
+    """
+
+    :param parameter_object:
+
+    """
     if len(parameter_object.keys()) > 1 or "$ref" not in parameter_object:
         raise ValidationError('Invalid reference object. It may only contain key "$ref"')
 
 
 def validate_external_documentation_object(external_documentation_object):
+    """
+
+    :param external_documentation_object:
+
+    """
     pass
 
 
 def validate_responses_object(responses_object):
+    """
+
+    :param responses_object:
+
+    """
     for k, v in responses_object.items():
         if k in ["1XX", "2XX", "3XX", "4XX", "5XX", "default"]:
             try:
@@ -438,6 +528,11 @@ def validate_responses_object(responses_object):
 
 
 def validate_response_object(response_object):
+    """
+
+    :param response_object:
+
+    """
     for k, v in response_object.items():
         if k == "description":
             continue
@@ -461,6 +556,11 @@ def validate_response_object(response_object):
 
 
 def validate_request_body_object(request_body_object):
+    """
+
+    :param request_body_object:
+
+    """
     for k, v in request_body_object.items():
         if k in ["description"]:
             continue
@@ -473,6 +573,11 @@ def validate_request_body_object(request_body_object):
 
 
 def validate_content_object(content_object):
+    """
+
+    :param content_object:
+
+    """
     for k, v in content_object.items():
         if re.match(r"(.*)/(.*)", k):
             validate_media_type_object(v)
@@ -484,6 +589,11 @@ def validate_content_object(content_object):
 
 
 def validate_media_type_object(media_type_object):
+    """
+
+    :param media_type_object:
+
+    """
     for k, v in media_type_object.items():
         if k == "schema":
             validate_schema_object(v)
@@ -494,10 +604,20 @@ def validate_media_type_object(media_type_object):
 
 
 def validate_security_requirement_object(security_requirement_object):
+    """
+
+    :param security_requirement_object:
+
+    """
     pass
 
 
 def validate_components_object(definition_object):
+    """
+
+    :param definition_object:
+
+    """
     for k, v in definition_object.items():
         if k == "schemas":
             validate_schema_object(v)
@@ -505,6 +625,11 @@ def validate_components_object(definition_object):
 
 
 def validate_schema_object(schema_object):
+    """
+
+    :param schema_object:
+
+    """
     for k, v in schema_object.items():
         try:
             validate_reference_object(v)
@@ -515,6 +640,11 @@ def validate_schema_object(schema_object):
 
 
 def validate_headers_object(headers_object):
+    """
+
+    :param headers_object:
+
+    """
     for k, v in headers_object.items():
         if k not in [
             "name",
@@ -552,6 +682,11 @@ def validate_headers_object(headers_object):
 
 
 def validate_link_object(link_object):
+    """
+
+    :param link_object:
+
+    """
     for k, v in link_object.items:
         if k in ["operationRef", "operationId", "parameters", "requestBody", "description"]:
             continue
@@ -560,6 +695,11 @@ def validate_link_object(link_object):
 
 
 def validate_server_object(server_object):
+    """
+
+    :param server_object:
+
+    """
     if isinstance(server_object, dict):
         for k, v in server_object.items():
             if k not in ["url", "description", "variables"]:
@@ -582,6 +722,11 @@ def validate_server_object(server_object):
 
 
 def validate_url(url):
+    """
+
+    :param url:
+
+    """
     url_regex = re.compile(
         r"^(?:http|ftp)s?://"  # http:// or https://
         r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|"  # domain...
@@ -596,6 +741,11 @@ def validate_url(url):
 
 
 def validate_email(email):
+    """
+
+    :param email:
+
+    """
     email_regex = re.compile(
         r"(^[-!#$%&'*+/=?^_`{}|~0-9A-Z]+(\.[-!#$%&'*+/=?^_`{}|~0-9A-Z]+)*"  # dot-atom
         r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-011\013\014\016-\177])*"'  # quoted-string
@@ -607,6 +757,11 @@ def validate_email(email):
 
 
 def validate_server_variables_object(server_variables_object):
+    """
+
+    :param server_variables_object:
+
+    """
     for k, v in server_variables_object.items():
         if k not in ["enum", "default", "description"]:
             raise ValidationError(
@@ -635,24 +790,32 @@ def validate_server_variables_object(server_variables_object):
 
 
 def validate_example_object(example_object):
+    """
+
+    :param example_object:
+
+    """
     pass
 
 
 def extract_swagger_path(path):
-    """
-    Extracts a swagger type path from the given flask style path.
+    """Extracts a swagger type path from the given flask style path.
     This /path/<parameter> turns into this /path/{parameter}
     And this /<string(length=2):lang_code>/<string:id>/<float:probability>
     to this: /{lang_code}/{id}/{probability}
+
+    :param path:
+
     """
     return re.sub("<(?:[^:]+:)?([^>]+)>", "{\\1}", path)
 
 
 def sanitize_doc(comment):
-    """
-    Substitute HTML breaks for new lines in comment text.
+    """Substitute HTML breaks for new lines in comment text.
+
     :param comment: The comment text
-    :return: Sanitized comment text
+    :returns: Sanitized comment text
+
     """
     if isinstance(comment, list):
         return sanitize_doc("\n".join(filter(None, comment)))
@@ -661,11 +824,12 @@ def sanitize_doc(comment):
 
 
 def parse_method_doc(method, operation):
-    """
-    Parse documentation from a resource method.
+    """Parse documentation from a resource method.
+
     :param method: The resource method
     :param operation: The operation document
-    :return: The operation summary
+    :returns: The operation summary
+
     """
     summary = None
 
@@ -681,11 +845,12 @@ def parse_method_doc(method, operation):
 
 
 def parse_schema_doc(cls, definition):
-    """
-    Parse documentation from a schema class.
+    """Parse documentation from a schema class.
+
     :param cls: The schema class
     :param definition: The schema definition
-    :return: The schema description
+    :returns: The schema description
+
     """
     description = None
 

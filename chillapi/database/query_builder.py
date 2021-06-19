@@ -18,6 +18,13 @@ sql_operators = {
 
 
 def create_select_paginated_query(table, columns: List[str], filters: dict):
+    """
+
+    :param table:
+    :param columns: List[str]:
+    :param filters: dict:
+
+    """
     table = Table(table)
     table_columns = [table[c] for c in columns]
     query = (
@@ -34,6 +41,13 @@ def create_select_paginated_query(table, columns: List[str], filters: dict):
 
 
 def create_select_filtered_paginated_ordered_query(table, columns: List[str], filters: dict):
+    """
+
+    :param table:
+    :param columns: List[str]:
+    :param filters: dict:
+
+    """
     table = Table(table)
     table_columns = [table[c] for c in columns]
     query = (
@@ -50,6 +64,13 @@ def create_select_filtered_paginated_ordered_query(table, columns: List[str], fi
 
 
 def create_select_filtered_paginated_query_count(table, filters: dict, id_field_where: str):
+    """
+
+    :param table:
+    :param filters: dict:
+    :param id_field_where: str:
+
+    """
     table = Table(table)
     query = Query.from_(table).select(fn.Count(id_field_where, alias="count"))
 
@@ -59,6 +80,13 @@ def create_select_filtered_paginated_query_count(table, filters: dict, id_field_
 
 
 def set_query_filters(filters, query, table):
+    """
+
+    :param filters:
+    :param query:
+    :param table:
+
+    """
     for k, v in filters.items():
         if k == "size":
             continue
@@ -81,6 +109,13 @@ def set_query_filters(filters, query, table):
 
 
 def create_select_filtered_query(table, columns: List[str], filters: dict):
+    """
+
+    :param table:
+    :param columns: List[str]:
+    :param filters: dict:
+
+    """
     table = Table(table)
     table_columns = [table[c] for c in columns]
     query = Query.from_(table).select(*table_columns)
@@ -94,6 +129,12 @@ def create_select_filtered_query(table, columns: List[str], filters: dict):
 
 
 def create_insert(table, columns: List[str]):
+    """
+
+    :param table:
+    :param columns: List[str]:
+
+    """
     table = Table(table)
     table_columns = [table[c] for c in columns]
     query = Query.into(table).columns(*table_columns).insert(*[Parameter(f":{c}") for c in columns])
@@ -102,6 +143,13 @@ def create_insert(table, columns: List[str]):
 
 
 def create_update(table, columns: dict, filters: dict):
+    """
+
+    :param table:
+    :param columns: dict:
+    :param filters: dict:
+
+    """
     table = Table(table)
     query = Query.update(table)
     for k, v in columns.items():
@@ -111,6 +159,12 @@ def create_update(table, columns: dict, filters: dict):
 
 
 def create_delete(table, filters):
+    """
+
+    :param table:
+    :param filters:
+
+    """
     table = Table(table)
     query = Query.from_(table).delete()
     query = set_query_filters(filters, query, table)
@@ -118,6 +172,14 @@ def create_delete(table, filters):
 
 
 def create_select_join_soft_delete_filter(table, relation_column_id, relation_join_table, relation_columns):
+    """
+
+    :param table:
+    :param relation_column_id:
+    :param relation_join_table:
+    :param relation_columns:
+
+    """
     _table, _relation_join_table = Tables(table, relation_join_table)
     query = (
         Query.from_(_table)

@@ -9,6 +9,8 @@ from chillapi.exceptions.api_manager import ColumnNotExist, ConfigError
 
 
 class Repository(ABC):
+    """ """
+
     def __init__(self, db: ScopedSession):
         self.db = db
         driver = self.db.bind.dialect.dbapi.__name__
@@ -18,47 +20,160 @@ class Repository(ABC):
 
     @abstractmethod
     def execute(self, sql, params=None) -> CursorResult:
+        """
+
+        :param sql: param params:  (Default value = None)
+        :param params:  (Default value = None)
+
+        """
         pass
 
     @abstractmethod
     def execute_insert(self, sql, params=None) -> CursorResult:
+        """
+
+        :param sql: param params:  (Default value = None)
+        :param params:  (Default value = None)
+
+        """
         pass
 
     @abstractmethod
     def fetch_by(self, table: str, columns: List[str], filters: dict, params=None):
+        """
+
+        :param table: str:
+        :param columns: List[str]:
+        :param filters: dict:
+        :param params: Default value = None)
+        :param table: str:
+        :param columns: List[str]:
+        :param filters: dict:
+
+        """
         pass
 
     @abstractmethod
     def insert(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = "*") -> CursorResult:
+        """
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = "*")
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = "*")
+
+        """
         pass
 
     @abstractmethod
     def insert_batch(self, table: str, columns: List[str], params: List, returning: bool = True, returning_field: str = "*") -> List:
+        """
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: List:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = "*")
+        :param table: str:
+        :param columns: List[str]:
+        :param params: List:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = "*")
+
+        """
         pass
 
     @abstractmethod
     def update_batch(self, table: str, params: List, where_field: str = "id") -> List:
+        """
+
+        :param table: str:
+        :param params: List:
+        :param where_field: str:  (Default value = "id")
+        :param table: str:
+        :param params: List:
+        :param where_field: str:  (Default value = "id")
+
+        """
         pass
 
     @abstractmethod
     def delete_batch(self, table: str, ids: List, where_field: str = "id") -> List:
+        """
+
+        :param table: str:
+        :param ids: List:
+        :param where_field: str:  (Default value = "id")
+        :param table: str:
+        :param ids: List:
+        :param where_field: str:  (Default value = "id")
+
+        """
         pass
 
     @abstractmethod
     def insert_record(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = "*") -> int:
+        """
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = "*")
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = "*")
+
+        """
         pass
 
     @abstractmethod
     def update_record(self, table: str, where_field: str, where_value: str, params: dict) -> CursorResult:
+        """
+
+        :param table: str:
+        :param where_field: str:
+        :param where_value: str:
+        :param params: dict:
+        :param table: str:
+        :param where_field: str:
+        :param where_value: str:
+        :param params: dict:
+
+        """
         pass
 
     @abstractmethod
     def delete_record(self, table: str, where_field: str, where_field_id) -> CursorResult:
+        """
+
+        :param table: str:
+        :param where_field: str:
+        :param where_field_id:
+        :param table: str:
+        :param where_field: str:
+
+        """
         pass
 
 
 class Extension(ABC, dict):
+    """ """
+
     def execute(self, *args):
+        """
+
+        :param *args:
+
+        """
         method_name = getattr(args, "method")
         if method_name == "execute":
             raise Exception("You can not call myself")
@@ -67,6 +182,8 @@ class Extension(ABC, dict):
 
 
 class TableExtension(Extension):
+    """ """
+
     enabled: bool = False
     table: str = None
     config: dict = None
@@ -82,6 +199,7 @@ class TableExtension(Extension):
         self.enabled = self.config["enable"]
 
     def validate(self):
+        """ """
         if not self.enabled:
             return True
         _default_field = self.config["default_field"]
@@ -93,6 +211,8 @@ class TableExtension(Extension):
 
 
 class AuditLog(ABC, dict):
+    """ """
+
     request_id: str = None
     prev_request_id: str = None
     date: str = None
@@ -100,19 +220,35 @@ class AuditLog(ABC, dict):
 
     @abstractmethod
     def for_json(self) -> dict:
+        """ """
         pass
 
 
 class AuditLogHandler(Extension):
+    """ """
+
     @abstractmethod
     def log(self, log: AuditLog):
+        """
+
+        :param log: AuditLog:
+        :param log: AuditLog:
+
+        """
         pass
 
     def execute(self, *args):
+        """
+
+        :param *args:
+
+        """
         self.log(getattr(args, "log"))
 
 
 class AttributeDict(dict):
+    """ """
+
     __slots__ = ()
     __getattr__ = dict.__getitem__
     __setattr__ = dict.__setitem__

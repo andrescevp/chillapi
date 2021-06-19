@@ -37,7 +37,14 @@ where i.{x['id_field']} is null;
 
 
 class DataRepository(Repository):
+    """ """
+
     def adapt_params(self, params):
+        """
+
+        :param params:
+
+        """
         adapted_params = dict({})
         for key, value in params.items():
             adapted_params[key] = value
@@ -46,6 +53,12 @@ class DataRepository(Repository):
         return adapted_params
 
     def execute(self, sql, params=None) -> CursorResult:
+        """
+
+        :param sql:
+        :param params:  (Default value = None)
+
+        """
         try:
             r = self.db.execute(text(sql), params)
         except sqlalchemy.exc.DatabaseError as e:
@@ -57,6 +70,12 @@ class DataRepository(Repository):
         return r
 
     def execute_insert(self, sql, params=None) -> CursorResult:
+        """
+
+        :param sql:
+        :param params:  (Default value = None)
+
+        """
         try:
             r = self.db.execute(sql, params)
             self.db.commit()
@@ -71,10 +90,27 @@ class DataRepository(Repository):
         return r
 
     def fetch_by(self, table: str, columns: List[str], filters: dict, params=None):
+        """
+
+        :param table: str:
+        :param columns: List[str]:
+        :param filters: dict:
+        :param params:  (Default value = None)
+
+        """
         sql = create_select_filtered_query(table, columns, filters)
         return self.execute(sql, params)
 
     def insert(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = "*") -> CursorResult:
+        """
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = "*")
+
+        """
         adapted_params = self.adapt_params(params)
         params_keys = adapted_params.keys()
         select_columns = [c for c in columns if c in params_keys]
@@ -82,6 +118,15 @@ class DataRepository(Repository):
         return self.execute(sql, adapted_params)
 
     def insert_batch(self, table: str, columns: List[str], params: List, returning: bool = True, returning_field: str = "*") -> List:
+        """
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: List:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = "*")
+
+        """
         adapted_params = [self.adapt_params(param) for param in params]
         params_keys = adapted_params[0].keys()
         select_columns = [c for c in columns if c in params_keys]
@@ -97,6 +142,13 @@ class DataRepository(Repository):
         return insert_result.rowcount
 
     def update_batch(self, table: str, params: List, where_field: str = "id") -> List:
+        """
+
+        :param table: str:
+        :param params: List:
+        :param where_field: str:  (Default value = "id")
+
+        """
         adapted_params = [self.adapt_params(param) for param in params]
         for i, _params in enumerate(adapted_params):
             where_value = _params[where_field]
@@ -108,6 +160,13 @@ class DataRepository(Repository):
         return []
 
     def delete_batch(self, table: str, ids: List, where_field: str = "id") -> List:
+        """
+
+        :param table: str:
+        :param ids: List:
+        :param where_field: str:  (Default value = "id")
+
+        """
         for i, _id in enumerate(ids):
             sql = create_delete(table, {where_field: {"op": "=", "value": _id}})
             self.execute(sql, {where_field: _id})
@@ -115,6 +174,15 @@ class DataRepository(Repository):
         return []
 
     def insert_record(self, table: str, columns: List[str], params: dict, returning: bool = True, returning_field: str = "*") -> int:
+        """
+
+        :param table: str:
+        :param columns: List[str]:
+        :param params: dict:
+        :param returning: bool:  (Default value = True)
+        :param returning_field: str:  (Default value = "*")
+
+        """
         adapted_params = self.adapt_params(params)
         params_keys = adapted_params.keys()
         select_columns = [c for c in columns if c in params_keys]
@@ -135,11 +203,26 @@ class DataRepository(Repository):
         return insert_result.fetchone()[0]
 
     def update_record(self, table: str, where_field: str, where_value: str, params: dict) -> CursorResult:
+        """
+
+        :param table: str:
+        :param where_field: str:
+        :param where_value: str:
+        :param params: dict:
+
+        """
         adapted_params = self.adapt_params(params)
         sql = create_update(table, adapted_params, {where_field: {"op": "=", "value": where_value}})
         return self.execute(sql, {**adapted_params, **{where_field: where_value}})
 
     def delete_record(self, table: str, where_field: str, where_field_id) -> CursorResult:
+        """
+
+        :param table: str:
+        :param where_field: str:
+        :param where_field_id:
+
+        """
 
         sql = create_delete(table, {where_field: {"op": "=", "value": where_field_id}})
         return self.execute(sql, {where_field: where_field_id})

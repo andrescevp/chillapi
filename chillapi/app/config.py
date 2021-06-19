@@ -36,24 +36,52 @@ class ChillApiModuleLoader(dict):
     loaded = False
 
     def add_module(self, module: str):
+        """
+        Add a imported instance of the specified python package
+        :param module: str:
+
+        """
         if self.has_module(module):
             return
 
         self._modules[module] = importlib.import_module(module)
 
     def get_module(self, module: str):
+        """
+
+        :param module: str:
+
+        """
         if not self.has_module(module):
             raise ConfigError(f"{module} not loaded!")
 
         return self._modules.get(module)
 
     def get_module_attr(self, module: str, attr: str, args: dict):
+        """
+
+        :param module: str:
+        :param attr: str:
+        :param args: dict:
+
+        """
         return getattr(self.get_module(module), attr)(**args)
 
     def has_module_attr(self, module: str, attr: str):
+        """
+
+        :param module: str:
+        :param attr: str:
+
+        """
         return hasattr(self.get_module(module), attr)
 
     def has_module(self, module: str):
+        """
+
+        :param module: str:
+
+        """
         return module in self._modules.keys()
 
 
@@ -69,6 +97,13 @@ class ChillApiExtensions(dict):
         self.internal_extension_map = INTERNAL_EXTENSION_DEFAULTS.copy()
 
     def set_extension(self, name: str, package_config: dict, type: str = "app"):
+        """
+
+        :param name: str:
+        :param package_config: dict:
+        :param type: str:  (Default value = "app")
+
+        """
         self.module_loader.add_module(package_config["package"])
 
         extension = self.module_loader.get_module_attr(
@@ -84,6 +119,16 @@ class ChillApiExtensions(dict):
     def set_livecycle_table_extension(
         self, extension_name: str, columns: dict, extension_config: dict, table_name: str, repository: Repository, inspector: Inspector
     ):
+        """
+
+        :param extension_name: str:
+        :param columns: dict:
+        :param extension_config: dict:
+        :param table_name: str:
+        :param repository: Repository:
+        :param inspector: Inspector:
+
+        """
         _extension = self.internal_extension_map["livecycle"][extension_name]
         extension = _extension(
             **{"config": extension_config, "table": table_name, "repository": repository, "columns": columns, "inspector": inspector}
@@ -95,6 +140,13 @@ class ChillApiExtensions(dict):
         self.tables[table_name][extension_name] = extension
 
     def set_request_table_extension(self, extension_name: str, extension_config: dict, table_name: str):
+        """
+
+        :param extension_name: str:
+        :param extension_config: dict:
+        :param table_name: str:
+
+        """
         self.module_loader.add_module(extension_config["package"])
 
         extension = self.module_loader.get_module_attr(
@@ -108,6 +160,13 @@ class ChillApiExtensions(dict):
         self.tables[table_name][extension_name] = extension
 
     def set_validator_column_table_extension(self, column_name: str, extension_config: dict, table_name: str):
+        """
+
+        :param column_name: str:
+        :param extension_config: dict:
+        :param table_name: str:
+
+        """
         self.module_loader.add_module(extension_config["package"])
 
         extension = self.module_loader.get_module_attr(
@@ -125,21 +184,47 @@ class ChillApiExtensions(dict):
         self.tables[table_name]["validators"][column_name].append(extension)
 
     def is_extension_enabled(self, extension_name: str, type: str = "app") -> bool:
+        """
+
+        :param extension_name: str:
+        :param type: str:  (Default value = "app")
+
+        """
         return hasattr(getattr(self, type), extension_name)
 
     def is_table_extension_enabled(self, table_name: str, extension_name: str) -> bool:
+        """
+
+        :param table_name: str:
+        :param extension_name: str:
+
+        """
         if hasattr(self.tables, table_name):
             return hasattr(getattr(self.tables, table_name), extension_name)
         return False
 
     def get_extension(self, extension_name: str, type: str = "app"):
+        """
+
+        :param extension_name: str:
+        :param type: str:  (Default value = "app")
+
+        """
         return getattr(self, type)[extension_name]
 
     def get_table_extension(self, table_name: str, extension_name: str) -> TableExtension:
+        """
+
+        :param table_name: str:
+        :param extension_name: str:
+
+        """
         return getattr(getattr(self.tables, table_name), extension_name)
 
 
 class ApiConfig:
+    """ """
+
     app: dict = {}
     environment: dict = {}
     logger: dict = {}
@@ -197,6 +282,7 @@ class ApiConfig:
         self.load_extensions()
 
     def _init_tables(self):
+        """ """
         if "tables" in self.database and len(self.database["tables"]) > 0:
             _global_defaults = copy.deepcopy(self.database["defaults"]["tables"])
             if "audit_logger" in _global_defaults["extensions"]:
@@ -243,6 +329,7 @@ class ApiConfig:
 
     @classmethod
     def reset(cls):
+        """ """
         cls.app = {}
         cls.environment = {}
         cls.logger = {}
@@ -250,26 +337,49 @@ class ApiConfig:
         cls.model_names = []
 
     def get_columns_table_details(self, table_name):
+        """
+
+        :param table_name:
+
+        """
         return self.db_inspector.get_columns(table_name)
 
     def get_class_name_from_model_name(self, model_name):
+        """
+
+        :param model_name:
+
+        """
         class_name = model_name.replace("_", " ").title().replace(" ", "")
         return class_name
 
     def validate_sources(self):
+        """ """
         pass
 
     def get_table_columns(self, name):
+        """
+
+        :param name:
+
+        """
         table_columns = self.get_columns_table_details(name)
         return {v["name"]: v for i, v in enumerate(table_columns)}
 
     def load_table_columns(self):
+        """ """
         for _it, table in enumerate(self.database["tables"]):
             table_name = table["name"]
             _table_columns = self.get_table_columns(table_name)
             self.database["tables"][_it]["columns"] = _table_columns
 
     def load_extension(self, table_config: dict, extension_name: str):
+        """
+
+        :param table_config: dict:
+        :param extension_name: str:
+
+        """
         table_name = table_config["model_name"]
         if extension_name in LIVECYCLE_EXTENSIONS and self.extensions.is_table_extension_enabled(table_name, extension_name) is False:
             self.extensions.set_livecycle_table_extension(
@@ -289,6 +399,7 @@ class ApiConfig:
             # self.extensions.set_request_table_extension(extension_name, _extension_conf, table_name)
 
     def load_extensions(self):
+        """ """
         if not self.extensions.is_extension_enabled("audit"):
             self.extensions.set_extension("audit", self.database["defaults"]["tables"]["extensions"]["audit_logger"])
 
@@ -297,6 +408,7 @@ class ApiConfig:
                 self.load_extension(table, _extension_name)
 
     def to_dict(self):
+        """ """
         return {
             "app": self.app,
             "logger": self.logger,

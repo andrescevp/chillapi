@@ -19,19 +19,39 @@ from chillapi.app.flask_restful_swagger_3.swagger import (
 
 
 def abort(http_status_code, schema=None, **kwargs):
+    """
+    Proxy method to throw a non authorized request
+
+    :param http_status_code:
+    :param schema:  (Default value = None)
+    :param **kwargs:
+
+    """
     if schema:
         kwargs.update(schema)
     flask_abort(http_status_code, **kwargs)
 
 
 class ModelError(Exception):
+    """ Model Error Base Class"""
+
     pass
 
 
 def auth_required(f):
-    """Decorator which checks if the request is permitted to call the view"""
+    """Decorator which checks if the request is permitted to call the view
+
+    :param f:
+
+    """
 
     def decorator(*args, **kwargs):
+        """
+
+        :param *args:
+        :param **kwargs:
+
+        """
         if not auth(request, extract_swagger_path(request.url_rule.rule), request.method):
             abort(401)
         return f(*args, **kwargs)
@@ -104,7 +124,15 @@ class Api(restful_Api):
                 create_swagger_endpoint(self.get_swagger_doc(), _security_level=self._security_level), *api_spec_urls, endpoint="swagger"
             )
 
-    def add_resource(self, resource, *urls, **kwargs):
+    def add_resource(self, resource: Resource, *urls, **kwargs):
+        """
+        Adds a Flask Resource to the API
+
+        :param resource:
+        :param *urls:
+        :param **kwargs:
+
+        """
         path_item = {}
         # definitions = {}
         schemas = {}
@@ -149,14 +177,14 @@ class Api(restful_Api):
 
 
 class Extractor:
-    """
-    Extracts swagger.doc object to proper swagger representation by extractor implementation
-    """
+    """Extracts swagger.doc object to proper swagger representation by extractor implementation"""
 
     @classmethod
     def _choose_impl(cls, operation):
-        """
-        Chooses implementation of extractor
+        """Chooses implementation of extractor
+
+        :param operation:
+
         """
         if "reqparser" in operation:
             impl = _RequestParserExtractorImpl
@@ -166,26 +194,38 @@ class Extractor:
 
     @classmethod
     def extract(cls, operation):
+        """
+
+        :param operation:
+
+        """
         return cls._choose_impl(operation)._extract()
 
     def _extract(self):
+        """ """
         raise NotImplementedError()
 
 
 class _BaseExtractorImpl(Extractor):
-    """
-    Base implementation of extractor
+    """Base implementation of extractor
     Uses for common extraction of swagger.doc
+
+
     """
 
     def __init__(self, operation):
         self._operation = operation
 
     def _extract(self):
+        """ """
         return self._extract_schemas(self._operation)
 
     def _extract_schemas(self, obj):
-        """Converts all schemes in a given object to its proper swagger representation."""
+        """Converts all schemes in a given object to its proper swagger representation.
+
+        :param obj:
+
+        """
         definitions = {}
         if isinstance(obj, list):
             for i, o in enumerate(obj):
@@ -202,6 +242,12 @@ class _BaseExtractorImpl(Extractor):
         return obj, definitions
 
     def _extract_model(self, obj, definitions):
+        """
+
+        :param obj:
+        :param definitions:
+
+        """
         # Object is a model. Convert it to valid json and get a definition object
         if not issubclass(obj, Schema):
             raise ValueError(f'"{obj}" is not a subclass of the schema model')
@@ -218,14 +264,18 @@ class _BaseExtractorImpl(Extractor):
 
 
 class _RequestParserExtractorImpl(_BaseExtractorImpl):
-    """
-    Uses for extraction of swagger.doc objects, which contains 'reqparser' parameter
-    """
+    """Uses for extraction of swagger.doc objects, which contains 'reqparser' parameter"""
 
     def _extract(self):
+        """ """
         return self._extract_with_reqparser(self._operation)
 
     def _extract_with_reqparser(self, operation):
+        """
+
+        :param operation:
+
+        """
         if "parameters" in operation:
             raise ValidationError("parameters and reqparser can't be in same spec")
         # we need to pass copy because 'reqparser' will be deleted
@@ -233,8 +283,10 @@ class _RequestParserExtractorImpl(_BaseExtractorImpl):
         return self._extract_schemas(operation)
 
     def _get_reqparse_args(self, operation):
-        """
-        Get arguments from specified RequestParser and converts it to swagger representation
+        """Get arguments from specified RequestParser and converts it to swagger representation
+
+        :param operation:
+
         """
         model_data = {"model_name": operation["reqparser"]["name"], "properties": {}, "required": []}
         make_model = False
@@ -267,11 +319,11 @@ class _RequestParserExtractorImpl(_BaseExtractorImpl):
 
     @staticmethod
     def _get_swagger_arg_type(type_):
-        """
-        Converts python-type to swagger type
+        """Converts python-type to swagger type
         If type don't supports, tries to get `swagger_type` property from `type_`
-        :param type_:
-        :return:
+
+        :param type_: return:
+
         """
         if hasattr(type_, "swagger_type"):
             return type_.swagger_type
@@ -300,10 +352,10 @@ class _RequestParserExtractorImpl(_BaseExtractorImpl):
 
     @classmethod
     def _reqparser_arg_to_swagger_param(cls, arg):
-        """
-        Converts particular RequestParser argument to swagger repr
-        :param arg:
-        :return:
+        """Converts particular RequestParser argument to swagger repr
+
+        :param arg: return:
+
         """
         param = {"name": arg.name, "description": arg.help, "required": arg.required}
         if arg.choices:
@@ -325,6 +377,8 @@ class _RequestParserExtractorImpl(_BaseExtractorImpl):
         """
 
         class _NewModel(Schema):
+            """ """
+
             pass
 
         _NewModel.__name__ = kwargs["model_name"]
@@ -339,6 +393,8 @@ class _RequestParserExtractorImpl(_BaseExtractorImpl):
 
 
 class Schema(dict):
+    """ """
+
     properties = None
 
     def __init__(self, **kwargs):
@@ -365,27 +421,33 @@ class Schema(dict):
 
     @classmethod
     def reference(cls):
+        """ """
         return {"$ref": f"#/components/schemas/{cls.__name__}"}
 
     @classmethod
     def definitions(cls):
+        """ """
         return {k: v for k, v in cls.__dict__.items() if not k.startswith("_")}
 
     @classmethod
     def array(cls):
+        """ """
         return {"type": "array", "items": cls}
 
     @classmethod
     def is_required(cls):
+        """ """
         return bool(filter(lambda x: bool(x), map(lambda x: x["required"], cls.properties.values())))
 
 
 def get_swagger_blueprint(docs, api_spec_url="/api/swagger", **kwargs):
-    """
-    Returns a Flask blueprint to serve the given list of swagger document objects.
+    """Returns a Flask blueprint to serve the given list of swagger document objects.
+
     :param docs: A list of of swagger document objects
-    :param api_spec_url: The URL path that serves the swagger specification document
-    :return: A Flask blueprint
+    :param api_spec_url: The URL path that serves the swagger specification document (Default value = "/api/swagger")
+    :param **kwargs:
+    :returns: A Flask blueprint
+
     """
     swagger_object = {}
     paths = {}
@@ -424,9 +486,17 @@ def get_swagger_blueprint(docs, api_spec_url="/api/swagger", **kwargs):
 def swagger_type(type_):
     """Decorator to add __swagger_type property to flask-restful custom input
     type functions
+
+    :param type_:
+
     """
 
     def inner(f):
+        """
+
+        :param f:
+
+        """
         f.__swagger_type = type_
         return f
 
