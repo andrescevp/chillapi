@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from chillapi.abc import AuditLog as AuditLogBase, AuditLogHandler
-from chillapi.http.utils import get_request_id
-from chillapi.logger.app_loggers import audit_logger
+from ..abc import AuditLog as AuditLogBase, AuditLogHandler
+from ..http.utils import get_request_id
+from ..logger.app_loggers import audit_logger
 
 
 class AuditLog(AuditLogBase):

@@ -4,7 +4,7 @@ from flask import make_response
 from werkzeug.exceptions import HTTPException
 from wtforms import ValidationError
 
-from chillapi.logger.app_loggers import error_handler_logger as logger
+from ..logger.app_loggers import error_handler_logger as logger
 
 
 def register_error_handlers(app):

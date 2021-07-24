@@ -3,11 +3,11 @@ from typing import List
 import inflect
 from flask import request
 
-from chillapi.app.flask_restful_swagger_3 import swagger
-from chillapi.database.repository import DataRepository
-from chillapi.swagger.http import AutomaticResource, ResourceResponse
-from chillapi.swagger.schemas import get_query_endpoint_schema
-from chillapi.swagger.utils import get_error_swagger_schema, get_not_found_swagger_schema
+from ..app.swagger_schema import swagger
+from ..database.repository import DataRepository
+from ..swagger.http import AutomaticResource, ResourceResponse
+from ..swagger.schemas import get_query_endpoint_schema
+from ..swagger.utils import get_error_swagger_schema, get_not_found_swagger_schema
 
 error_swagger_schema = get_error_swagger_schema()
 not_found_swagger_schema = get_not_found_swagger_schema()

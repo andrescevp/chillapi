@@ -34,7 +34,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.orm.scoping import ScopedSession
 
 
-def create_db(environment: dict, schemas: str = None) -&gt; Tuple[ScopedSession, Inspector]:
+def create_db_toolbox(environment: dict, schemas: str = None) -&gt; Tuple[ScopedSession, Inspector]:
     &#34;&#34;&#34;
 
     :param environment: dict:
@@ -78,7 +78,7 @@ def create_db(environment: dict, schemas: str = None) -&gt; Tuple[ScopedSession,
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="chillapi.database.connection.create_db"><code class="name flex">
-<span>def <span class="ident">create_db</span></span>(<span>environment: dict, schemas: str = None) ‑> Tuple[sqlalchemy.orm.scoping.scoped_session, sqlalchemy.engine.reflection.Inspector]</span>
+<span>def <span class="ident">create_db_toolbox</span></span>(<span>environment: dict, schemas: str = None) ‑> Tuple[sqlalchemy.orm.scoping.scoped_session, sqlalchemy.engine.reflection.Inspector]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>:param environment: dict:
@@ -88,7 +88,7 @@ def create_db(environment: dict, schemas: str = None) -&gt; Tuple[ScopedSession,
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def create_db(environment: dict, schemas: str = None) -&gt; Tuple[ScopedSession, Inspector]:
+<pre><code class="python">def create_db_toolbox(environment: dict, schemas: str = None) -&gt; Tuple[ScopedSession, Inspector]:
     &#34;&#34;&#34;
 
     :param environment: dict:
@@ -142,7 +142,7 @@ def create_db(environment: dict, schemas: str = None) -&gt; Tuple[ScopedSession,
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="chillapi.database.connection.create_db" href="#chillapi.database.connection.create_db">create_db</a></code></li>
+<li><code><a title="chillapi.database.connection.create_db_toolbox" href="#chillapi.database.connection.create_db">create_db_toolbox</a></code></li>
 </ul>
 </li>
 </ul>

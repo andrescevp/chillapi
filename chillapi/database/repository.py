@@ -5,10 +5,10 @@ import sqlalchemy
 from sqlalchemy import text
 from sqlalchemy.engine import CursorResult
 
-from chillapi.abc import Repository
-from chillapi.database import DB_DIALECT_SQLITE
-from chillapi.database.query_builder import create_delete, create_insert, create_select_filtered_query, create_update
-from chillapi.logger.app_loggers import logger
+from ..abc import Repository
+from ..database import DB_DIALECT_SQLITE
+from ..database.query_builder import create_delete, create_insert, create_select_filtered_query, create_update
+from ..logger.app_loggers import logger
 
 DB_DIALECT_POSTGRES = "postgres"
 

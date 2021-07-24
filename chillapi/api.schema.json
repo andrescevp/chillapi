@@ -155,16 +155,9 @@
       "title": "The environment schema",
       "description": "raw string or an os env prefixed by $. Example: $APP_SECRET",
       "required": [
-        "__CHILLAPI_DB_DSN__",
         "__CHILLAPI_APP_SECRET_KEY__"
       ],
       "properties": {
-        "__CHILLAPI_DB_DSN__": {
-          "type": "string",
-          "title": "The __CHILLAPI_DB_DSN__ schema",
-          "description": "An explanation about the purpose of this instance.",
-          "default": "postgresql://root:root@postgres/chillapi"
-        },
         "__CHILLAPI_APP_SECRET_KEY__": {
           "type": "string",
           "title": "The __CHILLAPI_APP_SECRET_KEY__ schema",
@@ -244,27 +237,36 @@
       "additionalProperties": false
     },
     "database": {
-      "type": "object",
-      "properties": {
-        "schema": {
-          "type": "string",
-          "title": "Postgres api schema",
-          "default": "public"
-        },
-        "defaults": {
-          "$ref": "#/$defs/table_defaults"
-        },
-        "tables": {
-          "$ref": "#/$defs/table_endpoints"
-        },
-        "sql": {
-          "$ref": "#/$defs/sql_endpoints"
-        },
-        "templates": {
-          "$ref": "#/$defs/sql_template_endpoints"
+      "patternProperties": {
+        "^[A-Za-z0-9_-]*$": {
+          "type": "object",
+          "properties": {
+            "dsn": {
+              "type": "string",
+              "title": "database dsn",
+              "default": "public"
+            },
+            "schema": {
+              "type": "string",
+              "title": "Postgres api schema",
+              "default": "public"
+            },
+            "defaults": {
+              "$ref": "#/$defs/table_defaults"
+            },
+            "tables": {
+              "$ref": "#/$defs/table_endpoints"
+            },
+            "sql": {
+              "$ref": "#/$defs/sql_endpoints"
+            },
+            "templates": {
+              "$ref": "#/$defs/sql_template_endpoints"
+            }
+          },
+          "additionalProperties": false
         }
-      },
-      "additionalProperties": false
+      }
     },
     "table_defaults": {
       "type": "object",

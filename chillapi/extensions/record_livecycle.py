@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from chillapi.abc import TableExtension
-from chillapi.database.query_builder import create_select_join_soft_delete_filter
-from chillapi.exceptions.api_manager import ConfigError
+from ..abc import TableExtension
+from ..database.query_builder import create_select_join_soft_delete_filter
+from ..exceptions.api_manager import ConfigError
 
 
 class SoftDeleteExtension(TableExtension):

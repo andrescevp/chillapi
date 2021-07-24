@@ -3,10 +3,10 @@ import abc
 import flask
 from flask import jsonify, make_response
 
-from chillapi.app.flask_restful_swagger_3 import Resource, Schema
-from chillapi.extensions.audit import AuditLog
-from chillapi.logger.app_loggers import logger
-from chillapi.swagger import AfterResponseEventType, BeforeRequestEventType, BeforeResponseEventType
+from ..app.swagger_schema import Resource, Schema
+from ..extensions.audit import AuditLog
+from ..logger.app_loggers import logger
+from ..swagger import AfterResponseEventType, BeforeRequestEventType, BeforeResponseEventType
 
 
 class ResourceResponse:

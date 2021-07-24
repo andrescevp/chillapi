@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from chillapi.logger.formatter import GelfFormatter
+from ..logger.formatter import GelfFormatter
 
 allowed_reserved_attrs = [
     "levelname",

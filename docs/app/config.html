@@ -47,7 +47,7 @@ from chillapi.app import (
     _table_default_config,
     _tables_default_config,
 )
-from chillapi.database.connection import create_db
+from chillapi.database.connection import create_db_toolbox
 from chillapi.database.repository import DataRepository
 from chillapi.exceptions.api_manager import ColumnNotExist, ConfigError, TableNotExist
 from chillapi.extensions import LIVECYCLE_EXTENSIONS, REQUEST_EXTENSIONS
@@ -297,7 +297,7 @@ class ApiConfig:
         if &#34;templates&#34; in self.database and len(self.database[&#34;templates&#34;]) &gt; 0:
             self.database[&#34;templates&#34;] = [dict(dict_deepmerge({}, _sql_template_default_config, t)) for t in self.database[&#34;templates&#34;]]
 
-        self.db, self.db_inspector = create_db(self.environment, self.database[&#34;schema&#34;])
+        self.db, self.db_inspector = create_db_toolbox(self.environment, self.database[&#34;schema&#34;])
         self.repository = DataRepository(self.db)
 
         _db_tables = self.db_inspector.get_table_names()
@@ -511,7 +511,7 @@ class ApiConfig:
         if &#34;templates&#34; in self.database and len(self.database[&#34;templates&#34;]) &gt; 0:
             self.database[&#34;templates&#34;] = [dict(dict_deepmerge({}, _sql_template_default_config, t)) for t in self.database[&#34;templates&#34;]]
 
-        self.db, self.db_inspector = create_db(self.environment, self.database[&#34;schema&#34;])
+        self.db, self.db_inspector = create_db_toolbox(self.environment, self.database[&#34;schema&#34;])
         self.repository = DataRepository(self.db)
 
         _db_tables = self.db_inspector.get_table_names()

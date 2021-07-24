@@ -18,8 +18,8 @@ from datetime import datetime
 import simplejson
 from sqlalchemy.sql.type_api import TypeEngine
 
-from chillapi.database.query_builder import sql_operators
-from chillapi.http.utils import get_request_id
+from ..database.query_builder import sql_operators
+from ..http.utils import get_request_id
 
 
 class CustomEncoder(simplejson.JSONEncoder):

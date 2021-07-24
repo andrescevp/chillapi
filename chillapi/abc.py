@@ -4,8 +4,8 @@ from typing import List
 from sqlalchemy.engine import CursorResult, Inspector
 from sqlalchemy.orm.scoping import ScopedSession
 
-from chillapi.database import _ALLOWED_DRIVERS
-from chillapi.exceptions.api_manager import ColumnNotExist, ConfigError
+from .database import _ALLOWED_DRIVERS
+from .exceptions.api_manager import ColumnNotExist, ConfigError
 
 
 class Repository(ABC):
@@ -191,6 +191,7 @@ class TableExtension(Extension):
     inspector: Inspector
 
     def __init__(self, config: dict, columns: dict = None, repository: Repository = None, table: str = None, inspector: Inspector = None):
+        super().__init__()
         self.inspector = inspector
         self.columns = columns
         self.repository = repository

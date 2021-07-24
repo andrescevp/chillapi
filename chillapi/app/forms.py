@@ -4,9 +4,9 @@ import wtforms_json
 from wtforms import BooleanField, DateTimeField, Field, fields, FloatField, Form, IntegerField, StringField
 from wtforms.validators import DataRequired, ValidationError
 
-from chillapi.app.flask_restful_swagger_3 import Schema as SwaggerSchema
-from chillapi.swagger.jsonschema import WTFormToJSONSchema
-from chillapi.swagger.utils import get_form_array_swagger_schema
+from ..app.swagger_schema import Schema as SwaggerSchema
+from ..swagger.jsonschema import WTFormToJSONSchema
+from ..swagger.utils import get_form_array_swagger_schema
 
 wtforms_json.init()
 wtform_to_swagger_schema = WTFormToJSONSchema()

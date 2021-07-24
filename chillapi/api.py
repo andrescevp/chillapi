@@ -11,19 +11,18 @@ from openapi_spec_validator import default_handlers, JSONSpecValidatorFactory, S
 from openapi_spec_validator.readers import read_from_filename
 from openapi_spec_validator.schemas import read_yaml_file
 from six.moves.urllib import parse, request
-from swagger_ui import api as api_doc
 
-from chillapi.abc import AttributeDict
-from chillapi.app.config import ApiConfig, ChillApiExtensions, ChillApiModuleLoader, CWD
-from chillapi.app.error_handlers import register_error_handlers
-from chillapi.app.file_utils import read_yaml
-from chillapi.app.flask_restful_swagger_3 import Api, swagger
-from chillapi.app.sitemap import register_routes as register_routes_sitemap
-from chillapi.exceptions.api_manager import ConfigError
-from chillapi.extensions.audit import register_audit_handler
-from chillapi.logger.app_loggers import logger
-from chillapi.logger.formatter import CustomEncoder
-from chillapi.manager import FlaskApiManager
+from .abc import AttributeDict
+from .app.config import ApiConfig, ChillApiExtensions, ChillApiModuleLoader, CWD
+from .app.error_handlers import register_error_handlers
+from .app.file_utils import read_yaml
+from .app.sitemap import register_routes as register_routes_sitemap
+from .app.swagger_schema import Api, swagger
+from .app.swagger_ui import api as api_doc
+from .exceptions.api_manager import ConfigError
+from .logger.app_loggers import logger
+from .logger.formatter import CustomEncoder
+from .manager import FlaskApiManager
 
 _CONFIG_FILE = f"{CWD}/api.yaml"
 
@@ -68,7 +67,7 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
 
     register_error_handlers(app)
     app.config["BASE_DIR"] = CWD
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("__CHILLAPI_DB_DSN__")
+    # app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("__CHILLAPI_DB_DSN__")
     app.config["SECRET_KEY"] = os.environ.get("__CHILLAPI_APP_SECRET_KEY__")
     app.config["WTF_CSRF_ENABLED"] = False
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
@@ -89,7 +88,7 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
         components={"securitySchemes": api_config["app"]["securitySchemes"] if "securitySchemes" in api_config["app"] else None},
     )
 
-    api_doc.RestfulApi(app, title=_app_name, doc=api_config["app"]["swagger_ui_url"], config={"app_name": _app_name})  # Swagger UI config overrides
+    api_doc.SwaggerUI(app, title=_app_name, doc=api_config["app"]["swagger_ui_url"], config={"app_name": _app_name})  # Swagger UI config overrides
 
     api_spec_file = f"{export_path}/api_spec.json"
 
@@ -128,9 +127,11 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
     simplejson.dump(config.to_dict(), open(f"{export_path}/{_app_name}_api.config.json", "w"), indent=2, cls=CustomEncoder, for_json=True)
 
     api_manager.create_api(api)
-    register_audit_handler(app, extensions.get_extension("audit"))
+    # register_audit_handler(app, extensions.get_extension("audit"))
 
     if api_config["app"]["debug"]:
+        if not os.path.exists(f"{export_path}/profile"):
+            os.makedirs(f"{export_path}/profile")
         from werkzeug.middleware.profiler import ProfilerMiddleware
 
         app.config["PROFILE"] = True

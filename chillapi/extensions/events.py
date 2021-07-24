@@ -1,7 +1,7 @@
 import abc
 
-from chillapi.swagger import BeforeRequestEventType, BeforeResponseEventType
-from chillapi.swagger.http import AutomaticResource, ResourceResponse
+from ..swagger import BeforeRequestEventType, BeforeResponseEventType
+from ..swagger.http import AutomaticResource, ResourceResponse
 
 
 class EventDto:

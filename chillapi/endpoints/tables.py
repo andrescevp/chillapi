@@ -10,21 +10,21 @@ from openapi_schema_validator import validate as json_swagger_schema_validator
 from simplejson.errors import JSONDecodeError
 from wtforms.validators import ValidationError
 
-from chillapi.abc import Repository
-from chillapi.app.flask_restful_swagger_3 import swagger
-from chillapi.app.forms import create_form_class, generate_form_swagger_schema_from_form
-from chillapi.database import DB_DIALECT_POSTGRES
-from chillapi.database.query_builder import (
+from ..abc import Repository
+from ..app.forms import create_form_class, generate_form_swagger_schema_from_form
+from ..app.swagger_schema import swagger
+from ..database import DB_DIALECT_POSTGRES
+from ..database.query_builder import (
     create_select_filtered_paginated_ordered_query,
     create_select_filtered_paginated_query_count,
 )
-from chillapi.database.repository import _MAGIC_QUERIES
-from chillapi.exceptions.api_manager import ConfigError
-from chillapi.exceptions.http import NotFoundException, RequestInvalidFieldSchemaError, RequestSchemaError
-from chillapi.extensions.audit import AuditLog
-from chillapi.logger.app_loggers import logger
-from chillapi.swagger.http import AutomaticResource, ResourceResponse
-from chillapi.swagger.schemas import (
+from ..database.repository import _MAGIC_QUERIES
+from ..exceptions.api_manager import ConfigError
+from ..exceptions.http import NotFoundException, RequestInvalidFieldSchemaError, RequestSchemaError
+from ..extensions.audit import AuditLog
+from ..logger.app_loggers import logger
+from ..swagger.http import AutomaticResource, ResourceResponse
+from ..swagger.schemas import (
     create_swagger_type_from_dict,
     get_delete_list_endpoint_schema,
     get_delete_single_endpoint_schema,
@@ -35,7 +35,7 @@ from chillapi.swagger.schemas import (
     get_put_list_endpoint_schema,
     get_put_single_endpoint_schema,
 )
-from chillapi.swagger.utils import (
+from ..swagger.utils import (
     get_error_swagger_schema,
     get_filter_schema,
     get_list_filtered_request_swagger_schema,

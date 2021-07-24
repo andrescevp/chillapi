@@ -1,23 +1,30 @@
-from typing import Tuple
+import os
+from typing import Dict
 
 from sqlalchemy import create_engine, inspect
-from sqlalchemy.engine import Inspector
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.orm.scoping import ScopedSession
+
+TYPE_RELATIONAL = "relational"
+TYPE_DOCUMENT = "document"
+TYPE_FILE = "file"
 
 
-def create_db(environment: dict, schemas: str = None) -> Tuple[ScopedSession, Inspector]:
+def create_db_toolbox(database_dict: dict) -> Dict:
     """
 
     :param environment: dict:
     :param schemas: str:  (Default value = None)
 
     """
-    db_url = environment["__CHILLAPI_DB_DSN__"]
+    type = TYPE_RELATIONAL
+    if database_dict["dsn"].startswith("$"):
+        database_dict["dsn"] = os.getenv(database_dict["dsn"].replace("$", "", 1))
+
+    db_url = database_dict["dsn"]
     connect_args = {}
 
     if db_url.__contains__("postgresql"):
-        connect_args = {"options": f"-csearch_path={schemas}"}
+        connect_args = {"options": f"-csearch_path={database_dict['schema']}"}
     # if db_url.__contains__("sqlite"):
     #     @event.listens_for(Engine, "connect")
     #     def set_sqlite_pragma(dbapi_connection, connection_record):
@@ -35,7 +42,11 @@ def create_db(environment: dict, schemas: str = None) -> Tuple[ScopedSession, In
     db = SessionLocal()
 
     try:
-        return db, inspect(engine)
+        return {
+            "session": db,
+            "inspector": inspect(engine),
+            "type": type,
+        }
     finally:
         # if db_url.__contains__("sqlite"):
         #     engine.dispose()

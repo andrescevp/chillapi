@@ -1,5 +1,5 @@
-from chillapi.app.flask_restful_swagger_3 import Schema
-from chillapi.database.query_builder import sql_operators
+from ..app.swagger_schema import Schema
+from ..database.query_builder import sql_operators
 
 
 class ColumnSwaggerDefinition:

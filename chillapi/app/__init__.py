@@ -9,7 +9,7 @@ _app_defaults = {
 }
 
 _environment_defaults = {
-    "__CHILLAPI_DB_DSN__": None,
+    # "__CHILLAPI_DB_DSN__": None,
     "__CHILLAPI_APP_SECRET_KEY__": "this-is-not-so-secret",
 }
 

@@ -26,6 +26,17 @@ services:
     volumes:
       - ./docker/db-entrypoint.sql:/docker-entrypoint-initdb.d/init.sql
 
+  mongodb:
+    image: mongo
+    container_name: chillapi-mongodb
+    environment:
+      - PUID=1000
+      - PGID=1000
+#    volumes:
+#      - /home/barry/mongodb/database:/data/db
+    ports:
+      - 27017:27017
+
   chillapi-api:
     build:
       context: .

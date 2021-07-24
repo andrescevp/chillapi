@@ -4,7 +4,7 @@ import inspect
 from flask import Blueprint, request
 from flask_restful import abort as flask_abort, Api as restful_Api, Resource as flask_Resource
 
-from chillapi.app.flask_restful_swagger_3.swagger import (
+from chillapi.app.swagger_schema.swagger import (
     _auth as auth,
     add_parameters,
     create_swagger_endpoint,

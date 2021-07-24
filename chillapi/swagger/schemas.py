@@ -1,7 +1,7 @@
 from typing import List
 
-from chillapi.app.flask_restful_swagger_3 import Schema
-from chillapi.swagger.utils import get_error_swagger_schema, get_not_found_swagger_schema, get_revisable_response_swagger_schema
+from ..app.swagger_schema import Schema
+from ..swagger.utils import get_error_swagger_schema, get_not_found_swagger_schema, get_revisable_response_swagger_schema
 
 revisable_response_swagger_schema = get_revisable_response_swagger_schema()
 error_swagger_schema = get_error_swagger_schema()

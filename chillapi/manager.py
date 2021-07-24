@@ -3,10 +3,10 @@ from typing import List
 
 import inflect
 
-from chillapi import ApiManager
-from chillapi.app.config import ApiConfig
-from chillapi.endpoints.sql import create_sql_endpoint_class
-from chillapi.endpoints.tables import (
+from . import ApiManager
+from .app.config import ApiConfig
+from .endpoints.sql import create_sql_endpoint_class
+from .endpoints.tables import (
     create_delete_list_endpoint_class,
     create_delete_single_endpoint_class,
     create_get_list_endpoint_class,
@@ -16,9 +16,9 @@ from chillapi.endpoints.tables import (
     create_put_list_endpoint_class,
     create_put_single_endpoint_class,
 )
-from chillapi.exceptions.api_manager import ConfigError
-from chillapi.swagger.http import AutomaticResource
-from chillapi.swagger.schemas import create_swagger_type_from_dict
+from .exceptions.api_manager import ConfigError
+from .swagger.http import AutomaticResource
+from .swagger.schemas import create_swagger_type_from_dict
 
 inflector = inflect.engine()
 created_endpoint_used_names = []
@@ -36,23 +36,25 @@ class FlaskSqlApiManager(ApiManager):
         :param api:
 
         """
-        for i, sql_endpoint in enumerate(self.config.database["sql"]):
-            sql = sql_endpoint["sql"]
-            duplicated_name_postfix = "_SQL"
-            self.create_sql_endpoint(api, duplicated_name_postfix, i, sql, sql_endpoint)
+        for source_key in self.config.database:
+            for i, sql_endpoint in enumerate(self.config.database[source_key]["sql"]):
+                sql = sql_endpoint["sql"]
+                duplicated_name_postfix = "_SQL"
+                self.create_sql_endpoint(api, duplicated_name_postfix, i, sql, sql_endpoint, source_key)
 
-        for i, sql_endpoint in enumerate(self.config.database["templates"]):
-            template = sql_endpoint["template"]
-            if template.startswith("."):
-                template = f'{os.getcwd()}{template.lstrip(".")}'
-            template = os.path.realpath(template)
-            with open(template) as sql_template:
-                sql = sql_template.read()
-            duplicated_name_postfix = "_TSQL"
+        for source_key in self.config.database:
+            for i, sql_endpoint in enumerate(self.config.database[source_key]["templates"]):
+                template = sql_endpoint["template"]
+                if template.startswith("."):
+                    template = f'{os.getcwd()}{template.lstrip(".")}'
+                template = os.path.realpath(template)
+                with open(template) as sql_template:
+                    sql = sql_template.read()
+                duplicated_name_postfix = "_TSQL"
 
-            self.create_sql_endpoint(api, duplicated_name_postfix, i, sql, sql_endpoint)
+                self.create_sql_endpoint(api, duplicated_name_postfix, i, sql, sql_endpoint, source_key)
 
-    def create_sql_endpoint(self, api, duplicated_name_postfix, i, sql, sql_endpoint):
+    def create_sql_endpoint(self, api, duplicated_name_postfix, i, sql, sql_endpoint, source_key):
         """
 
         :param api:
@@ -94,7 +96,7 @@ class FlaskSqlApiManager(ApiManager):
             method,
             url,
             sql,
-            self.config.repository,
+            self.config.repository[source_key],
             query_parameters,
             tags,
             request_schema,
@@ -115,6 +117,7 @@ class FlaskTableApiManager(ApiManager):
         self,
         table: dict,
         endpoint: str,
+        source_key: str,
         action: str,
         allowed_columns: List,
         excluded_columns: List,
@@ -133,12 +136,13 @@ class FlaskTableApiManager(ApiManager):
 
         """
 
-        return create_get_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository)
+        return create_get_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository[source_key])
 
     def create_put_single_endpoint(
         self,
         table: dict,
         endpoint: str,
+        source_key: str,
         action: str,
         allowed_columns: List,
         excluded_columns: List,
@@ -157,12 +161,13 @@ class FlaskTableApiManager(ApiManager):
 
         """
 
-        return create_put_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository)
+        return create_put_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository[source_key])
 
     def create_post_single_endpoint(
         self,
         table: dict,
         endpoint: str,
+        source_key: str,
         action: str,
         allowed_columns: List,
         excluded_columns: List,
@@ -181,12 +186,13 @@ class FlaskTableApiManager(ApiManager):
 
         """
 
-        return create_post_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository)
+        return create_post_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository[source_key])
 
     def create_delete_single_endpoint(
         self,
         table: dict,
         endpoint: str,
+        source_key: str,
         action: str,
         allowed_columns: List,
         excluded_columns: List,
@@ -204,12 +210,13 @@ class FlaskTableApiManager(ApiManager):
         :param extensions: dict:
 
         """
-        return create_delete_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository)
+        return create_delete_single_endpoint_class(table, allowed_columns, allowed_columns_map, extensions, self.config.repository[source_key])
 
     def create_get_list_endpoint(
         self,
         table: dict,
         endpoint: str,
+        source_key: str,
         action: str,
         allowed_columns: List,
         excluded_columns: List,
@@ -232,13 +239,14 @@ class FlaskTableApiManager(ApiManager):
             allowed_columns,
             allowed_columns_map,
             extensions,
-            self.config.repository,
+            self.config.repository[source_key],
         )
 
     def create_put_list_endpoint(
         self,
         table: dict,
         endpoint: str,
+        source_key: str,
         action: str,
         allowed_columns: List,
         excluded_columns: List,
@@ -261,13 +269,14 @@ class FlaskTableApiManager(ApiManager):
             allowed_columns,
             allowed_columns_map,
             extensions,
-            self.config.repository,
+            self.config.repository[source_key],
         )
 
     def create_post_list_endpoint(
         self,
         table: dict,
         endpoint: str,
+        source_key: str,
         action: str,
         allowed_columns: List,
         excluded_columns: List,
@@ -290,13 +299,14 @@ class FlaskTableApiManager(ApiManager):
             allowed_columns,
             allowed_columns_map,
             extensions,
-            self.config.repository,
+            self.config.repository[source_key],
         )
 
     def create_delete_list_endpoint(
         self,
         table: dict,
         endpoint: str,
+        source_key: str,
         action: str,
         allowed_columns: List,
         excluded_columns: List,
@@ -319,7 +329,7 @@ class FlaskTableApiManager(ApiManager):
             allowed_columns,
             allowed_columns_map,
             extensions,
-            self.config.repository,
+            self.config.repository[source_key],
         )
 
     def create_api(self, api):
@@ -328,44 +338,46 @@ class FlaskTableApiManager(ApiManager):
         :param api:
 
         """
-        for table in self.config.database["tables"]:
-            for endpoint, actions in table["api_endpoints"].items():
-                for action in actions:
-                    _create_method = f"create_{endpoint.lower()}_{action.lower()}_endpoint"
-                    _create = getattr(self, _create_method, None)
+        for source_key in self.config.database:
+            for table in self.config.database[source_key]["tables"]:
+                for endpoint, actions in table["api_endpoints"].items():
+                    for action in actions:
+                        _create_method = f"create_{endpoint.lower()}_{action.lower()}_endpoint"
+                        _create = getattr(self, _create_method, None)
 
-                    if _create is None:
-                        raise ConfigError(f"There is not {_create_method}")
-                    model_name = table["model_name"]
-                    table_columns = table["columns"]
+                        if _create is None:
+                            raise ConfigError(f"There is not {_create_method}")
+                        model_name = table["model_name"]
+                        table_columns = table["columns"]
 
-                    table_columns_excluded = table["fields_excluded"][endpoint][action] if endpoint != "DELETE" else {}
-                    table_extensions = self.config.extensions.tables[model_name]
-                    allowed_columns = [x for x in table_columns.keys() if x not in table_columns_excluded]
+                        table_columns_excluded = table["fields_excluded"][endpoint][action] if endpoint != "DELETE" else {}
+                        table_extensions = self.config.extensions.tables[source_key][model_name]
+                        allowed_columns = [x for x in table_columns.keys() if x not in table_columns_excluded]
 
-                    allowed_columns_map = {x: table["columns"][x] for x in table["columns"].keys() if x in allowed_columns}
-                    _endpoint: AutomaticResource = _create(
-                        **{
-                            "table": table,
-                            "endpoint": endpoint,
-                            "action": action,
-                            "allowed_columns": allowed_columns,
-                            "excluded_columns": table_columns_excluded,
-                            "allowed_columns_map": allowed_columns_map,
-                            "extensions": table_extensions,
-                        }
-                    )
+                        allowed_columns_map = {x: table["columns"][x] for x in table["columns"].keys() if x in allowed_columns}
+                        _endpoint: AutomaticResource = _create(
+                            **{
+                                "table": table,
+                                "endpoint": endpoint,
+                                "action": action,
+                                "allowed_columns": allowed_columns,
+                                "excluded_columns": table_columns_excluded,
+                                "allowed_columns_map": allowed_columns_map,
+                                "extensions": table_extensions,
+                                "source_key": source_key,
+                            }
+                        )
 
-                    api.add_resource(
-                        _endpoint,
-                        _endpoint.route,
-                        endpoint=_endpoint.endpoint,
-                        resource_class_kwargs={
-                            "before_request": self.config.extensions.tables[model_name]["before_request"],
-                            "before_response": self.config.extensions.tables[model_name]["before_response"],
-                            "after_response": self.config.extensions.tables[model_name]["after_response"],
-                        },
-                    )
+                        api.add_resource(
+                            _endpoint,
+                            _endpoint.route,
+                            endpoint=_endpoint.endpoint,
+                            resource_class_kwargs={
+                                "before_request": self.config.extensions.tables[source_key][model_name]["before_request"],
+                                "before_response": self.config.extensions.tables[source_key][model_name]["before_response"],
+                                "after_response": self.config.extensions.tables[source_key][model_name]["after_response"],
+                            },
+                        )
 
 
 class FlaskApiManager(ApiManager):

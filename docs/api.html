@@ -117,7 +117,7 @@ def ChillApi(app: Flask = None, config_file: str = _CONFIG_FILE, export_path: st
         components={&#34;securitySchemes&#34;: api_config[&#34;app&#34;][&#34;securitySchemes&#34;] if &#34;securitySchemes&#34; in api_config[&#34;app&#34;] else None},
     )
 
-    api_doc.RestfulApi(app, title=_app_name, doc=api_config[&#34;app&#34;][&#34;swagger_ui_url&#34;], config={&#34;app_name&#34;: _app_name})  # Swagger UI config overrides
+    api_doc.SwaggerUI(app, title=_app_name, doc=api_config[&#34;app&#34;][&#34;swagger_ui_url&#34;], config={&#34;app_name&#34;: _app_name})  # Swagger UI config overrides
 
     api_spec_file = f&#34;{export_path}/api_spec.json&#34;
 
@@ -314,7 +314,7 @@ def set_api_security(api_config, module_loader):
         components={&#34;securitySchemes&#34;: api_config[&#34;app&#34;][&#34;securitySchemes&#34;] if &#34;securitySchemes&#34; in api_config[&#34;app&#34;] else None},
     )
 
-    api_doc.RestfulApi(app, title=_app_name, doc=api_config[&#34;app&#34;][&#34;swagger_ui_url&#34;], config={&#34;app_name&#34;: _app_name})  # Swagger UI config overrides
+    api_doc.SwaggerUI(app, title=_app_name, doc=api_config[&#34;app&#34;][&#34;swagger_ui_url&#34;], config={&#34;app_name&#34;: _app_name})  # Swagger UI config overrides
 
     api_spec_file = f&#34;{export_path}/api_spec.json&#34;
 
